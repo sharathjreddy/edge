@@ -2,7 +2,7 @@
 var myList = [ 
                 { "name" : "HEIGHT", "type" : "NUMERIC" },
                 { "name" : "ACT_TYPE", "type" : "SELECT", "values" : [ 'NONE', 'HAND QUAD', '' ] },
-                { "name" : "ACTUATOR", "type" : "SELECT", "values" : [ 'NONE',  'HQRSS050', 'RH120', 'RLH120', 'LF120', 'MA418', 'LF24' ] }
+                { "name" : "ACTUATOR", "type" : "SELECT", "values" : [ 'NONE',  'HQRSS050', 'HDHQ100', 'RH120', 'RLH120', 'LF120', 'MA418', 'LF24' ] }
              ];
 
 var _table_ = document.createElement('table'),

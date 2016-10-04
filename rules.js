@@ -43,7 +43,7 @@ function actuator2(model) {
 
 function actuator3(model) {
 
-	var result = { IsAvailable : true };
+	var result = {};
 
 	if (model.ACT_TYPE != "HAND QUAD") {
 	    result.IsAvailable = false;
@@ -59,7 +59,7 @@ function actuator3(model) {
 	}
     if (model.Category == "Control Dampers") { 
     	if (model.Child_Category == "Industrial") {
-    		if (model.FAIL_POS == "NONE" && model.INSTALLATION == "NONE" && model.OPER_SHAFT == "JACKSHAFT") {
+    		if (model.FAIL_POS == "NONE") && (model.INSTALLATION == "NONE") && (model.OPER_SHAFT == "JACKSHAFT") {
     			result.IsAvailable = True;	
     		}
     		else {

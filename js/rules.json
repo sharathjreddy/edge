@@ -1,0 +1,9 @@
+{
+	"rules": [{
+		"event": "Global Value Available",
+		"option": "Actuator",
+		"value": "HDHQ100",
+		"function" : "console.log('executing...'); var result = { }; if (model.ACT_TYPE == 'HAND QUAD') { result.isAvailable = true; } return result;"
+		} ]
+}
+
