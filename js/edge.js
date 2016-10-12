@@ -1,9 +1,37 @@
+ var options = [
 
-var myList = [ 
-                { "name" : "HEIGHT", "type" : "NUMERIC" },
-                { "name" : "ACT_TYPE", "type" : "SELECT", "values" : [ 'NONE', 'HAND QUAD', '' ] },
-                { "name" : "ACTUATOR", "type" : "SELECT", "values" : [ 'NONE',  'HQRSS050', 'HDHQ100', 'RH120', 'RLH120', 'LF120', 'MA418', 'LF24' ] }
-             ];
+
+{ "name":"WIDTH","type":"NUMERIC", },
+{ "name":"HEIGHT","type":"NUMERIC", },
+{ "name":"SIZE","type":"SELECT","values":['Deduct 1/4'] },
+{ "name":"FRAME","type":"SELECT","values":['CHANNEL','FRONT FLANGE','REAR FLANGE','DOUBLE FLANG','T-FLANGE','U CHANNEL','C STYLE','CO STYLE','CR STYLE'] },
+{ "name":"BLADE SEALS","type":"SELECT","values":['NEOPRENE'] },
+{ "name":"OPER.SHAFT","type":"SELECT","values":['EXTENDED','NONE'] },
+{ "name":"ACT TYPE","type":"SELECT","values":['NONE','HAND QUAD','ELECTRIC/120 VOLT','ELECTRIC/24 VOLT','ELECTRIC/230 VOLT','PNEUMATIC','120 VOLT W/SWITCH','24 VOLT W/SWITCH','24 VOLT MODULATING','230 VOLT W/SWITCH','PNEU MODULATING'] },
+{ "name":"ACTUATOR","type":"SELECT","values":['NONE','HQRSS050','HDHQ100','HDHQ050','HQR050B','HQR050','M9220-BAA-RK','RH120','FSLF120-RUS','NFBUP-RUS','MS4120','RLH120','AFBUP','FSTF120-RUS','M9208-BAA-RK','LF120','AFBUP-RUS','M9203-BUA-RK','MA418','NFBUP','NFB24','LF24','MA318','AFB24','MS8120','RLH24','M9203-BGA-RK','M9208-BGA-RK','FSTF24','GCA121','RH24','GCA126','M9220-BGA-RK','FSLF24','TFB24','331-3060P','331-2961','331-4827P','331-4827','331-2961P','331-3060','M9203-BUB-RK','M9220-BAC-RK','FSTF120-S','MS4120S','TFB120-S','RLH120-S','NFBUP-S','M9208-BAC-RK','AFBUP-S','RH120-S','LF120-S','MA418-500','GCA226','FSLF120S','RLH24-S','MA318-500','MS8120S','FSTF24-S','RH24-S','NFB24-S','FSLF24S','LF24-S','AFB24S','M9220-BGC-RK','M9208-BGC-RK','TFB24-S','M9203-GGA-RK','TFB24SR-RUS','TFB24-SR','RLH24-MOD','M9208-GGA-RK','RH24-MOD','GCA161','NFB24-SR','AFB24SR','LF24SR-RUS','M9220-GGA-RK','LF24-SR','MS7520A2015','FSTF230','FSTF230-S'] },
+{ "name":"ACTUATOR BRAND","type":"SELECT","values":['BELIMO'] },
+{ "name":"FAIL POS.","type":"SELECT","values":['N/A','CLOSE','OPEN','IN PLACE'] },
+{ "name":"INSTALLATION","type":"SELECT","values":['N/A','IN','OUT'] },
+{ "name":"SIDE PLATE","type":"SELECT","values":['NO','YES'] },
+{ "name":"FRAME GAUGE","type":"SELECT","values":['16 GA.','.125 ALUM','14 GA. U CHANNEL','12 GA. U CHANNEL'] },
+{ "name":"FRM MATERIAL","type":"SELECT","values":['GALV.STEEL','304 SS','ALUMINUM'] },
+{ "name":"BLADE WIDTH","type":"SELECT","values":['3 1/2 Inch WIDE'] },
+{ "name":"Slv/Tran","type":"SELECT","values":['None','SLEEVE'] },
+{ "name":"Slv/Tran Len","type":"SELECT","values":['N/A','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','8','9','10','11'] },
+{ "name":"Slv/Tran Ga","type":"SELECT","values":['N/A','20 Gauge','18 Gauge','16 Gauge','14 Gauge','10 Gauge','.080 Inch','.125 Inch'] },
+{ "name":"Slv/Tran Mat","type":"SELECT","values":['N/A','GALVANIZED','304 SS','ALUMINUM'] },
+{ "name":"CONSTRUCTION","type":"SELECT","values":['304 SS','STANDARD GALV','ALUM/GALV'] },
+{ "name":"MTG.HOLES","type":"SELECT","values":['FRONT FLANGE','REAR FLANGE','BOTH SIDES'] },
+{ "name":"BLADE ACTION","type":"SELECT","values":['OPPOSED'] },
+{ "name":"LINKAGE","type":"SELECT","values":['CONCEALED'] },
+{ "name":"FRAME DEPTH","type":"SELECT","values":['5 INCHES','3 1/2 INCHES','6 INCHES'] },
+{ "name":"BEARING TYPE","type":"SELECT","values":['THRUST- VERT BLADES'] },
+{ "name":"BEARING MAT.","type":"SELECT","values":['STANDARD','SS'] },
+{ "name":"LNKG. MATRL","type":"SELECT","values":['STANDARD','STAIN. STEEL'] },
+
+
+];
+
 
 var _table_ = document.createElement('table'),
     _tr_ = document.createElement('tr'),
@@ -13,12 +41,84 @@ var _table_ = document.createElement('table'),
 
 var table;
 $(document).ready(function() {
-    table = buildHtmlTable(myList);
-    table.addEventListener('change',  changeHandler);
+    table = buildHtmlTable(options);
+    //table.addEventListener('change',  changeHandler);
     table.addEventListener('mousedown',  clickHandler);
+    table.addEventListener('focusout',  validateModel);
     var div1 = document.getElementById('div1');
     div1.appendChild(table);
+    loadRules();
 });
+
+
+function loadRules() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            parseRules(xmlHttp.response);
+    }
+    xmlHttp.open("GET", '/js/CD35.js', true); // true for asynchronous 
+    xmlHttp.send(null);
+
+}
+
+var rules = {};
+function parseRules(response) {
+    alert('Received Response');
+    console.log(response);
+    var data = JSON.parse(response);
+    var i = 0;
+    for (let rule of data.rules) {
+        i++;
+        console.log(rule);
+        console.log('parsing number ' + i);
+        if (! rules.hasOwnProperty(rule.option))
+            rules[rule.option] = {};
+        if (! rules[rule.option].hasOwnProperty(rule.event))
+            rules[rule.option][rule.event] = {};
+
+        console.log('function text: ' + rule.rule);
+        var func = new Function("m", rule.rule);
+        //check for value
+        if (rule.value == '-') {
+            rules[rule.option][rule.event] = func;
+        }
+        else {
+            rules[rule.option][rule.event][rule.value] = func;    
+        }    
+
+    }
+
+}
+
+
+
+function validateModel(event) {
+    //alert('validating...');
+    console.log('validing...');
+
+    var model = {}; 
+    var sel = event.target;
+    var target = sel;
+    
+    while (target && target.nodeName !== "TR") {
+        target = target.parentNode;
+    }
+    if (target) {
+        var cells = target.getElementsByTagName("td");
+        for (var i = 0; i < cells.length; i++) {
+            var el = cells[i].firstElementChild;
+            var option = el.getAttribute('data-option');
+            var value = el.value;
+            model[option] = value;
+        }
+    }
+    console.log(model);
+
+
+
+}
+
 
 //Capture all the values in the row 
 //Get the name of the option 
