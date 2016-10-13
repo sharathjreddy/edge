@@ -7,7 +7,7 @@
 { "name":"FRAME","type":"SELECT","values":['CHANNEL','FRONT FLANGE','REAR FLANGE','DOUBLE FLANG','T-FLANGE','U CHANNEL','C STYLE','CO STYLE','CR STYLE'] },
 { "name":"BLADE SEALS","type":"SELECT","values":['NEOPRENE'] },
 { "name":"OPER.SHAFT","type":"SELECT","values":['EXTENDED','NONE'] },
-{ "name":"ACT TYPE","type":"SELECT","values":['NONE','HAND QUAD','ELECTRIC/120 VOLT','ELECTRIC/24 VOLT','ELECTRIC/230 VOLT','PNEUMATIC','120 VOLT W/SWITCH','24 VOLT W/SWITCH','24 VOLT MODULATING','230 VOLT W/SWITCH','PNEU MODULATING'] },
+{ "name":"ACT_TYPE","type":"SELECT","values":['NONE','HAND QUAD','ELECTRIC/120 VOLT','ELECTRIC/24 VOLT','ELECTRIC/230 VOLT','PNEUMATIC','120 VOLT W/SWITCH','24 VOLT W/SWITCH','24 VOLT MODULATING','230 VOLT W/SWITCH','PNEU MODULATING'] },
 { "name":"ACTUATOR","type":"SELECT","values":['NONE','HQRSS050','HDHQ100','HDHQ050','HQR050B','HQR050','M9220-BAA-RK','RH120','FSLF120-RUS','NFBUP-RUS','MS4120','RLH120','AFBUP','FSTF120-RUS','M9208-BAA-RK','LF120','AFBUP-RUS','M9203-BUA-RK','MA418','NFBUP','NFB24','LF24','MA318','AFB24','MS8120','RLH24','M9203-BGA-RK','M9208-BGA-RK','FSTF24','GCA121','RH24','GCA126','M9220-BGA-RK','FSLF24','TFB24','331-3060P','331-2961','331-4827P','331-4827','331-2961P','331-3060','M9203-BUB-RK','M9220-BAC-RK','FSTF120-S','MS4120S','TFB120-S','RLH120-S','NFBUP-S','M9208-BAC-RK','AFBUP-S','RH120-S','LF120-S','MA418-500','GCA226','FSLF120S','RLH24-S','MA318-500','MS8120S','FSTF24-S','RH24-S','NFB24-S','FSLF24S','LF24-S','AFB24S','M9220-BGC-RK','M9208-BGC-RK','TFB24-S','M9203-GGA-RK','TFB24SR-RUS','TFB24-SR','RLH24-MOD','M9208-GGA-RK','RH24-MOD','GCA161','NFB24-SR','AFB24SR','LF24SR-RUS','M9220-GGA-RK','LF24-SR','MS7520A2015','FSTF230','FSTF230-S'] },
 { "name":"ACTUATOR BRAND","type":"SELECT","values":['BELIMO'] },
 { "name":"FAIL POS.","type":"SELECT","values":['N/A','CLOSE','OPEN','IN PLACE'] },
@@ -18,7 +18,7 @@
 { "name":"BLADE WIDTH","type":"SELECT","values":['3 1/2 Inch WIDE'] },
 { "name":"Slv/Tran","type":"SELECT","values":['None','SLEEVE'] },
 { "name":"Slv/Tran Len","type":"SELECT","values":['N/A','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','8','9','10','11'] },
-{ "name":"Slv/Tran Ga","type":"SELECT","values":['N/A','20 Gauge','18 Gauge','16 Gauge','14 Gauge','10 Gauge','.080 Inch','.125 Inch'] },
+{ "name":"Slv_Tran_Ga","type":"SELECT","values":['N/A','20 Gauge','18 Gauge','16 Gauge','14 Gauge','10 Gauge','.080 Inch','.125 Inch'] },
 { "name":"Slv/Tran Mat","type":"SELECT","values":['N/A','GALVANIZED','304 SS','ALUMINUM'] },
 { "name":"CONSTRUCTION","type":"SELECT","values":['304 SS','STANDARD GALV','ALUM/GALV'] },
 { "name":"MTG.HOLES","type":"SELECT","values":['FRONT FLANGE','REAR FLANGE','BOTH SIDES'] },
@@ -48,7 +48,36 @@ $(document).ready(function() {
     var div1 = document.getElementById('div1');
     div1.appendChild(table);
     loadRules();
+    bindKeys();
 });
+
+
+
+function bindKeys() {
+
+    $(document).keydown(function(e) {
+    switch(e.which) {
+        case 37: // left
+        break;
+
+        case 38: // up
+        break;
+
+        case 39: // right
+        break;
+
+        case 40: // down
+        break;
+
+        default: return; // exit this handler for other keys
+    }
+    e.preventDefault(); // prevent the default action (scroll / move caret)
+   });
+
+
+}
+
+
 
 
 function loadRules() {
@@ -64,7 +93,7 @@ function loadRules() {
 
 var rules = {};
 function parseRules(response) {
-    alert('Received Response');
+    //alert('Received Response');
     console.log(response);
     var data = JSON.parse(response);
     var i = 0;
@@ -81,17 +110,14 @@ function parseRules(response) {
         var func = new Function("m", rule.rule);
         //check for value
         if (rule.value == '-') {
-            rules[rule.option][rule.event] = func;
+            rules[rule.option][rule.event] = func; 
         }
         else {
             rules[rule.option][rule.event][rule.value] = func;    
         }    
 
     }
-
 }
-
-
 
 function validateModel(event) {
     //alert('validating...');
@@ -114,10 +140,41 @@ function validateModel(event) {
         }
     }
     console.log(model);
+    doValidate(model);
+}
 
+
+function doValidate(model) {
+
+    model.ModelMinWidth = 5;
+    model.ModelMaxWidth = 100;
+
+    //for each option, validate all the event types 
+    var result; 
+
+    for (let option of options) {
+        if (rules.hasOwnProperty(option.name)) {
+            var optionRules = rules[option.name];
+            var val = model[option.name];
+
+            if (optionRules.hasOwnProperty('GlobalOption Value Available')) {
+                result = optionRules['GlobalOption Value Available'](model);
+                console.log(result.Message);
+            }
+            if (optionRules.hasOwnProperty('Global Value Available')) {
+                var globalValueFunctions = optionRules['Global Value Available'];
+                if (globalValueFunctions.hasOwnProperty(val)) {
+                    result = optionRules['Global Value Available'][val](model);
+                    console.log(result.Message);
+                }
+            }
+        }
+    }
 
 
 }
+
+
 
 
 //Capture all the values in the row 
@@ -157,9 +214,9 @@ function clickHandler(event) {
         var cells = target.getElementsByTagName("td");
         for (var i = 0; i < cells.length; i++) {
             var el = cells[i].firstElementChild;
-            var option = el.getAttribute('data-option');
+            var optionName = el.getAttribute('data-option');
             var value = el.value;
-            model[option] = value;
+            model[optionName] = value;
         }
     }
     console.log(model);
@@ -176,9 +233,13 @@ function clickHandler(event) {
 
     //TODO: update the Grid with the availability results 
     for (i = 0; i < values.length; i++) {
-        if (!values[i].isAvailable) {
-            sel.options[i].style.backgroundColor = 'red';
+        if (!values[i].ListValueColor == 'red') {
+            sel.options[i].style.backgroundColor = 'pink';
             sel.options[i].disabled = true;
+        }
+        else if (!values[i].IsAvailable){
+            sel.options[i].style.backgroundColor = 'grey';
+            sel.options[i].disabled = false;    
         }
         else {
             sel.options[i].style.backgroundColor = 'white';
