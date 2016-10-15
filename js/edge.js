@@ -25,7 +25,7 @@
 { "name":"BLADE ACTION","type":"SELECT","values":['OPPOSED'] },
 { "name":"LINKAGE","type":"SELECT","values":['CONCEALED'] },
 { "name":"FRAME DEPTH","type":"SELECT","values":['5 INCHES','3 1/2 INCHES','6 INCHES'] },
-{ "name":"BEARING TYPE","type":"SELECT","values":['THRUST- VERT BLADES'] },
+{ "name":"BEARING TYPE","type":"SELECT","values":['DUMMY', 'DUMMY2', 'THRUST- VERT BLADES'] },
 { "name":"BEARING MAT.","type":"SELECT","values":['STANDARD','SS'] },
 { "name":"LNKG. MATRL","type":"SELECT","values":['STANDARD','STAIN. STEEL'] },
 
@@ -225,7 +225,7 @@ function clickHandler(event) {
     var values = [];
     var options = sel.options;
     for (i = 0; i < options.length; i++) {
-        values.push( { valueName : options[i].value, isAvailable : true } );
+        values.push( { valueName : options[i].value, IsAvailable : true } );
     }
     console.log(JSON.stringify(values));
     validate(model, option, values);
@@ -233,7 +233,7 @@ function clickHandler(event) {
 
     //TODO: update the Grid with the availability results 
     for (i = 0; i < values.length; i++) {
-        if (!values[i].ListValueColor == 'red') {
+        if (values[i].ListValueColor == 'Red') {
             sel.options[i].style.backgroundColor = 'pink';
             sel.options[i].disabled = true;
         }

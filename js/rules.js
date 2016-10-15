@@ -31,6 +31,21 @@ function validate(model, option, values) {
             }
         }
     }
+
+
+    if (optionRules.hasOwnProperty('Local Value Available')) {
+        
+        let globalValueFunctions = optionRules['Local Value Available'];
+    	for (let value of values) {	    
+            if (globalValueFunctions.hasOwnProperty(value.valueName)) {
+                result = optionRules['Local Value Available'][value.valueName](model);
+                value.IsAvailable = result.IsAvailable;
+                value.ListValueColor = result.ListValueColor;
+                console.log(result.Message);
+            }
+        }
+    }
+
 }
 
 
