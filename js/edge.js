@@ -41,42 +41,81 @@ var _table_ = document.createElement('table'),
 
 var table;
 $(document).ready(function() {
-    table = buildHtmlTable(options);
-    //table.addEventListener('change',  changeHandler);
-    table.addEventListener('mousedown',  clickHandler);
-    table.addEventListener('focusout',  validateModel);
-    var div1 = document.getElementById('div1');
-    div1.appendChild(table);
-    loadRules();
-    bindKeys();
-});
 
+    loadModelMetadata();
+
+    //table = buildHtmlTable(options);
+    
+    
+});
 
 
 function bindKeys() {
 
-    $(document).keydown(function(e) {
+    $(table).keydown(function(e) {
+    
+
+    var $table = $(this);
+    var $active = $('input:focus,select:focus',$table);
+    var $next = null;
+    var focusableQuery = 'input:visible,select:visible,textarea:visible';
+    var position = parseInt( $active.closest('td').index()) + 1;
+    console.log('position :',position);
+
+
     switch(e.which) {
         case 37: // left
+        $next = $active.parent('td').prev().find(focusableQuery);
         break;
 
         case 38: // up
+        $next = $active
+                .closest('tr')
+                .prev()                
+                .find('td:nth-child(' + position + ')')
+                .find(focusableQuery);
         break;
 
         case 39: // right
-        break;
-
+            //tab to next cell 
+            console.log('right key');
+            
+            $next = $active.closest('td').next().find(focusableQuery);            
+            break;
         case 40: // down
-        break;
+            console.log('key down');
+            $next = $active
+                .closest('tr')
+                .next()                
+                .find('td:nth-child(' + position + ')')
+                .find(focusableQuery);
+
+            addRow();
+            break;
 
         default: return; // exit this handler for other keys
     }
-    e.preventDefault(); // prevent the default action (scroll / move caret)
+    if($next && $next.length)
+    {        
+        $next.focus();
+    }
+    return false;
+    //e.preventDefault(); // prevent the default action (scroll / move caret)
    });
-
 
 }
 
+
+function loadModelMetadata() {
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            buildHtmlTable(xmlHttp.response);
+    }
+    xmlHttp.open("GET", '/product/CD35', true); // true for asynchronous 
+    xmlHttp.send(null);
+
+}
 
 
 
@@ -91,35 +130,9 @@ function loadRules() {
 
 }
 
-var rules = {};
-function parseRules(response) {
-    //alert('Received Response');
-    console.log(response);
-    var data = JSON.parse(response);
-    var i = 0;
-    for (let rule of data.rules) {
-        i++;
-        console.log(rule);
-        console.log('parsing number ' + i);
-        if (! rules.hasOwnProperty(rule.option))
-            rules[rule.option] = {};
-        if (! rules[rule.option].hasOwnProperty(rule.event))
-            rules[rule.option][rule.event] = {};
 
-        console.log('function text: ' + rule.rule);
-        var func = new Function("m", rule.rule);
-        //check for value
-        if (rule.value == '-') {
-            rules[rule.option][rule.event] = func; 
-        }
-        else {
-            rules[rule.option][rule.event][rule.value] = func;    
-        }    
 
-    }
-}
-
-function validateModel(event) {
+function blurHandler(event) {
     //alert('validating...');
     console.log('validing...');
 
@@ -140,56 +153,8 @@ function validateModel(event) {
         }
     }
     console.log(model);
-    doValidate(model);
+    validateModel(model);
 }
-
-
-function doValidate(model) {
-
-    model.ModelMinWidth = 5;
-    model.ModelMaxWidth = 100;
-
-    //for each option, validate all the event types 
-    var result; 
-
-    for (let option of options) {
-        if (rules.hasOwnProperty(option.name)) {
-            var optionRules = rules[option.name];
-            var val = model[option.name];
-
-            if (optionRules.hasOwnProperty('GlobalOption Value Available')) {
-                result = optionRules['GlobalOption Value Available'](model);
-                console.log(result.Message);
-            }
-            if (optionRules.hasOwnProperty('Global Value Available')) {
-                var globalValueFunctions = optionRules['Global Value Available'];
-                if (globalValueFunctions.hasOwnProperty(val)) {
-                    result = optionRules['Global Value Available'][val](model);
-                    console.log(result.Message);
-                }
-            }
-        }
-    }
-
-
-}
-
-
-
-
-//Capture all the values in the row 
-//Get the name of the option 
-//Invoke the Rules Handler
-function changeHandler() {
-    //alert('on change');
-    for (var c = 0, m = table.rows[1].cells.length; c < m; c++) {
-        console.log(table.rows[1].cells[c].childNodes[0].value);
-    }
-
-    var model = { height : 9  };
-    ruleHandler(null, model);
-}
-
 
 function clickHandler(event) {
     //alert('mouse down');
@@ -228,7 +193,7 @@ function clickHandler(event) {
         values.push( { valueName : options[i].value, IsAvailable : true } );
     }
     console.log(JSON.stringify(values));
-    validate(model, option, values);
+    validateOption(model, option, values);
     console.log(JSON.stringify(values));
 
     //TODO: update the Grid with the availability results 
@@ -248,41 +213,68 @@ function clickHandler(event) {
     }
 }
 
+
 // Builds the HTML Table out of myList json data from Ivy restful service.
  function buildHtmlTable(arr) {
-     var table = _table_.cloneNode(false),
+
+    arr = JSON.parse(arr);
+    var columns;
+
+    table = _table_.cloneNode(false),
          columns = addAllColumnHeaders(arr, table);
 
-        var tr = _tr_.cloneNode(false);
-        for (var i=0; i < arr.length; ++i) {
-            var x = arr[i];
-            var td = _td_.cloneNode(false);
-            if (x.type == 'NUMERIC') {
-                var ninput = document.createElement("INPUT");
-                ninput.setAttribute("type", "number");    
-                ninput.setAttribute("data-option", x.name);
-                td.appendChild(ninput);
-            }
-            if (x.type == 'SELECT') {
-                var sel = document.createElement("SELECT");
-                sel.setAttribute("data-option", x.name);
-                var opts = x.values;
-                for (var j = 0; j < opts.length; j++) {
-                    var option = document.createElement("option");
-                    option.value = opts[j];
-                    option.text = opts[j];
-                    //option.className = 'red';
-                    sel.appendChild(option);
-                }
+    var tr = createRow(arr);    
+    table.appendChild(tr);
 
-                td.appendChild(sel);
-            }
-            tr.appendChild(td);
-        }
-        table.appendChild(tr);
-     
-     return table;
+    table.addEventListener('mousedown',  clickHandler);
+    table.addEventListener('focusout',  blurHandler);
+    var div1 = document.getElementById('div1');
+    div1.appendChild(table);
+    loadRules();
+    //bindKeys();
+
+    return table;
  }
+ 
+
+function addRow() {
+    var tr = createRow(options);
+    table.appendChild(tr);
+}
+
+
+function createRow(options) {
+
+    var tr = _tr_.cloneNode(false);
+    for (var i=0; i < options.length; ++i) {
+        var x = options[i];
+        var td = _td_.cloneNode(false);
+        if (x.type == 'NUMERIC') {
+            var ninput = document.createElement("INPUT");
+            ninput.setAttribute("type", "number");    
+            ninput.setAttribute("data-option", x.name);
+            td.appendChild(ninput);
+        }
+        if (x.type == 'SELECT') {
+            var sel = document.createElement("SELECT");
+            sel.setAttribute("data-option", x.name);
+            var opts = x.values;
+            for (var j = 0; j < opts.length; j++) {
+                var value = document.createElement("option");
+                value.value = opts[j];
+                value.text = opts[j];
+                //option.className = 'red';
+                sel.appendChild(value);
+            }
+
+            td.appendChild(sel);
+        }
+        tr.appendChild(td);
+    }
+    return tr;
+
+}
+
  
 // Adds a header row to the table and returns the set of columns.
 // Need to do union of keys from all records as some records may not contain
