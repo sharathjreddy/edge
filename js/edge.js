@@ -1,36 +1,4 @@
- var options = [
 
-
-{ "name":"WIDTH","type":"NUMERIC", },
-{ "name":"HEIGHT","type":"NUMERIC", },
-{ "name":"SIZE","type":"SELECT","values":['Deduct 1/4'] },
-{ "name":"FRAME","type":"SELECT","values":['CHANNEL','FRONT FLANGE','REAR FLANGE','DOUBLE FLANG','T-FLANGE','U CHANNEL','C STYLE','CO STYLE','CR STYLE'] },
-{ "name":"BLADE SEALS","type":"SELECT","values":['NEOPRENE'] },
-{ "name":"OPER.SHAFT","type":"SELECT","values":['EXTENDED','NONE'] },
-{ "name":"ACT_TYPE","type":"SELECT","values":['NONE','HAND QUAD','ELECTRIC/120 VOLT','ELECTRIC/24 VOLT','ELECTRIC/230 VOLT','PNEUMATIC','120 VOLT W/SWITCH','24 VOLT W/SWITCH','24 VOLT MODULATING','230 VOLT W/SWITCH','PNEU MODULATING'] },
-{ "name":"ACTUATOR","type":"SELECT","values":['NONE','HQRSS050','HDHQ100','HDHQ050','HQR050B','HQR050','M9220-BAA-RK','RH120','FSLF120-RUS','NFBUP-RUS','MS4120','RLH120','AFBUP','FSTF120-RUS','M9208-BAA-RK','LF120','AFBUP-RUS','M9203-BUA-RK','MA418','NFBUP','NFB24','LF24','MA318','AFB24','MS8120','RLH24','M9203-BGA-RK','M9208-BGA-RK','FSTF24','GCA121','RH24','GCA126','M9220-BGA-RK','FSLF24','TFB24','331-3060P','331-2961','331-4827P','331-4827','331-2961P','331-3060','M9203-BUB-RK','M9220-BAC-RK','FSTF120-S','MS4120S','TFB120-S','RLH120-S','NFBUP-S','M9208-BAC-RK','AFBUP-S','RH120-S','LF120-S','MA418-500','GCA226','FSLF120S','RLH24-S','MA318-500','MS8120S','FSTF24-S','RH24-S','NFB24-S','FSLF24S','LF24-S','AFB24S','M9220-BGC-RK','M9208-BGC-RK','TFB24-S','M9203-GGA-RK','TFB24SR-RUS','TFB24-SR','RLH24-MOD','M9208-GGA-RK','RH24-MOD','GCA161','NFB24-SR','AFB24SR','LF24SR-RUS','M9220-GGA-RK','LF24-SR','MS7520A2015','FSTF230','FSTF230-S'] },
-{ "name":"ACTUATOR BRAND","type":"SELECT","values":['BELIMO'] },
-{ "name":"FAIL POS.","type":"SELECT","values":['N/A','CLOSE','OPEN','IN PLACE'] },
-{ "name":"INSTALLATION","type":"SELECT","values":['N/A','IN','OUT'] },
-{ "name":"SIDE PLATE","type":"SELECT","values":['NO','YES'] },
-{ "name":"FRAME GAUGE","type":"SELECT","values":['16 GA.','.125 ALUM','14 GA. U CHANNEL','12 GA. U CHANNEL'] },
-{ "name":"FRM MATERIAL","type":"SELECT","values":['GALV.STEEL','304 SS','ALUMINUM'] },
-{ "name":"BLADE WIDTH","type":"SELECT","values":['3 1/2 Inch WIDE'] },
-{ "name":"Slv/Tran","type":"SELECT","values":['None','SLEEVE'] },
-{ "name":"Slv/Tran Len","type":"SELECT","values":['N/A','12','13','14','15','16','17','18','19','20','21','22','23','24','25','26','27','28','29','30','31','32','33','34','35','36','8','9','10','11'] },
-{ "name":"Slv_Tran_Ga","type":"SELECT","values":['N/A','20 Gauge','18 Gauge','16 Gauge','14 Gauge','10 Gauge','.080 Inch','.125 Inch'] },
-{ "name":"Slv/Tran Mat","type":"SELECT","values":['N/A','GALVANIZED','304 SS','ALUMINUM'] },
-{ "name":"CONSTRUCTION","type":"SELECT","values":['304 SS','STANDARD GALV','ALUM/GALV'] },
-{ "name":"MTG.HOLES","type":"SELECT","values":['FRONT FLANGE','REAR FLANGE','BOTH SIDES'] },
-{ "name":"BLADE ACTION","type":"SELECT","values":['OPPOSED'] },
-{ "name":"LINKAGE","type":"SELECT","values":['CONCEALED'] },
-{ "name":"FRAME DEPTH","type":"SELECT","values":['5 INCHES','3 1/2 INCHES','6 INCHES'] },
-{ "name":"BEARING TYPE","type":"SELECT","values":['DUMMY', 'DUMMY2', 'THRUST- VERT BLADES'] },
-{ "name":"BEARING MAT.","type":"SELECT","values":['STANDARD','SS'] },
-{ "name":"LNKG. MATRL","type":"SELECT","values":['STANDARD','STAIN. STEEL'] },
-
-
-];
 
 
 var _table_ = document.createElement('table'),
@@ -38,6 +6,10 @@ var _table_ = document.createElement('table'),
     _th_ = document.createElement('th'),
     _td_ = document.createElement('td');
 
+
+var options = null;
+var properties = null;    
+var model = null;
 
 var table;
 $(document).ready(function() {
@@ -137,6 +109,8 @@ function blurHandler(event) {
     console.log('validing...');
 
     var model = {}; 
+    $.extend(model, properties);
+    
     var sel = event.target;
     var target = sel;
     
@@ -190,19 +164,19 @@ function clickHandler(event) {
     var values = [];
     var options = sel.options;
     for (i = 0; i < options.length; i++) {
-        values.push( { valueName : options[i].value, IsAvailable : true } );
+        values.push( { valueName : options[i].value, isavailable : true } );
     }
     console.log(JSON.stringify(values));
     validateOption(model, option, values);
     console.log(JSON.stringify(values));
-
+    
     //TODO: update the Grid with the availability results 
     for (i = 0; i < values.length; i++) {
-        if (values[i].ListValueColor == 'Red') {
+        if (values[i].listvaluecolor == 'Red') {
             sel.options[i].style.backgroundColor = 'pink';
             sel.options[i].disabled = true;
         }
-        else if (!values[i].IsAvailable){
+        else if (!values[i].isavailable){
             sel.options[i].style.backgroundColor = 'grey';
             sel.options[i].disabled = false;    
         }
@@ -218,12 +192,14 @@ function clickHandler(event) {
  function buildHtmlTable(arr) {
 
     arr = JSON.parse(arr);
+    options = arr.options;
+    properties = arr.properties; 
     var columns;
 
     table = _table_.cloneNode(false),
-         columns = addAllColumnHeaders(arr, table);
-
-    var tr = createRow(arr);    
+         columns = addAllColumnHeaders(options, table);
+         
+    var tr = createRow(options);    
     table.appendChild(tr);
 
     table.addEventListener('mousedown',  clickHandler);
@@ -285,7 +261,7 @@ function addAllColumnHeaders(arr, table)
     var tr = _tr_.cloneNode(false);
     for (var i=0; i < arr.length; i++) {
         var th = _th_.cloneNode(false);
-        th.appendChild(document.createTextNode(arr[i].name));
+        th.appendChild(document.createTextNode(arr[i].displayName));
         tr.appendChild(th);
     }
     table.appendChild(tr);

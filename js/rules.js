@@ -1,4 +1,4 @@
-
+                            
 
 
 
@@ -26,9 +26,9 @@ function validateOption(model, option, values) {
     	for (let value of values) {	    
             if (globalValueFunctions.hasOwnProperty(value.valueName)) {
                 result = optionRules['Global Value Available'][value.valueName](model);
-                value.IsAvailable = result.IsAvailable;
-                value.ListValueColor = result.ListValueColor;
-                console.log(result.Message);
+                value.isavailable = result.isavailable;
+                value.listvaluecolor = result.listvaluecolor;
+                console.log(result.message);
             }
         }
     }
@@ -60,8 +60,8 @@ function validateModel(model) {
     var result; 
 
     for (let option of options) {
-        if (rules.hasOwnProperty(option.name)) {
-            var optionRules = rules[option.name];
+        if (rules.hasOwnProperty(option.displayName)) {
+            var optionRules = rules[option.displayName];
             var val = model[option.name];
 
             if (optionRules.hasOwnProperty('GlobalOption Value Available')) {
