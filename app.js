@@ -12,7 +12,7 @@ app.get('/', function(req, res) {
 });
 
 app.get('/product/:id', function(req, res) {
-
+	
 	var id = req.params.id;
 	//console.log('id is ' + req.params.id);
 	//res.sendFile(path.join(__dirname, 'index.html'));
