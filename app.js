@@ -25,10 +25,10 @@ app.get('/product/:id', function(req, res) {
 });
 
 
+var port = process.env.PORT || 3000;
 
-
-app.listen(80, function() {   
-	console.log('Example app listening on 80');
+app.listen(port, function() {   
+	console.log('Edge app listening on ' + port);
 });
 
 
