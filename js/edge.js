@@ -9,7 +9,8 @@ var _table_ = document.createElement('table'),
 
 var options = null;
 var properties = null;    
-var model = null;
+var model = 'CD35';
+var counter = 1; 
 
 var table;
 $(document).ready(function() {
@@ -56,13 +57,18 @@ function bindKeys() {
             break;
         case 40: // down
             console.log('key down');
+
+            if (!e.metaKey) return; 
+
+            if (e.metaKey)    
+                addRow();
+
             $next = $active
                 .closest('tr')
                 .next()                
                 .find('td:nth-child(' + position + ')')
                 .find(focusableQuery);
-
-            addRow();
+            
             break;
 
         default: return; // exit this handler for other keys
@@ -107,6 +113,7 @@ function loadRules() {
 function blurHandler(event) {
     //alert('validating...');
     console.log('validing...');
+    document.getElementById("msg").innerHTML = '';
 
     var model = {}; 
     $.extend(model, properties);
@@ -121,13 +128,17 @@ function blurHandler(event) {
         var cells = target.getElementsByTagName("td");
         for (var i = 0; i < cells.length; i++) {
             var el = cells[i].firstElementChild;
+            if (el == null) continue; 
             var option = el.getAttribute('data-option');
             var value = el.value;
             model[option] = value;
         }
     }
     console.log(model);
-    validateModel(model);
+    var result = validateModel(model);
+    if (!result.isavailable) {
+        document.getElementById("msg").innerHTML = result.message;
+    }
 }
 
 function clickHandler(event) {
@@ -153,6 +164,7 @@ function clickHandler(event) {
         var cells = target.getElementsByTagName("td");
         for (var i = 0; i < cells.length; i++) {
             var el = cells[i].firstElementChild;
+            if (el == null) continue; 
             var optionName = el.getAttribute('data-option');
             var value = el.value;
             model[optionName] = value;
@@ -175,10 +187,12 @@ function clickHandler(event) {
         if (values[i].listvaluecolor == 'Red') {
             sel.options[i].style.backgroundColor = 'pink';
             sel.options[i].disabled = true;
+            sel.options[i].title = values[i].message; 
         }
         else if (!values[i].isavailable){
             sel.options[i].style.backgroundColor = 'grey';
             sel.options[i].disabled = false;    
+            sel.options[i].title = values[i].message; 
         }
         else {
             sel.options[i].style.backgroundColor = 'white';
@@ -207,7 +221,7 @@ function clickHandler(event) {
     var div1 = document.getElementById('div1');
     div1.appendChild(table);
     loadRules();
-    //bindKeys();
+    bindKeys();
 
     return table;
  }
@@ -222,14 +236,37 @@ function addRow() {
 function createRow(options) {
 
     var tr = _tr_.cloneNode(false);
+
+    var td = _td_.cloneNode(false);
+    var lineItem = model + '-' + counter;
+    counter++; 
+    td.appendChild(document.createTextNode(lineItem));
+    tr.appendChild(td);
+
+    td = _td_.cloneNode(false);
+    var ninput = document.createElement("INPUT");
+    ninput.setAttribute("type", "number");    
+    ninput.setAttribute("data-option", 'qty'); 
+    ninput.value = 1;
+    td.appendChild(ninput);
+    tr.appendChild(td);
+
+    td = _td_.cloneNode(false);
+    var ninput = document.createElement("INPUT");  
+    ninput.setAttribute("data-option", 'tag');
+    td.appendChild(ninput);
+    tr.appendChild(td);
+
     for (var i=0; i < options.length; ++i) {
         var x = options[i];
-        var td = _td_.cloneNode(false);
+        td = _td_.cloneNode(false);
         if (x.type == 'NUMERIC') {
             var ninput = document.createElement("INPUT");
             ninput.setAttribute("type", "number");    
             ninput.setAttribute("data-option", x.name);
+            ninput.value = 0;
             td.appendChild(ninput);
+
         }
         if (x.type == 'SELECT') {
             var sel = document.createElement("SELECT");
@@ -259,8 +296,22 @@ function addAllColumnHeaders(arr, table)
 {
 
     var tr = _tr_.cloneNode(false);
+
+    var th = _th_.cloneNode(false);
+    th.appendChild(document.createTextNode('Line Item'));
+    tr.appendChild(th);
+
+    th = _th_.cloneNode(false);
+    th.appendChild(document.createTextNode('Qty'));
+    tr.appendChild(th);
+    
+    th = _th_.cloneNode(false);
+    th.appendChild(document.createTextNode('Tag'));
+    tr.appendChild(th);
+
     for (var i=0; i < arr.length; i++) {
-        var th = _th_.cloneNode(false);
+        th = _th_.cloneNode(false);
+
         th.appendChild(document.createTextNode(arr[i].displayName));
         tr.appendChild(th);
     }

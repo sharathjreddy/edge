@@ -28,6 +28,7 @@ function validateOption(model, option, values) {
                 result = optionRules['Global Value Available'][value.valueName](model);
                 value.isavailable = result.isavailable;
                 value.listvaluecolor = result.listvaluecolor;
+                value.message = result.message;
                 console.log(result.message);
             }
         }
@@ -37,12 +38,15 @@ function validateOption(model, option, values) {
     if (optionRules.hasOwnProperty('Local Value Available')) {
         
         let globalValueFunctions = optionRules['Local Value Available'];
-    	for (let value of values) {	    
-            if (globalValueFunctions.hasOwnProperty(value.valueName)) {
-                result = optionRules['Local Value Available'][value.valueName](model);
-                value.IsAvailable = result.IsAvailable;
-                value.ListValueColor = result.ListValueColor;
-                console.log(result.Message);
+    	for (let value of values) {	 
+            if (value.isavailable) {   
+                if (globalValueFunctions.hasOwnProperty(value.valueName)) {
+                    result = optionRules['Local Value Available'][value.valueName](model);
+                    value.isavailable = result.isavailable;
+                    value.listvaluecolor = result.listvaluecolor;
+                    value.message = result.message;
+                    console.log(result.message);
+                }
             }
         }
     }
@@ -52,21 +56,21 @@ function validateOption(model, option, values) {
 
 
 function validateModel(model) {
-	
-    model.ModelMinWidth = 5;
-    model.ModelMaxWidth = 100;
 
     //for each option, validate all the event types 
     var result; 
-
+    
     for (let option of options) {
-        if (rules.hasOwnProperty(option.displayName)) {
-            var optionRules = rules[option.displayName];
+        if (rules.hasOwnProperty(option.name)) {
+            var optionRules = rules[option.name];
             var val = model[option.name];
 
             if (optionRules.hasOwnProperty('GlobalOption Value Available')) {
                 result = optionRules['GlobalOption Value Available'](model);
-                console.log(result.Message);
+                console.log(result.message);
+                if (!result.isavailable) {
+                    return result; 
+                }
             }
             if (optionRules.hasOwnProperty('Global Value Available')) {
                 var globalValueFunctions = optionRules['Global Value Available'];
@@ -74,10 +78,13 @@ function validateModel(model) {
                     result = optionRules['Global Value Available'][val](model);
                     console.log(result.Message);
                 }
+                if (!result.isavailable) {
+                    return result; 
+                }
             }
         }
     }
-
+    return { isavailable : true };
 
 }
 

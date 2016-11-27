@@ -14,6 +14,10 @@
         		
         		background-color: red;
     		}
+        table { white-space: nowrap;
+                border-spacing:10px;
+                border-collapse: separate; 
+              }
         </style>
 
     </head>
@@ -31,26 +35,12 @@
           </svg>
         </div>
         <div class="slds-media__body">
-          <p class="slds-text-title--caps slds-line-height--reset">Record Type</p>
-          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="this should match the Record Title">Record Title</h1>
+          <p class="slds-text-title--caps slds-line-height--reset">Job</p>
+          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="this should match the Record Title">Dampers for Irving Conv Center</h1>
         </div>
       </div>
     </div>
-    <div class="slds-col slds-no-flex slds-grid slds-align-top">
-      <button class="slds-button slds-button--neutral slds-not-selected" aria-live="assertive">
-        <span class="slds-text-not-selected">
-          <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
-            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#add"></use>
-          </svg>Follow</span>
-        <span class="slds-text-selected">
-          <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
-            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#check"></use>
-          </svg>Following</span>
-        <span class="slds-text-selected-focus">
-          <svg aria-hidden="true" class="slds-button__icon--stateful slds-button__icon--left">
-            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#close"></use>
-          </svg>Unfollow</span>
-      </button>
+    
       <div class="slds-button-group" role="group">
         <button class="slds-button slds-button--neutral">Edit</button>
         <button class="slds-button slds-button--neutral">Delete</button>
@@ -95,9 +85,10 @@
       </nav>
       
     <nav class="slds-col slds-size--1-of-1">
-        <div id="div1">
+        <div id="div1" style="width:100%;overflow:auto;height:400px;padding:10px;font-size:10px">
            
         </div>
+        <div id='msg'/>
     </nav>
     </div>
 
