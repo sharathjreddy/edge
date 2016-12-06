@@ -35,14 +35,16 @@ function bindKeys() {
     var position = parseInt( $active.closest('td').index()) + 1;
     console.log('position :',position);
 
-
     switch(e.which) {
         case 37: // left
         $next = $active.parent('td').prev().find(focusableQuery);
         break;
 
         case 38: // up
-        $next = $active
+
+            if (!e.ctrlKey) return;
+
+            $next = $active
                 .closest('tr')
                 .prev()                
                 .find('td:nth-child(' + position + ')')
@@ -58,16 +60,18 @@ function bindKeys() {
         case 40: // down
             console.log('key down');
 
-            if (!e.metaKey) return; 
-
-            if (e.metaKey)    
-                addRow();
+            if (!e.ctrlKey) return; 
 
             $next = $active
                 .closest('tr')
-                .next()                
-                .find('td:nth-child(' + position + ')')
-                .find(focusableQuery);
+                .next();
+
+            if ($next.length == 0) {  //We are on the last row!!
+                addRow();    
+                $next = $active.closest('tr').next();
+            }    
+
+            $next.find('td:nth-child(' + position + ')').find(focusableQuery).focus();
             
             break;
 
