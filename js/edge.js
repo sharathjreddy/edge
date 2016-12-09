@@ -145,6 +145,39 @@ function blurHandler(event) {
     }
 }
 
+
+function changeHandler(event) {
+    
+    console.log('change handler');
+
+    if (event.target.type != 'select-one') return;
+
+    var model = {}; 
+    var sel = event.target;
+    var target = sel;
+    var option = target.getAttribute('data-option');
+
+    while (target && target.nodeName !== "TR") {
+        target = target.parentNode;
+    }
+    if (target) {
+        var cells = target.getElementsByTagName("td");
+        for (var i = 0; i < cells.length; i++) {
+            var el = cells[i].firstElementChild;
+            if (el == null) continue; 
+            var optionName = el.getAttribute('data-option');
+            var value = el.value;
+            model[optionName] = value;
+        }
+    }
+    console.log(model);    
+    
+    var result = validateSelectedValue(model, option);
+    
+
+
+}
+
 function clickHandler(event) {
     //alert('mouse down');
     console.log('mouse down');
@@ -206,7 +239,7 @@ function clickHandler(event) {
 }
 
 
-// Builds the HTML Table out of myList json data from Ivy restful service.
+// Builds the HTML Table from the JSON Metadata
  function buildHtmlTable(arr) {
 
     arr = JSON.parse(arr);
@@ -222,6 +255,7 @@ function clickHandler(event) {
 
     table.addEventListener('mousedown',  clickHandler);
     table.addEventListener('focusout',  blurHandler);
+    table.addEventListener('change',  changeHandler);
     var div1 = document.getElementById('div1');
     div1.appendChild(table);
     loadRules();
@@ -323,3 +357,21 @@ function addAllColumnHeaders(arr, table)
 }
 
 
+function validateListOption() {
+
+    var result = validateOptionValue();
+    if (!result.isValid) {
+        startFlippingOptions(); 
+    }
+
+}
+
+
+function updateDisplay(model) {
+
+}
+
+
+function displayValidationErrorMessage() {
+
+}

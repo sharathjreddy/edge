@@ -1,5 +1,48 @@
                             
+function validateSelectedValue(model, option) {
 
+    
+    //for each option, validate all the event types 
+    var result; 
+
+    let value = model[option];
+
+    let optionRules = null;
+    if (rules.hasOwnProperty(option)) {
+        optionRules = rules[option];
+    }
+    else 
+        return;
+
+   
+    if (optionRules.hasOwnProperty('Global Value Available')) {
+        
+        let globalValueFunctions = optionRules['Global Value Available'];
+             
+            if (globalValueFunctions.hasOwnProperty(value)) {
+                result = optionRules['Global Value Available'][value](model);
+                console.log(result.message);
+            }
+        
+    }
+
+    if (!result.isavailable)
+        return result;
+
+    if (optionRules.hasOwnProperty('Local Value Available')) {
+        
+        let globalValueFunctions = optionRules['Local Value Available'];
+         
+        if (globalValueFunctions.hasOwnProperty(value)) {
+            result = optionRules['Local Value Available'][value](model);
+            console.log(result.message);
+        }
+        
+    }
+
+    return result; 
+
+}
 
 
 function validateOption(model, option, values) {
