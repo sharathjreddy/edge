@@ -8,6 +8,7 @@ var flippedModel = null;
 
 function startFlippingValues(model, _selectedOption, failedOptions) {
 	
+
 	failedFlipOptions.clear();
 	doneFlipOptions.clear();
 
@@ -21,7 +22,11 @@ function startFlippingValues(model, _selectedOption, failedOptions) {
 	
     flipOptions(failedOptions);
        
-    if (flipValuesExhausted) return true;
+    if (flipValuesExhausted) {
+    	return { flipped : false }
+    }
+
+    return { flipped : true, model : flippedModel }; 
 
 }
 
@@ -57,7 +62,7 @@ function continueFlipping(currentOption) {
 
 	var result = validateSelectedValue(flippedModel, currentOption); 
 	if (result.isavailable) {
-		doneFlipOptions.add(option); return true;
+		doneFlipOptions.add(currentOption); return true;
 	}
 
 	if (currentOption.isNumeric) return isValid; //Nothing more to be done; can't flip a numeric value 
@@ -69,19 +74,19 @@ function continueFlipping(currentOption) {
 
 		flippedModel[currentOption] = value; 
 		
-		isValid = validateSelectedValue(flippedModel, currentOption); 
-		if (isValid) {
+		result = validateSelectedValue(flippedModel, currentOption); 
+		if (result.isavailable) {
 			doneFlipOptions.add(currentOption); return true; 
 		}
 
-		var failedVariables = result.failedVariables(); 
-		failedflipOptions.add(currentOption);
+		var failedVariables = result.failedVariables; 
+		failedFlipOptions.add(currentOption);
 		flipOptions(failedVariables);
 
-		result = validateOptionValue(); 
+		result = validateSelectedValue(flippedModel, currentOption); 
 		
-		if (result.isValid) {
-			failedFlipOptions.remove(currentOption);
+		if (result.isavailable) {
+			failedFlipOptions.delete(currentOption);
 			doneFlipOptions.add(currentOption);
 			return true; 
 		}

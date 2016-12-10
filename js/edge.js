@@ -175,11 +175,23 @@ function changeHandler(event) {
     var result = validateSelectedValue(model, option);
     if (!result.isavailable) {
         var failedOptions = result.failedVariables;
-        startFlippingValues(model, option, failedOptions);
+        var result = startFlippingValues(model, option, failedOptions);
+        if (result.flipped) {
+            modifyRow(target, model, result.model); 
+        }
     }
 
+}
 
-
+function modifyRow(tr, model, flippedModel) {
+    for (var key in model) {
+        if (model.hasOwnProperty(key)) {
+            if (model[key] != flippedModel[key]) {
+                var td = tr.querySelector('[data-option="' + key + '"]');
+                td.value = flippedModel[key];    
+            }
+        }
+    }
 }
 
 function clickHandler(event) {
