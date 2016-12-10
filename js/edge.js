@@ -171,9 +171,13 @@ function changeHandler(event) {
         }
     }
     console.log(model);    
-    
+
     var result = validateSelectedValue(model, option);
-    
+    if (!result.isavailable) {
+        var failedOptions = result.failedVariables;
+        startFlippingValues(model, option, failedOptions);
+    }
+
 
 
 }

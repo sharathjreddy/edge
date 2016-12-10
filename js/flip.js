@@ -1,38 +1,46 @@
 var doneFlipOptions = new Set();
-var failedflipOptions = new Set();
+var failedFlipOptions = new Set();
 var flipValuesExhausted  = false;
+var selectedOption = '';
+var originalModel = null;
+var flippedModel = null;
 
-function startFlippingValues(model, selectedOption, failedOptions) {
+
+function startFlippingValues(model, _selectedOption, failedOptions) {
 	
-	flipOptionValues.clear()
-    doneFlipOptions.clear()
+	failedFlipOptions.clear();
+	doneFlipOptions.clear();
 
 	//TODO : sort failed options by validation order 
 	
-	doneFlipOptions.Add(selectedOption);
+	originalModel = model; 
+	flippedModel = Object.assign({}, model); 
 	
-    flipOptions(failedvariables)
+	selectedOption = _selectedOption;
+	doneFlipOptions.add(selectedOption);
+	
+    flipOptions(failedOptions);
        
-    if (blFlipValuesExhausted) return true;
+    if (flipValuesExhausted) return true;
 
 }
 
 
 
-function flipOptions(selectedOption, failedOptions) {
+function flipOptions(failedOptions) {
 
 
 	for (let failedOption of failedOptions) {
 
-		if (failedOption !==  selectedOption && !failedFlipOptions.contains(failedOption) 
-			                                 && !doneFlipOptions.contains(failedOption)) {
+		if (failedOption !==  selectedOption && !failedFlipOptions.has(failedOption) 
+			                                 && !doneFlipOptions.has(failedOption)) {
 	
 			var isFlipped = false;
     		flipValuesExhausted = false;
 
     		while (!isFlipped) {
 
-    			isFlipped = ContinueFlipping(column);
+    			isFlipped = continueFlipping(failedOption);
 
         		if (flipValuesExhausted) 
         			break;
@@ -45,30 +53,30 @@ function flipOptions(selectedOption, failedOptions) {
 
 
 
-function continueFlipping(model, currentOption) {
+function continueFlipping(currentOption) {
 
-	var isValid = validateOptionValue(); 
-	if (result) {
+	var result = validateSelectedValue(flippedModel, currentOption); 
+	if (result.isavailable) {
 		doneFlipOptions.add(option); return true;
 	}
 
-	if (option.isNumeric) return isValid; //Nothing more to be done; can't flip a numeric value 
+	if (currentOption.isNumeric) return isValid; //Nothing more to be done; can't flip a numeric value 
 
-	var values = getAllOptionValues(); 
+	var values = getValues(currentOption); 
 	for (let value of values) {
 
-		if (value == originalModel[optionToProcess]) continue; 
+		if (value == originalModel[currentOption]) continue; 
 
-		model[optionToProcess] = value; 
-
-		isValid = validateOptionValue();
+		flippedModel[currentOption] = value; 
+		
+		isValid = validateSelectedValue(flippedModel, currentOption); 
 		if (isValid) {
 			doneFlipOptions.add(currentOption); return true; 
 		}
 
 		var failedVariables = result.failedVariables(); 
 		failedflipOptions.add(currentOption);
-		flipOptions(faildVariables);
+		flipOptions(failedVariables);
 
 		result = validateOptionValue(); 
 		
@@ -83,5 +91,6 @@ function continueFlipping(model, currentOption) {
 				if (doneFlipOptions.contains(failedOption)) doneFlipOptions.remove(failedOption);
 		}
 	}
+	flipValuesExhausted = true; 
 	return false; 
 }

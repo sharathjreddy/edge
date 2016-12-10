@@ -1,10 +1,26 @@
-                            
+function getValues(option) {
+
+    var values = []; 
+
+    for (var i = 0; i < options.length; i++) {
+        if (option === options[i].name) {
+            values = options[i].values;   
+            break; 
+        }
+    }
+
+    return values;
+
+}                            
+
+
+
 function validateSelectedValue(model, option) {
 
     
     //for each option, validate all the event types 
-    var result; 
-
+    var result = { isavailable : true }; 
+    
     let value = model[option];
 
     let optionRules = null;
@@ -26,7 +42,7 @@ function validateSelectedValue(model, option) {
         
     }
 
-    if (!result.isavailable)
+    if (result && !result.isavailable)
         return result;
 
     if (optionRules.hasOwnProperty('Local Value Available')) {
