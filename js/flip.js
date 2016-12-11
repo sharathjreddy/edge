@@ -91,9 +91,9 @@ function continueFlipping(currentOption) {
 			return true; 
 		}
 
-		for (let failedOption of failedOptions) {
+		for (let failedOption of failedVariables) {
 			if (failedOption != currentOption)
-				if (doneFlipOptions.contains(failedOption)) doneFlipOptions.remove(failedOption);
+				if (doneFlipOptions.has(failedOption)) doneFlipOptions.delete(failedOption);
 		}
 	}
 	flipValuesExhausted = true; 
