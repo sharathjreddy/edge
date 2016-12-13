@@ -24,6 +24,19 @@ app.get('/product/:id', function(req, res) {
 
 });
 
+app.get('/product_properties/:id', function(req, res) {
+	
+	var id = req.params.id;
+	//console.log('id is ' + req.params.id);
+	//res.sendFile(path.join(__dirname, 'index.html'));
+	fs.readFile( __dirname + "/js/" + id + "_Properties.json", 'utf8', function (err, data) {
+       //var options = JSON.parse( data ); 
+       //console.log( options );
+       //res.end( JSON.stringify(options));
+       res.end(data);
+   });
+
+});
 
 var port = process.env.PORT || 3000;
 

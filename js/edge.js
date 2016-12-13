@@ -112,7 +112,46 @@ function loadRules() {
 
 }
 
+var fillDownSelectedOption = '';
+var fillDownSelectedRow = null; 
+var fillDownSelectedValue = '';
 
+function contextMenuHandler(event) {
+
+        var textbox = event.target; 
+
+        var isText = (textbox instanceof HTMLInputElement || textbox instanceof HTMLSelectElement);
+        if (!isText)
+            return true; 
+
+        fillDownSelectedOption = textbox.getAttribute('data-option');
+        fillDownSelectedValue = textbox.value; 
+        fillDownSelectedRow = textbox.parentNode.parentNode;
+    
+        
+        document.getElementById("rmenu").className = "show";  
+
+        document.getElementById("rmenu").style.top =  mouseY(event) + 'px';
+        document.getElementById("rmenu").style.left = mouseX(event) + 'px';
+        event.preventDefault();
+        return false; 
+
+}
+
+
+function filldown() {
+    //alert('starting fill down');
+    var input = prompt("Enter Number of Rows:", "1");
+    var rows = parseInt(input);
+
+    var nextRow = fillDownSelectedRow.nextElementSibling;
+    for (var i = 0; i < rows; i++) {
+        var input = nextRow.querySelector('[data-option="' + fillDownSelectedOption + '"]'); 
+        input.value = fillDownSelectedValue;
+        nextRow = nextRow.nextElementSibling;
+    }
+
+}
 
 function blurHandler(event) {
     //alert('validating...');
@@ -272,6 +311,13 @@ function clickHandler(event) {
     table.addEventListener('mousedown',  clickHandler);
     table.addEventListener('focusout',  blurHandler);
     table.addEventListener('change',  changeHandler);
+    table.addEventListener('contextmenu', contextMenuHandler); 
+    $(document).bind("click", function(event) {
+        document.getElementById("rmenu").className = "hide";
+    });
+    var fillDown = document.getElementById('filldown');
+    fillDown.addEventListener('click', filldown);
+
     var div1 = document.getElementById('div1');
     div1.appendChild(table);
     loadRules();
