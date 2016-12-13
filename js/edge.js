@@ -296,18 +296,18 @@ function clickHandler(event) {
 
 // Builds the HTML Table from the JSON Metadata
  function buildHtmlTable(arr) {
-
+    
     arr = JSON.parse(arr);
     options = arr.options;
     properties = arr.properties; 
     var columns;
-
+    
     table = _table_.cloneNode(false),
          columns = addAllColumnHeaders(options, table);
          
     var tr = createRow(options);    
     table.appendChild(tr);
-
+    
     table.addEventListener('mousedown',  clickHandler);
     table.addEventListener('focusout',  blurHandler);
     table.addEventListener('change',  changeHandler);
@@ -317,7 +317,7 @@ function clickHandler(event) {
     });
     var fillDown = document.getElementById('filldown');
     fillDown.addEventListener('click', filldown);
-
+    
     var div1 = document.getElementById('div1');
     div1.appendChild(table);
     loadRules();
@@ -360,7 +360,7 @@ function createRow(options) {
     for (var i=0; i < options.length; ++i) {
         var x = options[i];
         td = _td_.cloneNode(false);
-        if (x.type == 'NUMERIC') {
+        if (x.type == 'Value') {
             var ninput = document.createElement("INPUT");
             ninput.setAttribute("type", "number");    
             ninput.setAttribute("data-option", x.name);
@@ -368,14 +368,14 @@ function createRow(options) {
             td.appendChild(ninput);
 
         }
-        if (x.type == 'SELECT') {
+        if (x.type == 'List') {
             var sel = document.createElement("SELECT");
             sel.setAttribute("data-option", x.name);
             var opts = x.values;
             for (var j = 0; j < opts.length; j++) {
                 var value = document.createElement("option");
-                value.value = opts[j];
-                value.text = opts[j];
+                value.value = opts[j.name];
+                value.text = opts[j].name;
                 //option.className = 'red';
                 sel.appendChild(value);
             }
