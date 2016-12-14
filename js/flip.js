@@ -57,7 +57,6 @@ function flipOptions(failedOptions) {
 }
 
 
-
 function continueFlipping(currentOption) {
 
 	var result = validateSelectedValue(flippedModel, currentOption); 
@@ -78,7 +77,7 @@ function continueFlipping(currentOption) {
 		if (result.isavailable) {
 			doneFlipOptions.add(currentOption); return true; 
 		}
-
+		
 		var failedVariables = result.failedVariables; 
 		failedFlipOptions.add(currentOption);
 		flipOptions(failedVariables);
@@ -90,7 +89,7 @@ function continueFlipping(currentOption) {
 			doneFlipOptions.add(currentOption);
 			return true; 
 		}
-
+		
 		for (let failedOption of failedVariables) {
 			if (failedOption != currentOption)
 				if (doneFlipOptions.has(failedOption)) doneFlipOptions.delete(failedOption);
@@ -98,4 +97,8 @@ function continueFlipping(currentOption) {
 	}
 	flipValuesExhausted = true; 
 	return false; 
+}
+
+function flipOptionValue(model, optionName, valueName) {
+		
 }

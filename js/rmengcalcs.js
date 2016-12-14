@@ -12,6 +12,77 @@ this.getModelProperties = function () {
     return _modelProp;
 }
 /*Public Methods*/
+this.isULValid = function (job, product, line, option, value) {
+    if (_jobdata == null) {
+        _jobdata = job;
+    }
+    if (_modelProp == null || _modelProp.length == 0) {
+        getProductInformation(product, line);
+    }
+    var retval = [];
+    var sWriteProperty = "Products_" + product.Product_Name + "_Writable";
+    var sReadProperty = product.Product_Name + "_Properties";
+    var Category = product.Product_Parent_Category_Name;
+    if (typeof _modelProp["UL_Validation_Table"] === "undefined") { _modelProp["UL_Validation_Table"] = getPropertyValue2(sReadProperty, "Model", "UL_Validation_Table"); }
+    var ulValidation = _modelProp["UL_Validation_Table"];
+    if (ulValidation == null || ulValidation == "") {
+        retval["isavailable"] = "True";
+        retval["ListValueColor"] = "";
+    }
+    else {
+        //set model propertys
+        storeModelData(line, "FRAME");
+        storeModelData(line, "FRAME MVG");
+        storeModelData(line, "MOUNTING");
+        storeModelData(line, "BLADE ACTION");
+        storeModelData(line, "STATIC PRESSURE");
+        storeModelData(line, "ASSEMBLY TEMP");
+        storeModelData(line, "VELOCITY");
+        storeModelData(line, "FAIL POS.");
+        storeModelData(line, "ACTUATOR");
+        storeModelData(line, "ACTUATOR MVG");
+        storeModelData(line, "ACCESSORIES");
+        storeModelData(line, "GRILL DEPTH");
+        storeModelData(line, "DUCT CONNECTIONS");
+        if (typeof line["SLEEVE LENGTH"] !== "undefined") {
+            sSleeveLen = line["SLEEVE LENGTH"];
+            var dSleeveLen = 0;
+            if (sSleeveLen.startsWith("OTH -")) {
+                sSleeveLen = sSleeveLen.substring(sSleeveLen.indexOf("- ") + 2);
+            }
+            _modelProp["SLEEVE LENGTH"] = parseInt(sSleeveLen);
+        }
+        //Value being set to ISULValid base on current option
+        switch (option.toUpperCase()) {
+            case "SLEEVE LENGTH":
+                sSleeveLen = value;
+                var dSleeveLen = 0;
+                if (sSleeveLen.startsWith("OTH -")) {
+                    sSleeveLen = sSleeveLen.substring(sSleeveLen.indexOf("- ") + 2);
+                }
+                _modelProp["SLEEVE LENGTH"] = parseInt(sSleeveLen);
+                break;
+            default:
+                _modelProp[option.toUpperCase()] = value;
+                break;
+        }
+        _modelProp["SectionsTall"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "SectionsTall");
+        _modelProp["SectionsWide"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "SectionsWide");
+        _modelProp["Shape"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "Shape");
+        _modelProp["MaxSectionWidth"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "MaxSectionWidth");
+        _modelProp["MaxSectionHeight"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "MaxSectionHeight");
+        _modelProp["MaxSectionDepth"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "MaxSectionDepth");
+        _modelProp["MaxSectionWidth2"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "MaxSectionWidth2");
+        _modelProp["MaxSectionHeight2"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "MaxSectionHeight2");
+        _modelProp["MaxSectionDepth2"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "MaxSectionDepth2");
+        _modelProp["ModelMaxHeight"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "ModelMaxHeight");
+        _modelProp["ModelMaxWidth"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "ModelMaxWidth");
+        _modelProp["ModelMinHeight"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "ModelMinHeight");
+        _modelProp["ModelMinWidth"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "ModelMinWidth");
+        _modelProp["UL_Validation_Table"] = getPropertyValue2(sReadProperty, "Model", "UL_Validation_Table");
+    }
+    return isULValidProcess();
+}
 this.setSectionCalcs = function (job, product, line, option, value) {
     if (_jobdata == null) {
         _jobdata = job;
@@ -53,8 +124,12 @@ this.setActuatorQuantity = function (job, product, line) {
     var writeTable;
     var readTable;
     var perimeterInterval;
-    var actuator = _modelProp["ACTUATOR"];
-    var actuatorGUID = _modelProp["ACTUATOR MVG"];
+    var actuator = line["ACTUATOR"];
+    var actuatorGUID = line["ACTUATOR MVG"];
+    if (_modelProp["ACTUATOR"] != actuator) {
+        _modelProp["ACTUATOR"] = actuator;
+        _modelProp["ACTUATOR MVG"] = actuatorGUID ;
+    }
     var actuatorQty;
     //check if line has changed
     checkInstance(product, line);
@@ -139,19 +214,21 @@ this.setActuatorQuantity = function (job, product, line) {
         else {
             actuatorQty = getActuatorQuantity();
         }
-
         if (actuator.toUpperCase() != "NONE" && actuatorQty == 0) { actuatorQty = -1;}
         updatePropertyTable(propertyWritable, product.Product_GUID, "ActuatorQuantity", "Model", line.LineItemGuid, actuatorQty);
     }
-
+    _modelProp["ActuatorQuantity"] = actuatorQty;
 }
 this.setActuatorQuantityValue = function (job, product, line, value) {
     var propertyWritable = "Products_" + _modelName + "_Writable";
     updatePropertyTable(propertyWritable, product.Product_GUID, "ActuatorQuantity", "Model", line.LineItemGuid, value);
+    if (typeof _modelProp["ActuatorQuantity"] === "undefined") {
+        _modelProp["ActuatorQuantity"] = value;
+    }
 }
 this.calculateActuatorQuantity = function (job, product, line) {
     setActuatorQuantity(job, product, line);
-    return getPropertyValue("Products_" + _modelName + "_Writable", product.product_Guid, "Model", line.LineItemGuid, "ActuatorQuantity");
+    return getPropertyValue("Products_" + _modelName + "_Writable", product.Product_GUID, "Model", line.LineItemGuid, "ActuatorQuantity");
 }
 this.calculateAirMeasuringUnitLimits = function(productName, controlTransVal, itemWidth, itemHeight, option, lowLimitCFM, designLimitCFM, highLimitCFM, error) {
     try {
@@ -378,62 +455,9 @@ function airMeasuringUnitHasController(productName, controlTransVal) {
 function calculateSections(product) {
     var bIsValid = false;
     var bOtherMax = false;
+    bIsValid = isULValidProcess();
     var Category = _modelProp["PCategory"].toUpperCase();
     var ChildCategory = _modelProp["CCategory"].toUpperCase();
-    var ULValidation = _modelProp["UL_Validation_Table"].toUpperCase();
-    switch (ULValidation) {
-        case "UL_FSD":
-            bIsValid = getULCalcSections_FSD(bOtherMax);
-            break;
-        case "UL_SLEEVE_LENGTH_FSD":
-            bIsValid = getULCalcSections_FSD();
-            if (bIsValid == true) {
-                bIsValid = getULCalcSleeveLengthCalc_FSD();
-            }
-            break;
-        case "UL_SD":
-            bIsValid = getULCalcSections_SD();
-            break;
-        case "UL_DFD":
-            bIsValid = getULCalcSections_DFD();
-            break;
-        case "UL_DYNAMIC_FIRE_DAMPER":
-            var sRetval = getULCalcSections_DynamicFD();
-            if (sRetVal == "True") { bIsValid = true; }
-            else { bIsValid == false; }
-            break;
-        case "UL_FIRE_DAMPER":
-            bIsValid = getULCalcSections_FD();
-            break;
-        case "UL_STATIC_FIRE_DAMPER":
-            bIsValid = getULCalcSections_StaticFD();
-            break;
-        default:
-            bIsValid = true;
-            switch (Category) {
-                case "LOUVERS":
-                    if (_modelProp["HasSeals"] == true) { bOtherMax = true; }
-                    else {bOtherMax = false;}
-                    break;
-                case "CONTROL DAMPERS":
-                case "ZONE CONTROL":
-                    if (_modelProp["WIDTH"] > _modelProp["MaxSectionWidth"] || _modelProp["HEIGHT"] > _modelProp["MaxSectionHeight"]) {
-                        if (_modelProp["MaxSectionWidth2"] > 0 || _modelProp["MaxSectionHeight2"] > 0) { bOtherMax = true;}
-                        else {bOtherMax = false;}
-                    }
-                    else { bOtherMax = false;}
-                    break;
-                default:
-                    if (_modelProp["WIDTH"] > _modelProp["MaxSectionWidth"] || _modelProp["HEIGHT"] > _modelProp["MaxSectionHeight"]) {
-                        if (_modelProp["WIDTH"] > _modelProp["MaxSectionWidth2"] > 0 || _modelProp["HEIGHT"] > _modelProp["MaxSectionHeight2"] > 0) { bOtherMax = true;}
-                        else {bOtherMax = false;}
-                    }
-                    else { bOtherMax = false;}
-                    break;
-            }//end of Category select
-            break; 
-    } //end of UL_Validation select
-    
     if (Category == "SILENCERS" && _modelProp["SHAPE"] != 3) {
         if (ChildCategory == "ELBOW") {
             var temp = GetElbowSilencers(_modelProp["DEPTH"]);
@@ -1079,6 +1103,64 @@ function getULCalcSleeveLengthCalc_FSD() {
         _modelProp["WidthAdd"] = retval["WidthAdd"];
     }
     return retval["IsValid"];
+}
+
+function isULValidProcess() {
+    var ULValidation = _modelProp["UL_Validation_Table"].toUpperCase();
+    var Category = _modelProp["PCategory"].toUpperCase();
+    switch (ULValidation) {
+        case "UL_FSD":
+            bIsValid = getULCalcSections_FSD(bOtherMax);
+            break;
+        case "UL_SLEEVE_LENGTH_FSD":
+            bIsValid = getULCalcSections_FSD();
+            if (bIsValid == true) {
+                bIsValid = getULCalcSleeveLengthCalc_FSD();
+            }
+            break;
+        case "UL_SD":
+            bIsValid = getULCalcSections_SD();
+            break;
+        case "UL_DFD":
+            bIsValid = getULCalcSections_DFD();
+            break;
+        case "UL_DYNAMIC_FIRE_DAMPER":
+            var sRetval = getULCalcSections_DynamicFD();
+            if (sRetVal == "True") { bIsValid = true; }
+            else { bIsValid == false; }
+            break;
+        case "UL_FIRE_DAMPER":
+            bIsValid = getULCalcSections_FD();
+            break;
+        case "UL_STATIC_FIRE_DAMPER":
+            bIsValid = getULCalcSections_StaticFD();
+            break;
+        default:
+            bIsValid = true;
+            switch (Category) {
+                case "LOUVERS":
+                    if (_modelProp["HasSeals"] == true) { bOtherMax = true; }
+                    else { bOtherMax = false; }
+                    break;
+                case "CONTROL DAMPERS":
+                case "ZONE CONTROL":
+                    if (_modelProp["WIDTH"] > _modelProp["MaxSectionWidth"] || _modelProp["HEIGHT"] > _modelProp["MaxSectionHeight"]) {
+                        if (_modelProp["MaxSectionWidth2"] > 0 || _modelProp["MaxSectionHeight2"] > 0) { bOtherMax = true; }
+                        else { bOtherMax = false; }
+                    }
+                    else { bOtherMax = false; }
+                    break;
+                default:
+                    if (_modelProp["WIDTH"] > _modelProp["MaxSectionWidth"] || _modelProp["HEIGHT"] > _modelProp["MaxSectionHeight"]) {
+                        if (_modelProp["WIDTH"] > _modelProp["MaxSectionWidth2"] > 0 || _modelProp["HEIGHT"] > _modelProp["MaxSectionHeight2"] > 0) { bOtherMax = true; }
+                        else { bOtherMax = false; }
+                    }
+                    else { bOtherMax = false; }
+                    break;
+            }//end of Category select
+            break;
+    } //end of UL_Validation select
+    return bIsValid;
 }
 
 function listContains(list, value, length) {

@@ -29,10 +29,10 @@ function validateSelectedValue(model, option) {
     }
     else 
         return;
-
-   
+    
+    
     if (optionRules.hasOwnProperty('Global Value Available')) {
-        
+            
         let globalValueFunctions = optionRules['Global Value Available'];
              
             if (globalValueFunctions.hasOwnProperty(value)) {

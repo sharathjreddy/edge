@@ -92,14 +92,44 @@ function loadModelMetadata() {
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
-            buildHtmlTable(xmlHttp.response);
+            loadProperties(xmlHttp.response);
     }
     xmlHttp.open("GET", '/product/CD35', true); // true for asynchronous 
     xmlHttp.send(null);
 
 }
 
+function loadProperties(data) {
 
+    var arr = JSON.parse(data);
+    options = arr.options;
+    optionMap = {}; 
+    for (var i = 0; i < options.length; i++) {
+        var option = options[i];
+        optionMap[option.name] = option; 
+    }
+
+    properties = arr.properties; 
+    buildHtmlTable(options);
+
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            parseProperties(xmlHttp.response);
+    }
+    xmlHttp.open("GET", '/product_properties/CD35', true); // true for asynchronous 
+    xmlHttp.send(null);
+
+}
+
+function parseProperties(data) {
+    var arr = JSON.parse(data); 
+    product = arr.Products[0];
+    job = {}; 
+    job.CD35_Properties = arr.CD35_Properties; 
+    job.CD35_Writable_Properties = arr.CD35_Writable_Properties; 
+    job.Products_CD35_Writable = arr.Products_CD35_Writable; 
+}
 
 function loadRules() {
     var xmlHttp = new XMLHttpRequest();
@@ -177,6 +207,16 @@ function blurHandler(event) {
             model[option] = value;
         }
     }
+
+    enrichModel(model);
+    if (log.isTraceEnabled) {
+        log.trace(model); 
+    }    
+    
+    //setSectionCalcs(job, product, model, null, null);
+    //setActuatorQuantity(job, product, model); 
+    //var props = getModelProperties(); 
+    
     console.log(model);
     var result = validateModel(model);
     if (!result.isavailable) {
@@ -199,26 +239,8 @@ function changeHandler(event) {
     while (target && target.nodeName !== "TR") {
         target = target.parentNode;
     }
-    if (target) {
-        var cells = target.getElementsByTagName("td");
-        for (var i = 0; i < cells.length; i++) {
-            var el = cells[i].firstElementChild;
-            if (el == null) continue; 
-            var optionName = el.getAttribute('data-option');
-            var value = el.value;
-            model[optionName] = value;
-        }
-    }
-    console.log(model);    
-
-    var result = validateSelectedValue(model, option);
-    if (!result.isavailable) {
-        var failedOptions = result.failedVariables;
-        var result = startFlippingValues(model, option, failedOptions);
-        if (result.flipped) {
-            modifyRow(target, model, result.model); 
-        }
-    }
+    
+    validateRow(target, option);
 
 }
 
@@ -294,13 +316,89 @@ function clickHandler(event) {
 }
 
 
-// Builds the HTML Table from the JSON Metadata
- function buildHtmlTable(arr) {
+function validateRow(tr, optionChanged) {
+     
+    var model = {}; 
+    var cells = tr.getElementsByTagName("td");
+    for (var i = 0; i < cells.length; i++) {
+        var el = cells[i].firstElementChild;
+        if (el == null) continue; 
+            var optionName = el.getAttribute('data-option');
+            var value = el.value;
+            model[optionName] = value;
+    }
     
-    arr = JSON.parse(arr);
-    options = arr.options;
-    properties = arr.properties; 
-    var columns;
+    enrichModel(model);
+    if (log.isTraceEnabled) {
+        log.trace(model); 
+    }    
+
+    setSectionCalcs(job, product, model, optionChanged, model[optionChanged]);
+    setActuatorQuantity(job, product, model); 
+    var props = getModelProperties(); 
+
+    var result = validateSelectedValue(model, optionChanged);
+    if (!result.isavailable) {
+        var failedOptions = result.failedVariables;
+        var result = startFlippingValues(model, optionChanged, failedOptions);
+        if (result.flipped) {
+            modifyRow(tr, model, result.model); 
+        }
+    }
+    
+}
+
+
+//Take a model and add all the attributes required by Engineering Calcs 
+function enrichModel(model) {
+
+    for (var key in model) {
+        if (!model.hasOwnProperty(key)) {
+            continue; 
+        }
+
+        var option = optionMap[key];
+
+        if (!option) continue; //Not an option at all; maybe Qty or Tag. TODO: THis can be checked for to avoid lookup 
+        
+        var value = null;
+        if (option.type == "Value") {
+            value = option.values[0];
+        }
+        if (option.type == "List") {
+            console.log("list"); 
+            value = findValue(option.values, model[key]);
+        }
+
+        //findValue(option.values, model[key]);
+        model[option.displayName] = model[key]; 
+        model[option.displayName + ' Guid'] = value.valueGuid; 
+        model[option.displayName + ' MVG'] = value.modelValueGuid;
+        model[option.displayName + ' VALUETEXT'] = value.valueText; 
+
+        //Copy all values specific to CD35 
+        Object.assign(model, Line_Header); 
+
+    }
+
+}
+
+function findValue(values, valueToFind) {
+    for (var i = 0; i < values.length; i++) {
+        if (values[i].name == valueToFind) {
+            return values[i]; 
+        }    
+    }
+}
+
+
+
+
+
+// Builds the HTML Table from the JSON Metadata
+ function buildHtmlTable(options) {
+    
+   var columns;
     
     table = _table_.cloneNode(false),
          columns = addAllColumnHeaders(options, table);
@@ -374,7 +472,7 @@ function createRow(options) {
             var opts = x.values;
             for (var j = 0; j < opts.length; j++) {
                 var value = document.createElement("option");
-                value.value = opts[j.name];
+                value.value = opts[j].name;
                 value.text = opts[j].name;
                 //option.className = 'red';
                 sel.appendChild(value);
