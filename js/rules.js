@@ -39,7 +39,7 @@ function validateSelectedValue(model, option) {
         if (!isActuatorAvailable(model)) {
             result.isavailable = false; 
             result.listvaluecolor = 'Red';
-            result.message = 'Not available because of ' + model[ACT_TYPE]; 
+            result.message = 'Not available because of ' + model['ACT_TYPE']; 
             return result; 
         }
     }
@@ -85,9 +85,19 @@ function validateSelectedValue(model, option) {
 function validateOption(model, option, values) {
 
 	
-	//for each option, validate all the event types 
-    var result; 
+	var backupValue = model[option]; 
+    
+    for (let value of values) {
+        model[option] = value.valueName; 
+        result = validateSelectedValue(model, option);
+        value.isavailable = result.isavailable;
+        value.listvaluecolor = result.listvaluecolor;
+        value.message = result.message;
+    } 
 
+    model[option] = backupValue; 
+    return; 
+    
     let optionRules = null;
     if (rules.hasOwnProperty(option)) {
         optionRules = rules[option];
