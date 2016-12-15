@@ -64,20 +64,22 @@ function continueFlipping(currentOption) {
 		doneFlipOptions.add(currentOption); return true;
 	}
 
-	if (currentOption.isNumeric) return isValid; //Nothing more to be done; can't flip a numeric value 
+	var optionObj = optionMap[currentOption]; 
+	if (optionObj.type == "Value") return isValid; //Nothing more to be done; can't flip a numeric value 
 
-	var values = getValues(currentOption); 
+	var values = optionObj.values;  
 	for (let value of values) {
 
-		if (value == originalModel[currentOption]) continue; 
+		if (value.name == originalModel[currentOption]) continue; 
 
-		flippedModel[currentOption] = value; 
+		setOptionValue(flippedModel, optionObj, value);
+		//flippedModel[currentOption] = value; 
 		
 		result = validateSelectedValue(flippedModel, currentOption); 
 		if (result.isavailable) {
 			doneFlipOptions.add(currentOption); return true; 
 		}
-		
+
 		var failedVariables = result.failedVariables; 
 		failedFlipOptions.add(currentOption);
 		flipOptions(failedVariables);
@@ -89,7 +91,7 @@ function continueFlipping(currentOption) {
 			doneFlipOptions.add(currentOption);
 			return true; 
 		}
-		
+
 		for (let failedOption of failedVariables) {
 			if (failedOption != currentOption)
 				if (doneFlipOptions.has(failedOption)) doneFlipOptions.delete(failedOption);
@@ -99,6 +101,13 @@ function continueFlipping(currentOption) {
 	return false; 
 }
 
-function flipOptionValue(model, optionName, valueName) {
+function setOptionValue(model, option, value) {
+
+	model[option.name] = value.name;
+	
+    model[option.displayName] = value.name;  
+    model[option.displayName + ' Guid'] = value.valueGuid; 
+    model[option.displayName + ' MVG'] = value.modelValueGuid;
+    model[option.displayName + ' VALUETEXT'] = value.valueText; 
 		
 }
