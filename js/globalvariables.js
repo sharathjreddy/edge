@@ -7,6 +7,8 @@ var product;
 
 var job; 
 
+var actuatorMappings;
+
 var log = log4javascript.getDefaultLogger();
 
 log.setLevel(log4javascript.Level.TRACE);

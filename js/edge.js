@@ -103,6 +103,7 @@ function loadProperties(data) {
 
     var arr = JSON.parse(data);
     options = arr.options;
+    actuatorMappings = arr.actuator_mappings; 
     optionMap = {}; 
     for (var i = 0; i < options.length; i++) {
         var option = options[i];
@@ -390,7 +391,6 @@ function findValue(values, valueToFind) {
         }    
     }
 }
-
 
 
 

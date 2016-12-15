@@ -14,14 +14,35 @@ function getValues(option) {
 }                            
 
 
+function isActuatorAvailable(model) { 
+    var actType = model['ACT_TYPE'];
+    var actuator = model['ACTUATOR'];
+
+    var validActuators = actuatorMappings[actType]; 
+    if (validActuators.indexOf(actuator) == -1)
+        return false; 
+
+    return true; 
+}
+
+
+
 
 function validateSelectedValue(model, option) {
-
     
     //for each option, validate all the event types 
     var result = { isavailable : true }; 
     
     let value = model[option];
+
+    if (option == 'ACTUATOR') {
+        if (!isActuatorAvailable(model)) {
+            result.isavailable = false; 
+            result.listvaluecolor = 'Red';
+            result.message = 'Not available because of ' + model[ACT_TYPE]; 
+            return result; 
+        }
+    }
 
     let optionRules = null;
     if (rules.hasOwnProperty(option)) {
