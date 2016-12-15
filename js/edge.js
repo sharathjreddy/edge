@@ -126,6 +126,10 @@ function loadProperties(data) {
 function parseProperties(data) {
     var arr = JSON.parse(data); 
     product = arr.Products[0];
+    productProperties = {};
+    //These are used by Rules Engine, so need to copy them over with the appropriate key 
+    productProperties.Category = product.Product_Parent_Category_Name;
+    productProperties.Child_Category = product.Product_Child_Category_Name;
     job = {}; 
     job.CD35_Properties = arr.CD35_Properties; 
     job.CD35_Writable_Properties = arr.CD35_Writable_Properties; 
@@ -285,6 +289,7 @@ function clickHandler(event) {
             model[optionName] = value;
         }
     }
+    enrichModel(model); 
     console.log(model);
 
     //Get all the options from the Select control 
@@ -341,6 +346,9 @@ function validateRow(tr, optionChanged) {
     var result = validateSelectedValue(model, optionChanged);
     if (!result.isavailable) {
         var failedOptions = result.failedVariables;
+        if (log.isDebugEnabled) {
+            log.debug('Failed Options: ', failedOptions); 
+        }
         var result = startFlippingValues(model, optionChanged, failedOptions);
         if (result.flipped) {
             modifyRow(tr, model, result.model); 
@@ -380,6 +388,8 @@ function enrichModel(model) {
         //Copy all values specific to CD35 
         Object.assign(model, Line_Header); 
 
+        Object.assign(model, productProperties);
+        Object.assign(model, properties); 
     }
 
 }

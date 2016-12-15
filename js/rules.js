@@ -92,6 +92,10 @@ function validateOption(model, option, values) {
         result = validateSelectedValue(model, option);
         value.isavailable = result.isavailable;
         value.listvaluecolor = result.listvaluecolor;
+        if (result.message == '') {
+            var msg = 'This value is unavailable because of ' + result.failedVariables.join(',');
+            result.message = msg;     
+        }
         value.message = result.message;
     } 
 

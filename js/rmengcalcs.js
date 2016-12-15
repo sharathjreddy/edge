@@ -12,13 +12,11 @@ this.getModelProperties = function () {
     return _modelProp;
 }
 /*Public Methods*/
-this.isULValid = function (job, product, line, option, value) {
+this.isULValid = function (job, product, line, option) {
     if (_jobdata == null) {
         _jobdata = job;
     }
-    if (_modelProp == null || _modelProp.length == 0) {
-        getProductInformation(product, line);
-    }
+    getProductInformation(product, line);
     var retval = [];
     var sWriteProperty = "Products_" + product.Product_Name + "_Writable";
     var sReadProperty = product.Product_Name + "_Properties";
@@ -83,13 +81,11 @@ this.isULValid = function (job, product, line, option, value) {
     }
     return isULValidProcess();
 }
-this.setSectionCalcs = function (job, product, line, option, value) {
+this.setSectionCalcs = function (job, product, line) {
     if (_jobdata == null) {
         _jobdata = job;
     }
-    //update line value
-    line[option.toUpperCase()] = value;
-    line[option.toUpperCase()+ ' UOM'] = value;
+    getProductInformation(product, line);
     //check if line has changed
     checkInstance(product, line);
     //calcuate sections
@@ -120,6 +116,7 @@ this.setActuatorQuantity = function (job, product, line) {
     if (_jobdata == null) {
         _jobdata = job;
     }
+    getProductInformation(product, line);
     //method parameters
     var writeTable;
     var readTable;
@@ -572,6 +569,13 @@ function checkInstance(product, line) {
     }
 }
 
+/*check to see if modelProp is current*/
+function checkModelProp(option, line) {
+    if (typeof _modelProp[option] === "undefined" || _modelProp[option] != line[option]) {
+        _modelProp[option] = line[option];
+    }
+}
+
 function getActuatorQuantity() {
     if (_modelProp["ACTUATOR"].toUpperCase() == "NONE") {
         return 0;
@@ -853,6 +857,7 @@ function getHasProperty(line, name, value) {
 /*load the model and line information*/
 function getProductInformation(product, line) {
     _lineGuid = line.LineItemGuid;
+    _modelProp = [];
     var table = product.Product_Brand + '_' + product.Product_Name + '_LineItem';
     var dWidth, dHeight, dDepth, dSleeveLen = 0;
     _modelProp["Brand"] = product.Product_Brand;
@@ -931,19 +936,6 @@ function getPropertyValue(table, record, type, id, property) {
         if (tbl[i]["Record_Guid"].toUpperCase() == record.toUpperCase() && tbl[i]["Table_Name"].toUpperCase() == type.toUpperCase() && tbl[i]["LineItem_Id"].toUpperCase() == id.toUpperCase()) {
             if (tbl[i]["Property_Name"].toUpperCase() == property.toUpperCase()) {
                 return tbl[i]["Property_Default_Value"];
-            }
-        }
-    }
-}
-function getPropertyValueTrace(table, record, type, id, property) {
-    var tbl = _jobdata[table];
-    for (var i = 0; i < tbl.length; i++) {
-        if (tbl[i]["Property_Name"].toUpperCase() == property.toUpperCase()) {
-            console.log(tbl[i]["Property_Name"] + "|" + tbl[i]["Table_Name"] + "|" + tbl[i]["Record_Guid"] + "|" + tbl[i]["Property_Default_Value"]);
-            if (tbl[i]["Table_Name"] == type && tbl[i]["LineItem_Id"] == id) {
-                if (tbl[i]["Record_Guid"].toUpperCase() == record.toUpperCase()) {
-                    return tbl[i]["Property_Default_Value"];
-                }
             }
         }
     }
