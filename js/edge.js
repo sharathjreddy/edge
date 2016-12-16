@@ -342,14 +342,15 @@ function validateRow(tr, optionChanged) {
     setSectionCalcs(job, product, model, optionChanged, model[optionChanged]);
     setActuatorQuantity(job, product, model); 
     var props = getModelProperties(); 
-
-    var result = validateSelectedValue(model, optionChanged);
+    
+    var result = ruleFlow(model, optionChanged);
     if (!result.isavailable) {
-        var failedOptions = result.failedVariables;
+        var failedVariables = result.failedVariables;
+        var allVariables = result.allVariables; 
         if (log.isDebugEnabled) {
-            log.debug('Failed Options: ', failedOptions); 
+            log.debug('Failed Variables: ', failedVariables); 
         }
-        var result = startFlippingValues(model, optionChanged, failedOptions);
+        var result = startFlippingValues(model, optionChanged, failedVariables, allVariables);
         if (result.flipped) {
             modifyRow(tr, model, result.model); 
         }

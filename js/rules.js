@@ -26,9 +26,7 @@ function isActuatorAvailable(model) {
 }
 
 
-
-
-function validateSelectedValue(model, option) {
+function ruleFlow(model, option) {
     
     //for each option, validate all the event types 
     var result = { isavailable : true }; 
@@ -44,6 +42,49 @@ function validateSelectedValue(model, option) {
         }
     }
 
+    switch(option) {  
+        case "ACTUATOR":
+        case "INSTALLATION":
+        case "ACCESSORIES": 
+            //should never actually fail !! 
+            isActuatorInvalid(isValid, category, product, line, actuator); 
+            break; 
+            
+        case "FRAME":
+        case "MOUNTING":
+        case "BLADE ACTION":
+        case "FAIL POS.": 
+        case "ACCESSORIES": 
+        case "SLEEVE LENGTH": 
+            
+            var bIsValid = isULValid(job, product, model, option); 
+            if (!bIsValid.retval) {
+                result.isavailable = false; 
+                result.message = bIsValid["ErrorMsg"];
+                return result; 
+            }
+            break; 
+            
+        case "WIDTH", "HEIGHT": 
+            var height = parseInt(model['HEIGHT']);
+            var width = parseInt(model['WIDTH']);
+            bIsValid = isULValid(job, product, model, option); 
+            if (!bIsValid.retval) {
+                result.isavailable = false; 
+                result.message = bIsValid["ErrorMsg"];
+                return result; 
+            }
+            break; 
+    }        
+    
+    if (option == 'ACTUATOR' && value != 'NONE') {
+        setActuatorQuantity(job, product, model, ruleGuidDetails("ModelValueGuid"));
+         var mActQty = getWriteablePropertyValue("ActuatorQuantity");
+         if (mActQty <= 0) 
+            return false; 
+    }
+    
+    
     let optionRules = null;
     if (rules.hasOwnProperty(option)) {
         optionRules = rules[option];
@@ -51,7 +92,7 @@ function validateSelectedValue(model, option) {
     else 
         return;
     
-    
+    //Invoke the Rule Engine  
     if (optionRules.hasOwnProperty('Global Value Available')) {
             
         let globalValueFunctions = optionRules['Global Value Available'];
@@ -83,16 +124,15 @@ function validateSelectedValue(model, option) {
 
 
 function validateOption(model, option, values) {
-
 	
 	var backupValue = model[option]; 
     
     for (let value of values) {
         model[option] = value.valueName; 
-        result = validateSelectedValue(model, option);
+        result = ruleFlow(model, option);
         value.isavailable = result.isavailable;
         value.listvaluecolor = result.listvaluecolor;
-        if (result.message == '') {
+        if (!result.isavailable && result.message == '') {
             var msg = 'This value is unavailable because of ' + result.failedVariables.join(',');
             result.message = msg;     
         }
@@ -101,50 +141,6 @@ function validateOption(model, option, values) {
 
     model[option] = backupValue; 
     return; 
-    
-    let optionRules = null;
-    if (rules.hasOwnProperty(option)) {
-        optionRules = rules[option];
-    }
-    else 
-    	return;
-
-    if (optionRules.hasOwnProperty('GlobalOption Value Available')) {
-        result = optionRules['GlobalOption Value Available'](model);
-        console.log(result.Message);
-    }
-
-    if (optionRules.hasOwnProperty('Global Value Available')) {
-        
-        let globalValueFunctions = optionRules['Global Value Available'];
-    	for (let value of values) {	    
-            if (globalValueFunctions.hasOwnProperty(value.valueName)) {
-                result = optionRules['Global Value Available'][value.valueName](model);
-                value.isavailable = result.isavailable;
-                value.listvaluecolor = result.listvaluecolor;
-                value.message = result.message;
-                console.log(result.message);
-            }
-        }
-    }
-
-
-    if (optionRules.hasOwnProperty('Local Value Available')) {
-        
-        let globalValueFunctions = optionRules['Local Value Available'];
-    	for (let value of values) {	 
-            if (value.isavailable) {   
-                if (globalValueFunctions.hasOwnProperty(value.valueName)) {
-                    result = optionRules['Local Value Available'][value.valueName](model);
-                    value.isavailable = result.isavailable;
-                    value.listvaluecolor = result.listvaluecolor;
-                    value.message = result.message;
-                    console.log(result.message);
-                }
-            }
-        }
-    }
-
 }
 
 

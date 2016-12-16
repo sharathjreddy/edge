@@ -59,7 +59,7 @@ function flipOptions(failedOptions) {
 
 function continueFlipping(currentOption) {
 
-	var result = validateSelectedValue(flippedModel, currentOption); 
+	var result = ruleFlow(flippedModel, currentOption); 
 	if (result.isavailable) {
 		doneFlipOptions.add(currentOption); return true;
 	}

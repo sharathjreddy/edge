@@ -9,9 +9,214 @@ var _bLnSectionsHighOverride = false;
 var _iSectionHighOverride = 0;
 /*Public Properties*/
 this.getModelProperties = function () {
-    return _modelProp;
+    var retval = [];
+    for (var prop in _modelProp) {
+        if (_modelProp.hasOwnProperty(prop)) {
+            retval[prop.toLowerCase()] = _modelProp[prop];
+        }
+    }
+    return retval;
 }
 /*Public Methods*/
+this.calculateActuatorQuantity = function (job, product, line) {
+    setActuatorQuantity(job, product, line);
+    return getPropertyValue("Products_" + _modelName + "_Writable", product.Product_GUID, "Model", line.LineItemGuid, "ActuatorQuantity");
+}
+this.calculateAirMeasuringUnitLimits = function (productName, controlTransVal, itemWidth, itemHeight, option, lowLimitCFM, designLimitCFM, highLimitCFM, error) {
+    try {
+        var freeArea = 0;
+        var iWidth = 0;
+        var iHeight = 0;
+        var lDefaultLowLimitCFM = 0;
+        var lDefaultHighLimitCFM = 0;
+        var lDefaultDesignLimitCFM = 0;
+        var iError = 0;
+        var retval = [];
+        //set return values
+        retval["IsValid"] = false;
+        retval["LowLimit"] = 0;
+        retval["HighLimit"] = 0;
+        retval["DesignLimit"] = 0;
+        retval["ErrorMessage"] = "";
+
+        var bHasController = airMeasuringUnitHasController(productName, controlTransVal);
+        switch (productName.toUpperCase) {
+            case "AMS050":
+            case "PVDS050X":
+                lDefaultLowLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 300));
+                lDefaultHighLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 2000));
+                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                if (bHasController == true) {
+                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 25600) {
+                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 256000;
+                    }
+                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                }
+                else {
+                    lDefaultDesignLimitCFM = 0;
+                }
+                break;
+            case "CDRAMS":
+            case "PVDS060X":
+                lDefaultLowLimitCFM = Math.ceil((((itemWidth ^ 2) * 3.14) / 144) * 300);
+                lDefaultHighLimitCFM = Math.ceil((((itemWidth ^ 2) * 3.14) / 144) * 2149);
+                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                if (bHasController == true) {
+                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 25600) {
+                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 256000;
+                    }
+                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                }
+                else {
+                    lDefaultDesignLimitCFM = 0;
+                }
+                break;
+            case "IAQ50X":
+            case "PVDT050X":
+                iWidth = parseInt(itemWidth);
+                iHeight = parseInt(itemHeight);
+                freeArea = (iWidth * iHeight);
+                lDefaultLowLimitCFM = Math.ceil((freeArea * 150) / 144);
+                lDefaultHighLimitCFM = Math.ceil((freeArea * 2000) / 144);
+                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                break;
+            case "EAMS-HP":
+                lDefaultLowLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 50));
+                lDefaultHighLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 2000));
+                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                if (bHasController == true) {
+                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 32000) {
+                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 32000;
+                    }
+                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                }
+                else {
+                    lDefaultDesignLimitCFM = 0;
+                }
+                break;
+            case "EAMS":
+            case "PVES030":
+                lDefaultLowLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 100));
+                lDefaultHighLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 2000));
+                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                if (bHasController == true) {
+                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 32000) {
+                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 32000;
+                    }
+                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
+                }
+                else {
+                    lDefaultDesignLimitCFM = 0;
+                }
+                break;
+            case "AMS":
+            case "PVDS020":
+                lDefaultLowLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 300);
+                lDefaultHighLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 2000);
+                lDefaultDesignLimitCFM = 0;
+                break;
+            case "EAML6625":
+                lDefaultLowLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 345);
+                lDefaultHighLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 1508);
+                lDefaultDesignLimitCFM = 0;
+                break;
+            case "AML3":
+            case "PVDL300":
+                freeArea = getFreeArea("AML3", itemWidth, itemHeight);
+                lDefaultLowLimitCFM = Math.ceil(freeArea * 275);
+                lDefaultHighLimitCFM = Math.ceil(freeArea * 1400);
+                lDefaultDesignLimitCFM = 0;
+                break;
+            case "AML6":
+            case "PVDL600":
+                freeArea = getFreeArea("AML6", itemWidth, itemHeight);
+                lDefaultLowLimitCFM = Math.ceil(freeArea * 345);
+                lDefaultHighLimitCFM = Math.ceil(freeArea * 2149);
+                lDefaultDesignLimitCFM = 0;
+                break;
+            default:
+                lDefaultDesignLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 700);
+                lDefaultLowLimitCFM = Math.ceil(lDefaultDesignLimitCFM * 0.7);
+                lDefaultHighLimitCFM = Math.ceil(lDefaultDesignLimitCFM * 1.4);
+                break;
+        }
+        var iError = 0;
+        if (bHasController) {
+            switch (option) {
+                case "CNTRL/TRANS":
+                    retval["LowLimit"] = lDefaultLowLimitCFM;
+                    retval["HighLimit"] = lDefaultHighLimitCFM;
+                    retval["DesignLimit"] = lDefaultDesignLimitCFM;
+                    break;
+                case "LO LIMIT CFM":
+                    if (lowLimitCFM < lDefaultLowLimitCFM) {
+                        iError = 1;
+                    } else if (lowLimitCFM > designLimitCFM)
+                        iError = 5;
+                    break;
+                case "CFM DESIGN":
+                    if (designLimitCFM < lDefaultLowLimitCFM) {
+                        iError = 2;
+                    } else if (designLimitCFM > lDefaultHighLimitCFM)
+                        iError = 3;
+                    break;
+                case "HI LIMIT CFM":
+                    if (highLimitCFM > lDefaultHighLimitCFM) {
+                        iError = 4;
+                    } else if (highLimitCFM < designLimitCFM)
+                        iError = 6;
+                    break;
+                case "WIDTH":
+                case "HEIGHT":
+                    retval["LowLimit"] = lDefaultLowLimitCFM;
+                    retval["HighLimit"] = lDefaultHighLimitCFM;
+                    retval["DesignLimit"] = lDefaultDesignLimitCFM;
+                    break;
+                default:
+                    if (retval["LowLimit"] == 0) { retval["LowLimit"] = lDefaultLowLimitCFM; }
+                    if (retval["HighLimit"] == 0) { retval["HighLimit"] = lDefaultHighLimitCFM; }
+                    if (retval["DesignLimit"] == 0) { retval["DesignLimit"] = lDefaultDesignLimitCFM; }
+                    break;
+            }
+            if (iError == 0) {
+                if (lowLimitCFM < lDefaultLowLimitCFM) { iError = 1; }
+                else if (lowLimitCFM > designLimitCFM) { iError = 5; }
+                else if (designLimitCFM < lDefaultLowLimitCFM) { iError = 2; }
+                else if (designLimitCFM > lDefaultHighLimitCFM) { iError = 3; }
+                else if (highLimitCFM > lDefaultHighLimitCFM) { iError = 4; }
+                else if (highLimitCFM > designLimitCFM) { iError = 6; }
+            }
+            switch (iError) {
+                case 0:
+                    retval["ErrorMessage"] = "";
+                    break;
+                case 1:
+                    retval["ErrorMessage"] = lowLimitCFM + " Low Limit CFM is below the minimum of " + lDefaultLowLimitCFM;
+                case 2:
+                    retval["ErrorMessage"] = designLimitCFM + " Design CFM is below the minimum of " + lDefaultLowLimitCFM
+                case 3:
+                    retval["ErrorMessage"] = designLimitCFM + " Design CFM is above the maximum of " + lDefaultHighLimitCFM
+                case 4:
+                    retval["ErrorMessage"] = highLimitCFM + " High Limit CFM is above the maximum of " + lDefaultHighLimitCFM
+                case 5:
+                    retval["ErrorMessage"] = lowLimitCFM + " Low Limit CFM is above the Design CFM " + designLimitCFM
+                case 6:
+                    retval["ErrorMessage"] = lowLimitCFM + " High Limit CFM is below the Design CFM " + designLimitCFM
+            }
+        }
+        else {
+            retval["LowLimit"] = lDefaultLowLimitCFM;
+            retval["HighLimit"] = lDefaultHighLimitCFM;
+            retval["DesignLimit"] = lDefaultDesignLimitCFM;
+        }
+        retval["IsValid"] = true;
+
+    }
+    catch (err) {
+        retval["IsValid"] = false;
+    }
+    return retval;
+}
 this.isULValid = function (job, product, line, option) {
     if (_jobdata == null) {
         _jobdata = job;
@@ -53,7 +258,7 @@ this.isULValid = function (job, product, line, option) {
         //Value being set to ISULValid base on current option
         switch (option.toUpperCase()) {
             case "SLEEVE LENGTH":
-                sSleeveLen = value;
+                sSleeveLen = line[option];
                 var dSleeveLen = 0;
                 if (sSleeveLen.startsWith("OTH -")) {
                     sSleeveLen = sSleeveLen.substring(sSleeveLen.indexOf("- ") + 2);
@@ -61,7 +266,7 @@ this.isULValid = function (job, product, line, option) {
                 _modelProp["SLEEVE LENGTH"] = parseInt(sSleeveLen);
                 break;
             default:
-                _modelProp[option.toUpperCase()] = value;
+                _modelProp[option.toUpperCase()] = line[option];
                 break;
         }
         _modelProp["SectionsTall"] = getPropertyValue(sWriteProperty, product.Product_GUID, "Model", line.LineItemGuid, "SectionsTall");
@@ -80,6 +285,97 @@ this.isULValid = function (job, product, line, option) {
         _modelProp["UL_Validation_Table"] = getPropertyValue2(sReadProperty, "Model", "UL_Validation_Table");
     }
     return isULValidProcess();
+}
+this.isActuatorTypeCorrect = function (product, line, option, value, dropdown) {
+    var actuator;
+    var installation;
+    var isValid = [];
+    if (option.toUpperCase() == "ACTUATOR") {
+        actuator = value;
+    } else {
+        if (typeof line["ACTUATOR"] !== "undefined") {
+            actuator = line["ACTUATOR"];
+        }
+        else { actuator = "NONE"; }
+        if (option.toUpperCase() == "INSTALLATION") {
+            installation = value;
+        } else {
+            if (typeof line["installation"] !== "undefined") {
+                installation = line["ACTUATOR"];
+            }
+        }
+        var bActTypeCorrect = true;
+        var errorMessage = "";
+        if (option.toUpperCase() == "ACTUATOR" && dropdown == true) {
+            retval = IsActuatorTypeValid(actuator, line["ACT TYPE"]);
+            bActTypeCorrect = retval["IsActTypeCorrect"];
+            errorMessage = retval["ErrorMessage"];
+        }
+        if (bActTypeCorrect == false) {
+            isValid["isavailable"] = false;
+            isValid["ListValueColor"] = "Red";
+            isValid["FailedVariables"] = "ACT_TYPE";
+            isValid["Message"] = errorMessage;
+        }
+        else {
+            if (installation.toUpperCase() == "IN" && actuator != "NONE" && actuator.startsWith("OTH") == false) {
+                isValid = IsActuatorInvalid(isValid, product.Product_Parent_Category_Name, line["Product_Original_Name"], line, actuator);
+            } else {
+                isValid["isavailable"] = true;
+                isValid["ListValueColor"] = "";
+                isValid["FailedVariables"] = "";
+                isValid["Message"] = errorMessage;
+            }
+
+        }
+        return isValid;
+    }
+}
+function isActuatorTypeValid(actuator, type) {
+    var retval = [];
+    var actuatorType = "";
+    var validActionType = "";
+
+    if (actuator.toUpperCase().startsWith("OTH")) {
+        retval["IsActTypeCorrect"] = true;
+        return retval;
+    }
+    if (actuatorType == "") {
+        retval["IsActTypeCorrect"] = true;
+        return retval;
+    }
+
+    var lookupType = lookupActuatorType(actuator);
+    if (lookupType == actuatorType) {
+        retval["IsActTypeCorrect"] = true;
+        return retval;
+    } else {
+        retval["IsActTypeCorrect"] = false;
+        retval["ErrorMessage"] = "This actuator is only available if Act Type " + lookupType + " is selected";
+        return retval;
+    }
+    return retval;
+}
+function isActuatorInvalid(isValid, category, product, line, actuator) {
+    var width = 0;
+    var height = 0;
+    var minWidth = 0;
+    var minHeight = 0;
+    var bAvailable = false;
+    var message = "";
+
+    if (actuator.toUpperCase().startsWith("OTH")) {
+        isValid["isavailable"] = true;
+        return isValid;
+    }
+    switch (category.toUpperCase()) {
+        case "FIRE/SMOKE DAMPERS":
+        case "SMOKE DAMPERS":
+        case "CONTROL DAMPERS":
+            isValid["isavailable"] = true;
+            return isValid;
+            break;
+    }
 }
 this.setSectionCalcs = function (job, product, line) {
     if (_jobdata == null) {
@@ -112,6 +408,7 @@ this.setSectionCalcs = function (job, product, line) {
         }
     }
 }
+//actuatorMVG is an option property, pass null and the line value will be used
 this.setActuatorQuantity = function (job, product, line) {
     if (_jobdata == null) {
         _jobdata = job;
@@ -123,10 +420,8 @@ this.setActuatorQuantity = function (job, product, line) {
     var perimeterInterval;
     var actuator = line["ACTUATOR"];
     var actuatorGUID = line["ACTUATOR MVG"];
-    if (_modelProp["ACTUATOR"] != actuator) {
-        _modelProp["ACTUATOR"] = actuator;
-        _modelProp["ACTUATOR MVG"] = actuatorGUID ;
-    }
+    _modelProp["ACTUATOR"] = actuator;
+        
     var actuatorQty;
     //check if line has changed
     checkInstance(product, line);
@@ -223,205 +518,6 @@ this.setActuatorQuantityValue = function (job, product, line, value) {
         _modelProp["ActuatorQuantity"] = value;
     }
 }
-this.calculateActuatorQuantity = function (job, product, line) {
-    setActuatorQuantity(job, product, line);
-    return getPropertyValue("Products_" + _modelName + "_Writable", product.Product_GUID, "Model", line.LineItemGuid, "ActuatorQuantity");
-}
-this.calculateAirMeasuringUnitLimits = function(productName, controlTransVal, itemWidth, itemHeight, option, lowLimitCFM, designLimitCFM, highLimitCFM, error) {
-    try {
-        var freeArea = 0;
-        var iWidth = 0;
-        var iHeight = 0;
-        var lDefaultLowLimitCFM = 0;
-        var lDefaultHighLimitCFM = 0;
-        var lDefaultDesignLimitCFM = 0;
-        var iError = 0;
-        var retval = [];
-        //set return values
-        retval["IsValid"] = false;
-        retval["LowLimit"] = 0;
-        retval["HighLimit"] = 0;
-        retval["DesignLimit"] = 0;
-        retval["ErrorMessage"] = "";
-
-        var bHasController = airMeasuringUnitHasController(productName, controlTransVal);
-        switch (productName.toUpperCase){
-            case "AMS050":
-            case "PVDS050X":
-                lDefaultLowLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 300));
-                lDefaultHighLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 2000));
-                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                if (bHasController == true) {
-                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 25600) {
-                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 256000;
-                    }
-                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                }
-                else {
-                    lDefaultDesignLimitCFM = 0;
-                }
-                break;
-            case "CDRAMS":
-            case "PVDS060X":
-                lDefaultLowLimitCFM = Math.ceil((((itemWidth ^ 2) * 3.14) / 144) * 300);
-                lDefaultHighLimitCFM = Math.ceil((((itemWidth ^ 2) * 3.14) / 144) * 2149);
-                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                if (bHasController == true) {
-                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 25600) {
-                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 256000;
-                    }
-                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                }
-                else {
-                    lDefaultDesignLimitCFM = 0;
-                }
-                break;
-            case "IAQ50X":
-            case "PVDT050X":
-                iWidth = parseInt(itemWidth);
-                iHeight = parseInt(itemHeight);
-                freeArea = (iWidth * iHeight);
-                lDefaultLowLimitCFM = Math.ceil((freeArea * 150) / 144);
-                lDefaultHighLimitCFM = Math.ceil((freeArea * 2000) / 144);
-                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                break;
-            case "EAMS-HP":
-                lDefaultLowLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 50));
-                lDefaultHighLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 2000));
-                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                if (bHasController == true) {
-                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 32000) {
-                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 32000;
-                    }
-                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                }
-                else {
-                    lDefaultDesignLimitCFM = 0;
-                }
-                break;
-            case "EAMS":
-            case "PVES030":
-                lDefaultLowLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 100));
-                lDefaultHighLimitCFM = Math.ceil((((itemWidth * itemHeight) / 144) * 2000));
-                lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                if (bHasController == true) {
-                    if ((lDefaultHighLimitCFM - lDefaultLowLimitCFM) > 32000) {
-                        lDefaultHighLimitCFM = lDefaultLowLimitCFM + 32000;
-                    }
-                    lDefaultDesignLimitCFM = Math.ceil((lDefaultLowLimitCFM + lDefaultHighLimitCFM) / 2);
-                }
-                else {
-                    lDefaultDesignLimitCFM = 0;
-                }
-                break;
-            case "AMS": 
-            case "PVDS020":
-                lDefaultLowLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 300);
-                lDefaultHighLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 2000);
-                lDefaultDesignLimitCFM = 0;
-                break;
-            case "EAML6625":
-                lDefaultLowLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 345);
-                lDefaultHighLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 1508);
-                lDefaultDesignLimitCFM = 0;
-                break;
-            case "AML3":
-            case "PVDL300":
-                freeArea = getFreeArea("AML3", itemWidth, itemHeight);
-                lDefaultLowLimitCFM = Math.ceil(freeArea * 275);
-                lDefaultHighLimitCFM = Math.ceil(freeArea * 1400);
-                lDefaultDesignLimitCFM = 0;
-                break;
-            case "AML6":
-            case "PVDL600":
-                freeArea = getFreeArea("AML6", itemWidth, itemHeight);
-                lDefaultLowLimitCFM = Math.ceil(freeArea * 345);
-                lDefaultHighLimitCFM = Math.ceil(freeArea * 2149);
-                lDefaultDesignLimitCFM = 0;
-                break;
-            default:
-                lDefaultDesignLimitCFM = Math.ceil(((itemWidth * itemHeight) / 144) * 700);
-                lDefaultLowLimitCFM = Math.ceil(lDefaultDesignLimitCFM * 0.7);
-                lDefaultHighLimitCFM = Math.ceil(lDefaultDesignLimitCFM * 1.4);
-                break;
-        }
-        var iError = 0;
-        if (bHasController) {
-            switch (option) {
-                case "CNTRL/TRANS":
-                    retval["LowLimit"] = lDefaultLowLimitCFM;
-                    retval["HighLimit"] = lDefaultHighLimitCFM;
-                    retval["DesignLimit"] = lDefaultDesignLimitCFM;
-                    break;
-                case "LO LIMIT CFM":
-                    if (lowLimitCFM < lDefaultLowLimitCFM) {
-                        iError = 1;
-                    } else if (lowLimitCFM > designLimitCFM)
-                        iError = 5;
-                    break;
-                case "CFM DESIGN":
-                    if (designLimitCFM < lDefaultLowLimitCFM) {
-                        iError = 2;
-                    } else if (designLimitCFM > lDefaultHighLimitCFM )
-                        iError = 3;
-                    break;
-                case "HI LIMIT CFM":
-                    if (highLimitCFM > lDefaultHighLimitCFM) {
-                        iError = 4;
-                    } else if (highLimitCFM < designLimitCFM)
-                        iError = 6;
-                    break;
-                case "WIDTH":
-                case "HEIGHT":
-                    retval["LowLimit"] = lDefaultLowLimitCFM;
-                    retval["HighLimit"] = lDefaultHighLimitCFM;
-                    retval["DesignLimit"] = lDefaultDesignLimitCFM;
-                    break;
-                default:
-                    if (retval["LowLimit"] == 0) { retval["LowLimit"] = lDefaultLowLimitCFM; }
-                    if (retval["HighLimit"] == 0) { retval["HighLimit"] = lDefaultHighLimitCFM; }
-                    if (retval["DesignLimit"] == 0) {retval["DesignLimit"]= lDefaultDesignLimitCFM;}
-                    break;
-            }
-            if (iError == 0) {
-                if (lowLimitCFM < lDefaultLowLimitCFM) { iError = 1; }
-                else if (lowLimitCFM > designLimitCFM) { iError = 5; }
-                else if (designLimitCFM < lDefaultLowLimitCFM) { iError = 2; }
-                else if (designLimitCFM > lDefaultHighLimitCFM) { iError = 3; }
-                else if (highLimitCFM > lDefaultHighLimitCFM) { iError = 4; }
-                else if (highLimitCFM > designLimitCFM) { iError = 6; }
-            }
-            switch (iError) {
-                case 0:
-                    retval["ErrorMessage"] = "";
-                    break;
-                case 1:
-                    retval["ErrorMessage"] = lowLimitCFM + " Low Limit CFM is below the minimum of " + lDefaultLowLimitCFM;
-                case 2:
-                    retval["ErrorMessage"] = designLimitCFM + " Design CFM is below the minimum of " + lDefaultLowLimitCFM
-                case 3:
-                    retval["ErrorMessage"] = designLimitCFM + " Design CFM is above the maximum of " + lDefaultHighLimitCFM
-                case 4:
-                    retval["ErrorMessage"] = highLimitCFM + " High Limit CFM is above the maximum of " + lDefaultHighLimitCFM
-                case 5:
-                    retval["ErrorMessage"] = lowLimitCFM + " Low Limit CFM is above the Design CFM " + designLimitCFM
-                case 6:
-                    retval["ErrorMessage"] = lowLimitCFM + " High Limit CFM is below the Design CFM " + designLimitCFM
-            }
-        }
-        else {
-            retval["LowLimit"] = lDefaultLowLimitCFM;
-            retval["HighLimit"] = lDefaultHighLimitCFM;
-            retval["DesignLimit"] = lDefaultDesignLimitCFM;
-        }
-        retval["IsValid"] = true;
-        
-    }
-    catch (err) {
-        retval["IsValid"] = false;
-    }
-    return retval;
-}
 
 /*Private Methods*/
 function airMeasuringUnitHasController(productName, controlTransVal) {
@@ -448,7 +544,6 @@ function airMeasuringUnitHasController(productName, controlTransVal) {
     }
     return retval;
 }
-
 function calculateSections(product) {
     var bIsValid = false;
     var bOtherMax = false;
@@ -548,7 +643,6 @@ function calculateSections(product) {
     }
     return bIsValid;
 }
-
 function calcSectionValue(value, addOn, maxValue) {
     return Math.ceil((parseInt(value) + parseInt(addOn)) / parseInt(maxValue));
 }
@@ -568,14 +662,12 @@ function checkInstance(product, line) {
         getProductInformation(product, line);
     }
 }
-
 /*check to see if modelProp is current*/
 function checkModelProp(option, line) {
     if (typeof _modelProp[option] === "undefined" || _modelProp[option] != line[option]) {
         _modelProp[option] = line[option];
     }
 }
-
 function getActuatorQuantity() {
     if (_modelProp["ACTUATOR"].toUpperCase() == "NONE") {
         return 0;
@@ -996,7 +1088,7 @@ function getULCalcSections_DFD() {
         _modelProp["OtherMax"] = retval["OtherMax"];
         _modelProp["WidthAdd"] = retval["WidthAdd"];
     }
-    return retval["IsValid"];
+    return retval;
 }
 
 function getULCalcSections_DynamicFD() {
@@ -1013,7 +1105,7 @@ function getULCalcSections_DynamicFD() {
         _modelProp["WidthAdd"] = retval["WidthAdd"];
         if (typeof retaval["HPrime"] !== "undefined") { _modelProp["HPrime"] = retval["HPrime"];}
     }
-    return retval["IsValid"];
+    return retval;
 }
 
 function getULCalcSections_StaticFD() {
@@ -1030,7 +1122,7 @@ function getULCalcSections_StaticFD() {
         _modelProp["WidthAdd"] = retval["WidthAdd"];
         if (typeof retaval["HPrime"] !== "undefined") { _modelProp["HPrime"] = retval["HPrime"]; }
     }
-    return retval["IsValid"];
+    return retval;
 }
 
 function getULCalcSections_FD() {
@@ -1046,7 +1138,7 @@ function getULCalcSections_FD() {
         _modelProp["OtherMax"] = retval["OtherMax"];
         _modelProp["WidthAdd"] = retval["WidthAdd"];
     }
-    return retval["IsValid"];
+    return retval;
 }
 
 function getULCalcSections_FSD(bOtherMax) {
@@ -1063,7 +1155,7 @@ function getULCalcSections_FSD(bOtherMax) {
         _modelProp["WidthAdd"] = retval["WidthAdd"];
         _modelProp["OtherMax"] = retval["OtherMax"];
     }
-    return retval["IsValid"];
+    return retval;
 }
 
 function getULCalcSections_SD() {
@@ -1080,7 +1172,7 @@ function getULCalcSections_SD() {
         _modelProp["OtherMax"] = retval["OtherMax"];
         _modelProp["WidthAdd"] = retval["WidthAdd"];
     }
-    return retval["IsValid"];
+    return retval;
 }
 
 //(modelName, actuator, accessories, grill, duct, width, height, sleeve)
@@ -1094,41 +1186,40 @@ function getULCalcSleeveLengthCalc_FSD() {
         _modelProp["NumberOfSections"] = retval["NumberOfSections"];
         _modelProp["WidthAdd"] = retval["WidthAdd"];
     }
-    return retval["IsValid"];
+    return retval;
 }
 
 function isULValidProcess() {
     var ULValidation = _modelProp["UL_Validation_Table"].toUpperCase();
     var Category = _modelProp["PCategory"].toUpperCase();
+    var retval = [];
     switch (ULValidation) {
         case "UL_FSD":
-            bIsValid = getULCalcSections_FSD(bOtherMax);
+            retval = getULCalcSections_FSD(bOtherMax);
             break;
         case "UL_SLEEVE_LENGTH_FSD":
-            bIsValid = getULCalcSections_FSD();
-            if (bIsValid == true) {
-                bIsValid = getULCalcSleeveLengthCalc_FSD();
+            retval = getULCalcSections_FSD();
+            if (retval["IsValid"] == true) {
+                retval = getULCalcSleeveLengthCalc_FSD();
             }
             break;
         case "UL_SD":
-            bIsValid = getULCalcSections_SD();
+            retval = getULCalcSections_SD();
             break;
         case "UL_DFD":
-            bIsValid = getULCalcSections_DFD();
+            retval = getULCalcSections_DFD();
             break;
         case "UL_DYNAMIC_FIRE_DAMPER":
-            var sRetval = getULCalcSections_DynamicFD();
-            if (sRetVal == "True") { bIsValid = true; }
-            else { bIsValid == false; }
+            retval = getULCalcSections_DynamicFD();
             break;
         case "UL_FIRE_DAMPER":
-            bIsValid = getULCalcSections_FD();
+            retval = getULCalcSections_FD();
             break;
         case "UL_STATIC_FIRE_DAMPER":
-            bIsValid = getULCalcSections_StaticFD();
+            retval = getULCalcSections_StaticFD();
             break;
         default:
-            bIsValid = true;
+            retval["retval"] = true;
             switch (Category) {
                 case "LOUVERS":
                     if (_modelProp["HasSeals"] == true) { bOtherMax = true; }
@@ -1150,9 +1241,10 @@ function isULValidProcess() {
                     else { bOtherMax = false; }
                     break;
             }//end of Category select
+            _modelProp["OtherMax"] = bOtherMax;
             break;
     } //end of UL_Validation select
-    return bIsValid;
+    return retval;
 }
 
 function listContains(list, value, length) {
@@ -1173,7 +1265,6 @@ function storeModelData(table, option) {
         _modelProp[option] = table[option];
     }
 }
-
 function updatePropertyTable(table, product, variable, type, lineId, value) {
     /*loop through to find matching record*/
     for (var i = 0; i < _jobdata[table].length; i++) {
@@ -1185,5 +1276,3 @@ function updatePropertyTable(table, product, variable, type, lineId, value) {
         }
     }
 }
-
-
