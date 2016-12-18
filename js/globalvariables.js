@@ -28,4 +28,16 @@ var Line_Header = {
 
 var productProperties; //Properties need by the Rules Engine
 
+var model = {}; 
+var flippedModel = {}; 
+var startedFlipping = false; 
+
+var doneFlipOptions = new Set();
+var failedFlipOptions = new Set();
+var flipValuesExhausted  = false;
+var validationFailureMessage = ''; 
+var userSelectedOption = null; 
+
+
+
 

@@ -1,5 +1,4 @@
-
-
+"use strict";
 
 var _table_ = document.createElement('table'),
     _tr_ = document.createElement('tr'),
@@ -109,9 +108,37 @@ function loadProperties(data) {
         var option = options[i];
         optionMap[option.name] = option; 
     }
+    options.sort(function(a, b) {
+
+        var colA = parseInt(a.columnOrder);
+        var colB = parseInt(b.columnOrder);
+
+        if (colA < colB) {
+            return -1;
+        }
+        if (colA > colB) {
+            return 1;
+        }
+        return 0; 
+    });
 
     properties = arr.properties; 
     buildHtmlTable(options);
+
+    options.sort(function(a, b) {
+
+        var colA = parseInt(a.validationOrder);
+        var colB = parseInt(b.validationOrder);
+
+        if (colA < colB) {
+            return -1;
+        }
+        if (colA > colB) {
+            return 1;
+        }
+        return 0; 
+    });
+
 
     var xmlHttp = new XMLHttpRequest();
     xmlHttp.onreadystatechange = function() { 
@@ -230,34 +257,45 @@ function blurHandler(event) {
 }
 
 
-function changeHandler(event) {
+function afterCellUpdate(event) {
     
     console.log('change handler');
 
     if (event.target.type != 'select-one') return;
 
-    var model = {}; 
+    model = {}; 
     var sel = event.target;
     var target = sel;
     var option = target.getAttribute('data-option');
-
+    
     while (target && target.nodeName !== "TR") {
         target = target.parentNode;
     }
     
-    validateRow(target, option);
+    validateLineItem(target, option);
+
+    //setSectionCalcs(job, product, model, null, null);
+    //setActuatorQuantity(job, product, model); 
+    //var props = getModelProperties(); 
+    
+    //validation not successful,  but flip succeeded 
+    if (startedFlipping && !flipValuesExhausted) {
+        updateDisplay(target, flippedModel); 
+    }
+
+    displayValidationResult(); 
+
 
 }
 
-function modifyRow(tr, model, flippedModel) {
-    for (var key in model) {
-        if (model.hasOwnProperty(key)) {
-            if (model[key] != flippedModel[key]) {
-                var td = tr.querySelector('[data-option="' + key + '"]');
-                td.value = flippedModel[key];    
-            }
-        }
+function updateDisplay(row, line) {
+
+    for (let option of doneFlipOptions) {
+        var inputElement = row.querySelector('[data-option="' + option + '"]');
+        inputElement.value = line[option]; 
+
     }
+    
 }
 
 function clickHandler(event) {
@@ -322,9 +360,9 @@ function clickHandler(event) {
 }
 
 
-function validateRow(tr, optionChanged) {
+function validateLineItem(tr, optionChanged) {
      
-    var model = {}; 
+    model = {}; 
     var cells = tr.getElementsByTagName("td");
     for (var i = 0; i < cells.length; i++) {
         var el = cells[i].firstElementChild;
@@ -334,29 +372,76 @@ function validateRow(tr, optionChanged) {
             model[optionName] = value;
     }
     
-    enrichModel(model);
     if (log.isTraceEnabled) {
         log.trace(model); 
     }    
-
-    setSectionCalcs(job, product, model, optionChanged, model[optionChanged]);
-    setActuatorQuantity(job, product, model); 
-    var props = getModelProperties(); 
     
     var result = ruleFlow(model, optionChanged);
-    if (!result.isavailable) {
-        var failedVariables = result.failedVariables;
-        var allVariables = result.allVariables; 
-        if (log.isDebugEnabled) {
-            log.debug('Failed Variables: ', failedVariables); 
-        }
-        var result = startFlippingValues(model, optionChanged, failedVariables, allVariables);
-        if (result.flipped) {
-            modifyRow(tr, model, result.model); 
-        }
+    if (result.isavailable)  {
+        startedFlipping = false; 
+        return; 
     }
+
+    startedFlipping = true; 
+    userSelectedOption = optionChanged; 
     
+    var failedVariables = result.failedVariables;
+    var allVariables = result.allVariables; 
+    if (log.isDebugEnabled) {
+        log.debug('Failed Variables: ', failedVariables); 
+    }
+
+    failedFlipOptions.clear();
+    doneFlipOptions.clear();
+    flipValuesExhausted = false; 
+
+    flippedModel = Object.assign({}, model); 
+    enrichModel(flippedModel);
+
+    startFlippingValues(flippedModel, optionChanged, failedVariables);
+    
+    if (!flipValuesExhausted) {
+        callRulesEngineByValidationOrder(flippedModel); 
+    }
+        
 }
+
+
+function callRulesEngineByValidationOrder(line) {
+    for (let optionObj of options) {
+        if (doneFlipOptions.has(optionObj.name))
+            continue; 
+    
+
+        var result = ruleFlow(line, optionObj.name); 
+        if (!result)
+            debugger; 
+
+        //TODO: There are 2 more option types : for Drawings 
+
+        if (result.isavailable)
+            continue; 
+
+        if (!result.isavailable && optionObj.Type == 'Value')
+            return; 
+
+        var failedVariables = result.failedVariables;
+        if (failedVariables.length == 0) 
+            failedVariables = result.allVariables; 
+    
+        continueFlipping(line, optionObj.name);
+        if (flipValuesExhausted) //No point continueing 
+            return; 
+        
+    }
+
+    // TODO: if actuator was not modifed by flippig, sort actator by add on value 
+    
+    //TODO: sort (non-actutator) values for display? 
+}
+
+
+
 
 
 //Take a model and add all the attributes required by Engineering Calcs 
@@ -419,7 +504,7 @@ function findValue(values, valueToFind) {
     
     table.addEventListener('mousedown',  clickHandler);
     table.addEventListener('focusout',  blurHandler);
-    table.addEventListener('change',  changeHandler);
+    table.addEventListener('change',  afterCellUpdate);
     table.addEventListener('contextmenu', contextMenuHandler); 
     $(document).bind("click", function(event) {
         document.getElementById("rmenu").className = "hide";
@@ -538,11 +623,6 @@ function validateListOption() {
 }
 
 
-function updateDisplay(model) {
-
-}
-
-
-function displayValidationErrorMessage() {
+function displayValidationResult() {
 
 }

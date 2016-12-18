@@ -1,3 +1,5 @@
+"use strict";
+
 function getValues(option) {
 
     var values = []; 
@@ -26,6 +28,7 @@ function isActuatorAvailable(model) {
 }
 
 
+
 function ruleFlow(model, option) {
     
     //for each option, validate all the event types 
@@ -33,6 +36,8 @@ function ruleFlow(model, option) {
     
     let value = model[option];
 
+    //Look-up table that maps actuator types to valid actuator values 
+    //TODO: failed variable is acutator? 
     if (option == 'ACTUATOR') {
         if (!isActuatorAvailable(model)) {
             result.isavailable = false; 
@@ -47,7 +52,8 @@ function ruleFlow(model, option) {
         case "INSTALLATION":
         case "ACCESSORIES": 
             //should never actually fail !! 
-            isActuatorInvalid(isValid, category, product, line, actuator); 
+            var isValid = {}; 
+            isActuatorInvalid(isValid, product.Product_Parent_Category_Name, product, model, value); 
             break; 
             
         case "FRAME":
@@ -57,6 +63,7 @@ function ruleFlow(model, option) {
         case "ACCESSORIES": 
         case "SLEEVE LENGTH": 
             
+            //TODO: failedVariable == Current Variable?? 
             var bIsValid = isULValid(job, product, model, option); 
             if (!bIsValid.retval) {
                 result.isavailable = false; 
@@ -64,11 +71,11 @@ function ruleFlow(model, option) {
                 return result; 
             }
             break; 
-            
+
         case "WIDTH", "HEIGHT": 
             var height = parseInt(model['HEIGHT']);
             var width = parseInt(model['WIDTH']);
-            bIsValid = isULValid(job, product, model, option); 
+            bIsValid = isULValid(job, product, model, option);        
             if (!bIsValid.retval) {
                 result.isavailable = false; 
                 result.message = bIsValid["ErrorMsg"];
@@ -78,10 +85,16 @@ function ruleFlow(model, option) {
     }        
     
     if (option == 'ACTUATOR' && value != 'NONE') {
-        setActuatorQuantity(job, product, model, ruleGuidDetails("ModelValueGuid"));
-         var mActQty = getWriteablePropertyValue("ActuatorQuantity");
-         if (mActQty <= 0) 
-            return false; 
+        var modelValueGuid; 
+        setActuatorQuantity(job, product, model);           
+        var props = getModelProperties(); 
+        //TODO: update Actuator Quantity 
+        //var mActQty = getWriteablePropertyValue("ActuatorQuantity");
+        //if (mActQty <= 0) {
+        //    result.isavailable = false;
+        //    result.message = 'setActuatorQuantity returned false';       
+        //    return result; 
+        //}
     }
     
     
@@ -90,8 +103,11 @@ function ruleFlow(model, option) {
         optionRules = rules[option];
     }
     else 
-        return;
+        return processResult(result);
     
+    //TODO: GlobalOptionValueAvailable and LocalOptionValueAvailable 
+
+
     //Invoke the Rule Engine  
     if (optionRules.hasOwnProperty('Global Value Available')) {
             
@@ -105,7 +121,7 @@ function ruleFlow(model, option) {
     }
 
     if (result && !result.isavailable)
-        return result;
+        return processResult(result);
 
     if (optionRules.hasOwnProperty('Local Value Available')) {
         
@@ -118,9 +134,22 @@ function ruleFlow(model, option) {
         
     }
 
-    return result; 
+    return processResult(result); 
 
 }
+
+
+function processResult(result) {
+
+    validationFailureMessage = result.message;
+     
+    if (!result.isavailable && result.failedVariables.length == 0) {
+        result.failedVariables = result.allVariables;     
+    }
+     
+    return result; 
+}
+
 
 
 function validateOption(model, option, values) {
@@ -129,7 +158,7 @@ function validateOption(model, option, values) {
     
     for (let value of values) {
         model[option] = value.valueName; 
-        result = ruleFlow(model, option);
+        var result = ruleFlow(model, option);
         value.isavailable = result.isavailable;
         value.listvaluecolor = result.listvaluecolor;
         if (!result.isavailable && result.message == '') {
