@@ -13,8 +13,7 @@ function startFlippingValues(line, selectedOption, failedVariables) {
 
 function flipOptions(line, failedVariables, selectedOption) {
 	
-	if (failedVariables.length > 1)
-		debugger; 
+	
 	
 	let failedOptions = filterAndSort(failedVariables);
 	
@@ -65,6 +64,10 @@ function continueFlipping(line, currentOption) {
 		//TODO: handle case where it is RED 
 
 		result = ruleFlow(flippedModel, currentOption); 
+
+		if (result.listvaluecolor == 'Red')
+			continue;  
+
 		if (result.isavailable) {
 			doneFlipOptions.add(currentOption); 
 			flipValuesExhausted = false; 

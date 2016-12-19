@@ -6,7 +6,7 @@ var product;
 var job; 
 var actuatorMappings;
 var log = log4javascript.getDefaultLogger();
-log.setLevel(log4javascript.Level.TRACE);
+log.setLevel(log4javascript.Level.ERROR);
 //log.debug('Debug level');
 //if (log.isTraceEnabled())
 //	log.trace('Trace Level');
@@ -37,6 +37,8 @@ var failedFlipOptions = new Set();
 var flipValuesExhausted  = false;
 var validationFailureMessage = ''; 
 var userSelectedOption = null; 
+var validationSucceeded = false; 
+
 
 
 

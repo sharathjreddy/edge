@@ -105,10 +105,18 @@ function ruleFlow(model, option) {
     else 
         return processResult(result);
     
-    //TODO: GlobalOptionValueAvailable and LocalOptionValueAvailable 
+    
+    //Invoke the Rule Engine - 4 types of events   
+    if (optionRules.hasOwnProperty('GlobalOption Value Available')) {
+            
+        result = optionRules['GlobalOption Value Available'](model);
+        console.log(result.message); 
+    }
+
+    if (result && !result.isavailable)
+        return processResult(result);
 
 
-    //Invoke the Rule Engine  
     if (optionRules.hasOwnProperty('Global Value Available')) {
             
         let globalValueFunctions = optionRules['Global Value Available'];
@@ -119,9 +127,23 @@ function ruleFlow(model, option) {
             }
         
     }
+    
 
     if (result && !result.isavailable)
         return processResult(result);
+
+   
+    if (optionRules.hasOwnProperty('LocalOption Value Available')) {
+            
+        result = optionRules['LocalOption Value Available'](model);
+        console.log(result.message); 
+    }
+    
+    if (result && !result.isavailable)
+        return processResult(result);
+
+
+
 
     if (optionRules.hasOwnProperty('Local Value Available')) {
         

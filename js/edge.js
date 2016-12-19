@@ -150,13 +150,14 @@ function loadProperties(data) {
 
 }
 
+
 function parseProperties(data) {
     var arr = JSON.parse(data); 
     product = arr.Products[0];
-    productProperties = {};
+        
     //These are used by Rules Engine, so need to copy them over with the appropriate key 
-    productProperties.Category = product.Product_Parent_Category_Name;
-    productProperties.Child_Category = product.Product_Child_Category_Name;
+    properties.Category = product.Product_Parent_Category_Name;
+    properties.Child_Category = product.Product_Child_Category_Name;
     job = {}; 
     job.CD35_Properties = arr.CD35_Properties; 
     job.CD35_Writable_Properties = arr.CD35_Writable_Properties; 
@@ -215,53 +216,13 @@ function filldown() {
 
 }
 
-function blurHandler(event) {
-    //alert('validating...');
-    console.log('validing...');
-    document.getElementById("msg").innerHTML = '';
-
-    var model = {}; 
-    $.extend(model, properties);
     
-    var sel = event.target;
-    var target = sel;
-    
-    while (target && target.nodeName !== "TR") {
-        target = target.parentNode;
-    }
-    if (target) {
-        var cells = target.getElementsByTagName("td");
-        for (var i = 0; i < cells.length; i++) {
-            var el = cells[i].firstElementChild;
-            if (el == null) continue; 
-            var option = el.getAttribute('data-option');
-            var value = el.value;
-            model[option] = value;
-        }
-    }
-
-    enrichModel(model);
-    if (log.isTraceEnabled) {
-        log.trace(model); 
-    }    
-    
-    //setSectionCalcs(job, product, model, null, null);
-    //setActuatorQuantity(job, product, model); 
-    //var props = getModelProperties(); 
-    
-    console.log(model);
-    var result = validateModel(model);
-    if (!result.isavailable) {
-        document.getElementById("msg").innerHTML = result.message;
-    }
-}
-
-
 function afterCellUpdate(event) {
     
-    console.log('change handler');
+    console.log('executing afterCellUpdate');
 
-    if (event.target.type != 'select-one') return;
+    if (event.target.type != 'select-one' && event.target.type != 'number') 
+        return;
 
     model = {}; 
     var sel = event.target;
@@ -271,20 +232,32 @@ function afterCellUpdate(event) {
     while (target && target.nodeName !== "TR") {
         target = target.parentNode;
     }
-    
+
     validateLineItem(target, option);
 
-    //setSectionCalcs(job, product, model, null, null);
-    //setActuatorQuantity(job, product, model); 
-    //var props = getModelProperties(); 
-    
-    //validation not successful,  but flip succeeded 
-    if (startedFlipping && !flipValuesExhausted) {
+    displayValidationResult(); //Error msg, or in case of successful validation, NO message 
+
+    if (!validationSucceeded)
+        return; 
+
+    //Validation was successfull AFTER flipping : update the screen with the new values 
+    if (startedFlipping && validationSucceeded) {
         updateDisplay(target, flippedModel); 
     }
 
-    displayValidationResult(); 
+    var line = null;
+    if (!startedFlipping) {
+        line = model; 
+    }
+    else 
+    {
+        line = flippedModel; 
+    }
 
+    setSectionCalcs(job, product, line);
+    setActuatorQuantity(job, product, line); 
+    var props = getModelProperties(); 
+    
 
 }
 
@@ -376,9 +349,24 @@ function validateLineItem(tr, optionChanged) {
         log.trace(model); 
     }    
     
-    var result = ruleFlow(model, optionChanged);
+    validationSucceeded = false; 
+
+    Object.assign(model, properties); //add writable properties such as maxheight, maxwidth, etc 
+    
+    enrichModel(model);  //add attributes required by RM Eng Calcs 
+
+    var result = ruleFlow(model, optionChanged);  
     if (result.isavailable)  {
+        validationSucceeded = true; 
         startedFlipping = false; 
+        return; 
+    }
+
+    //If changed option is numeric, no point flipping!! 
+    var optionObj = optionMap[optionChanged];
+    if (optionObj.type == "Value") {
+        validationSucceeded = false; 
+        startedFlipping = false;     
         return; 
     }
 
@@ -386,7 +374,6 @@ function validateLineItem(tr, optionChanged) {
     userSelectedOption = optionChanged; 
     
     var failedVariables = result.failedVariables;
-    var allVariables = result.allVariables; 
     if (log.isDebugEnabled) {
         log.debug('Failed Variables: ', failedVariables); 
     }
@@ -396,13 +383,15 @@ function validateLineItem(tr, optionChanged) {
     flipValuesExhausted = false; 
 
     flippedModel = Object.assign({}, model); 
-    enrichModel(flippedModel);
-
+    
     startFlippingValues(flippedModel, optionChanged, failedVariables);
     
     if (!flipValuesExhausted) {
         callRulesEngineByValidationOrder(flippedModel); 
     }
+    if (!flipValuesExhausted)
+        validationSucceeded = true; 
+
         
 }
 
@@ -503,7 +492,7 @@ function findValue(values, valueToFind) {
     table.appendChild(tr);
     
     table.addEventListener('mousedown',  clickHandler);
-    table.addEventListener('focusout',  blurHandler);
+    table.addEventListener('focusout',  afterCellUpdate);
     table.addEventListener('change',  afterCellUpdate);
     table.addEventListener('contextmenu', contextMenuHandler); 
     $(document).bind("click", function(event) {
@@ -624,5 +613,7 @@ function validateListOption() {
 
 
 function displayValidationResult() {
-
+    var msg1 = document.getElementById('msg');
+    msg1.innerHTML = validationFailureMessage; 
 }
+
