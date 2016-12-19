@@ -1025,7 +1025,7 @@ function getProductInformation(product, line) {
 function getPropertyValue(table, record, type, id, property) {
     var tbl = _jobdata[table];
     for (var i = 0; i < tbl.length; i++) {
-        if (tbl[i]["Record_Guid"].toUpperCase() == record.toUpperCase() && tbl[i]["Table_Name"].toUpperCase() == type.toUpperCase() && tbl[i]["LineItem_Id"].toUpperCase() == id.toUpperCase()) {
+       if (tbl[i]["Record_Guid"].toUpperCase() == record.toUpperCase() && tbl[i]["Table_Name"].toUpperCase() == type.toUpperCase() && tbl[i]["LineItem_Id"].toUpperCase() == id.toUpperCase()) {
             if (tbl[i]["Property_Name"].toUpperCase() == property.toUpperCase()) {
                 return tbl[i]["Property_Default_Value"];
             }
