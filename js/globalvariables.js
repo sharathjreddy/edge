@@ -32,12 +32,19 @@ var model = {};
 var flippedModel = {}; 
 var startedFlipping = false; 
 
-var doneFlipOptions = new Set();
-var failedFlipOptions = new Set();
-var flipValuesExhausted  = false;
+var doneFlipOptions = new Set(); 
+var failedFlipOptions = new Set();  
+var flipValuesExhausted  = false; 
 var validationFailureMessage = ''; 
 var userSelectedOption = null; 
 var validationSucceeded = false; 
+
+var actuatorPricingRules = null; 
+
+
+
+
+
 
 
 

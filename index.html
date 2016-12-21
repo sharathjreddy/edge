@@ -12,6 +12,7 @@
         <script src="js/edge.js"></script>
         <script src="js/flip.js"></script>
         <script src="js/utils.js"></script>
+        <script src="js/pricing.js"></script>
         <script src="js/rmengcalc-data.js"></script>
         <script src="js/rmengcalc-acutator-data.js"></script>
         <script src="js/rmengcalcs.js"></script>
@@ -23,9 +24,11 @@
         		background-color: red;
     		}
         table { white-space: nowrap;
-                border-spacing:10px;
-                border-collapse: separate; 
+                border-spacing:0px;
+                border-collapse: separate;   
+                cellpadding:5px;
               }
+        tr, td {  padding: 5px;   }
 
         .show {
             z-index:1000;
@@ -41,6 +44,10 @@
 
         .hide {
             display: none;
+        }
+
+        tr:nth-of-type(odd){
+          background:rgba(255,255,136,0.5);
         }
 
         </style>
@@ -65,9 +72,9 @@
         </div>
       </div>
     </div>
-    
+      
       <div class="slds-button-group" role="group">
-        <button class="slds-button slds-button--neutral">Edit</button>
+        <button class="slds-button slds-button--neutral" id="price">Price</button>
         <button class="slds-button slds-button--neutral">Delete</button>
         <button class="slds-button slds-button--neutral">Clone</button>
         <div class="slds-dropdown-trigger slds-dropdown-trigger--click slds-button--last" aria-expanded="false">

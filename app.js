@@ -2,6 +2,8 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var fs = require("fs");
+var request = require('request');
+
 
 app.use('/js',express.static(path.join(__dirname, 'js')));
 
@@ -38,6 +40,15 @@ app.get('/product_properties/:id', function(req, res) {
 
 });
 
+app.use('/pricing', function(req, res) {
+
+	console.log('forwaring pricing request'); 
+	
+	var url = 'http://localhost:3001/pricing'; 
+  	req.pipe(request(url)).pipe(res);
+});
+	
+	
 var port = process.env.PORT || 3000;
 
 app.listen(port, function() {   

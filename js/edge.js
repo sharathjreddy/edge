@@ -5,7 +5,6 @@ var _table_ = document.createElement('table'),
     _th_ = document.createElement('th'),
     _td_ = document.createElement('td');
 
-
 var options = null;
 var properties = null;    
 var model = 'CD35';
@@ -16,6 +15,7 @@ $(document).ready(function() {
 
     loadModelMetadata();
 
+    document.getElementById("price").addEventListener("click", price, false);
     //table = buildHtmlTable(options);
     
     
@@ -253,10 +253,14 @@ function afterCellUpdate(event) {
     {
         line = flippedModel; 
     }
-
+    
     setSectionCalcs(job, product, line);
     setActuatorQuantity(job, product, line); 
     var props = getModelProperties(); 
+    
+    if (validationSucceeded) {
+        price(line); 
+    }
     
 
 }
@@ -274,19 +278,18 @@ function updateDisplay(row, line) {
 function clickHandler(event) {
     //alert('mouse down');
     console.log('mouse down');
-
+    
     if (event.target.type != 'select-one') return;
-
+    
     //TODO: Get model, option and values from the Grid
     console.log(event.target);
     console.log(event.target.type);
-
-
+    
     var model = {}; 
     var sel = event.target;
     var target = sel;
     var option = target.getAttribute('data-option');
-
+    
     while (target && target.nodeName !== "TR") {
         target = target.parentNode;
     }
@@ -302,7 +305,7 @@ function clickHandler(event) {
     }
     enrichModel(model); 
     console.log(model);
-
+    
     //Get all the options from the Select control 
     var values = [];
     var options = sel.options;
@@ -328,11 +331,12 @@ function clickHandler(event) {
         else {
             sel.options[i].style.backgroundColor = 'white';
             sel.options[i].disabled = false;    
+            sel.options[i].title = values[i].pricelabel; 
         }
     }
 }
-
-
+    
+    
 function validateLineItem(tr, optionChanged) {
      
     model = {}; 
@@ -374,6 +378,7 @@ function validateLineItem(tr, optionChanged) {
     userSelectedOption = optionChanged; 
     
     var failedVariables = result.failedVariables;
+    var allVariables = result.allVariables; 
     if (log.isDebugEnabled) {
         log.debug('Failed Variables: ', failedVariables); 
     }
@@ -384,7 +389,7 @@ function validateLineItem(tr, optionChanged) {
 
     flippedModel = Object.assign({}, model); 
     
-    startFlippingValues(flippedModel, optionChanged, failedVariables);
+    startFlippingValues(flippedModel, optionChanged, failedVariables, allVariables);
     
     if (!flipValuesExhausted) {
         callRulesEngineByValidationOrder(flippedModel); 
@@ -403,25 +408,21 @@ function callRulesEngineByValidationOrder(line) {
     
 
         var result = ruleFlow(line, optionObj.name); 
-        if (!result)
-            debugger; 
-
+        
         //TODO: There are 2 more option types : for Drawings 
 
         if (result.isavailable)
             continue; 
 
-        if (!result.isavailable && optionObj.Type == 'Value')
+        if (!result.isavailable && optionObj.type == 'Value')
             return; 
 
         var failedVariables = result.failedVariables;
-        if (failedVariables.length == 0) 
-            failedVariables = result.allVariables; 
-    
-        continueFlipping(line, optionObj.name);
+        var allVariables = result.allVariables; 
+        
+        startFlippingValues(line, optionObj.name, failedVariables, allVariables);
         if (flipValuesExhausted) //No point continueing 
             return; 
-        
     }
 
     // TODO: if actuator was not modifed by flippig, sort actator by add on value 

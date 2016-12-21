@@ -88,13 +88,9 @@ function ruleFlow(model, option) {
         var modelValueGuid; 
         setActuatorQuantity(job, product, model);           
         var props = getModelProperties(); 
-        //TODO: update Actuator Quantity 
-        //var mActQty = getWriteablePropertyValue("ActuatorQuantity");
-        //if (mActQty <= 0) {
-        //    result.isavailable = false;
-        //    result.message = 'setActuatorQuantity returned false';       
-        //    return result; 
-        //}
+                
+        model.ActuatorQuantity = props.actuatorquantity;
+        result.actuatorquantity = props.actuatorquantity;  
     }
     
     
@@ -127,7 +123,7 @@ function ruleFlow(model, option) {
             }
         
     }
-    
+
 
     if (result && !result.isavailable)
         return processResult(result);
@@ -143,8 +139,6 @@ function ruleFlow(model, option) {
         return processResult(result);
 
 
-
-
     if (optionRules.hasOwnProperty('Local Value Available')) {
         
         let globalValueFunctions = optionRules['Local Value Available'];
@@ -155,6 +149,16 @@ function ruleFlow(model, option) {
         }
         
     }
+
+    //If Actutator, execute Actuator Pricing Rules 
+    if (option == 'ACTUATOR') {
+        let func = actuatorPricingRules[value];        
+        if (func) {
+            let price = func(model);
+            result.price = price.totalprice; 
+        }
+    }
+
 
     return processResult(result); 
 
@@ -188,6 +192,7 @@ function validateOption(model, option, values) {
             result.message = msg;     
         }
         value.message = result.message;
+        value.pricelabel = result.actuatorquantity + '-' + result.price; 
     } 
 
     model[option] = backupValue; 
@@ -256,6 +261,13 @@ function parseRules(response) {
         }    
 
     }
+
+    actuatorPricingRules = {}; 
+    for (let rule of data.addon_rules) {
+        let func = new Function("m", rule.rule); 
+        actuatorPricingRules[rule.actuator] =  func;      
+    }
+
 }
 
 

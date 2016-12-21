@@ -1,18 +1,48 @@
 
 "use strict";
 
-function startFlippingValues(line, selectedOption, failedVariables) {
+function startFlippingValues(line, selectedOption, failedVariables, allVariables) {
 	
 	doneFlipOptions.add(selectedOption);
 	
     flipOptions(line, failedVariables, selectedOption);
-        
+
+    if (flipValuesExhausted)
+    	return; 
+
+    var allOptions = filterAndSort(allVariables); 
+
+    for (let option of allOptions) {
+
+    	var optionObj = optionMap[option]; 
+
+    	if (option == 'ACTUATOR' && (doneFlipOptions.has(option) || failedFlipOptions.has(option)))
+    		continue; 
+
+    	if (option == selectedOption || doneFlipOptions.has(option))
+    		continue; 
+
+    	var flipped = false; 
+    	if (optionObj.type == 'List') {
+         	
+         	while(!flipped) {
+                flipped = continueFlipping(line,option);
+                if (flipValuesExhausted) 
+                	return; 
+            }            
+
+        }
+        else if (optionObj.type == 'Value') {
+            flipped = continueFlipping(line, option); 
+            if (!flipped) 
+                 return; 
+        }     
+	} //end for     
 }
 
 
 
 function flipOptions(line, failedVariables, selectedOption) {
-	
 	
 	
 	let failedOptions = filterAndSort(failedVariables);
