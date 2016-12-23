@@ -44,8 +44,9 @@ app.use('/pricing', function(req, res) {
 
 	console.log('forwaring pricing request'); 
 	
-	var url = 'http://localhost:3001/pricing'; 
-  	req.pipe(request(url)).pipe(res);
+	//var url = 'http://localhost:3001/pricing'; 
+  	//req.pipe(request(url)).pipe(res);
+  	res.end('hello'); 
 });
 	
 	

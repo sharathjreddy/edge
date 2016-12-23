@@ -676,6 +676,10 @@ function getActuatorQuantity() {
     var frame = _modelProp["FRAME"].toUpperCase();
     var itemWidth = 0;
     var itemHeight = 0;
+    //make sure Width/Height are numeric
+    _modelProp["WIDTH"] = parseInt(_modelProp["WIDTH"]);
+    _modelProp["HEIGHT"] = parseInt(_modelProp["HEIGHT"]);
+
     _modelProp["MaxQty"] = _modelProp["PermiterInterval"];
     if (listContains("C,CO,CR,LO,LR,WC,WO", frame, 2) == true && frame.length > 0 || parseInt(_modelProp["Shape"]) == 1) {
         itemWidth = parseInt(_modelProp["WIDTH"]) + 2;
@@ -712,7 +716,8 @@ function getActuatorQuantity() {
             calcType = 1;
             break;
         case "CONTROL DAMPERS":
-            if (_modelProp["CCategory"].toUpperCase().indexOf("COMMERICAL") > 0 || _modelProp["CCategory"].toUpperCase().indexOf("FIBERGLASS") > 0) {
+            var ccat = _modelProp["CCategory"].toUpperCase();
+            if (ccat == "COMMERCIAL" || ccat == "FIBERGLASS") {
                 calcType = 9;
             } else {
                 if (actuatorType != 4) { calcType = 2; }
@@ -884,7 +889,6 @@ function getActuatorQuantity() {
             break;
         case 9:
             tempQty = 0;
-
             if (_modelProp["WIDTH"] <= _modelProp["MaxWidth"]) {
                 if (_modelProp["HasSeals"] == true) {
                     tempQty = Math.ceil(((_modelProp["WIDTH"] * _modelProp["HEIGHT"]) / 144) / _modelProp["MaxAreaWithSeals"]);
@@ -1025,7 +1029,7 @@ function getProductInformation(product, line) {
 function getPropertyValue(table, record, type, id, property) {
     var tbl = _jobdata[table];
     for (var i = 0; i < tbl.length; i++) {
-       if (tbl[i]["Record_Guid"].toUpperCase() == record.toUpperCase() && tbl[i]["Table_Name"].toUpperCase() == type.toUpperCase() && tbl[i]["LineItem_Id"].toUpperCase() == id.toUpperCase()) {
+        if (tbl[i]["Record_Guid"].toUpperCase() == record.toUpperCase() && tbl[i]["Table_Name"].toUpperCase() == type.toUpperCase() && tbl[i]["LineItem_Id"].toUpperCase() == id.toUpperCase()) {
             if (tbl[i]["Property_Name"].toUpperCase() == property.toUpperCase()) {
                 return tbl[i]["Property_Default_Value"];
             }
@@ -1249,9 +1253,10 @@ function isULValidProcess() {
 
 function listContains(list, value, length) {
     var check = list.split(",");
+    var check_val = value.substring(0, length);
     //use full string value
     if (length > 0) {
-        if (check.indexOf(value)) { return true; }
+        if (check.indexOf(check_val) > -1) { return true; }
         else { return false; }
     } else {
         if (check.indexOf(value.substring(0, length))) { return true; }

@@ -512,409 +512,409 @@
  "addon_rules": [
 
 
-{"actuator":"Actuator", "rule":" var result = 0;  return result;"}
+{"actuator":"Actuator", "rule":" var result = {};  return result;"}
 ,
-{"actuator":"MS8120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1020.0); return result;"}
+{"actuator":"MS8120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1020.0); return result;"}
 ,
-{"actuator":"HCMDIN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(360.0); return result;"}
+{"actuator":"HCMDIN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(360.0); return result;"}
 ,
-{"actuator":"SS CRANK LEVER", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(28.0); return result;"}
+{"actuator":"SS CRANK LEVER", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(28.0); return result;"}
 ,
-{"actuator":"H2000/6-B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(660.0); return result;"}
+{"actuator":"H2000/6-B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(660.0); return result;"}
 ,
-{"actuator":"ML-4302", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(472.0); return result;"}
+{"actuator":"ML-4302", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(472.0); return result;"}
 ,
-{"actuator":"MS4120S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1220.0); return result;"}
+{"actuator":"MS4120S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1220.0); return result;"}
 ,
-{"actuator":"LF24MFT30001", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1287.0); return result;"}
+{"actuator":"LF24MFT30001", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1287.0); return result;"}
 ,
-{"actuator":"FSNF120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(900.0); return result;"}
+{"actuator":"FSNF120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(900.0); return result;"}
 ,
-{"actuator":"FSAF24-SR", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1650.0); return result;"}
+{"actuator":"FSAF24-SR", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1650.0); return result;"}
 ,
-{"actuator":"DCP075OUT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(160.0); return result;"}
+{"actuator":"DCP075OUT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(160.0); return result;"}
 ,
-{"actuator":"MA418", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1325.0); return result;"}
+{"actuator":"MA418", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1325.0); return result;"}
 ,
-{"actuator":"FSTF120-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(695.0); return result;"}
+{"actuator":"FSTF120-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(695.0); return result;"}
 ,
-{"actuator":"M9220-BGC-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1305.0); return result;"}
+{"actuator":"M9220-BGC-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1305.0); return result;"}
 ,
-{"actuator":"Cable Drv 10 Ft", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(432.0); return result;"}
+{"actuator":"Cable Drv 10 Ft", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(432.0); return result;"}
 ,
-{"actuator":"FSAF24-BAL-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2285.0); return result;"}
+{"actuator":"FSAF24-BAL-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2285.0); return result;"}
 ,
-{"actuator":"M9203-BUA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(595.0); return result;"}
+{"actuator":"M9203-BUA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(595.0); return result;"}
 ,
-{"actuator":"MP2814-SQ", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(680.0); return result;"}
+{"actuator":"MP2814-SQ", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(680.0); return result;"}
 ,
-{"actuator":"LF120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(750.0); return result;"}
+{"actuator":"LF120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(750.0); return result;"}
 ,
-{"actuator":"M9203-GGA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(750.0); return result;"}
+{"actuator":"M9203-GGA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(750.0); return result;"}
 ,
-{"actuator":"H2000/3-A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(480.0); return result;"}
+{"actuator":"H2000/3-A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(480.0); return result;"}
 ,
-{"actuator":"NFBUP", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1100.0); return result;"}
+{"actuator":"NFBUP", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1100.0); return result;"}
 ,
-{"actuator":"NFB24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1100.0); return result;"}
+{"actuator":"NFB24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1100.0); return result;"}
 ,
-{"actuator":"H2000/8-A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(760.0); return result;"}
+{"actuator":"H2000/8-A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(760.0); return result;"}
 ,
-{"actuator":"H2024/3-A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(520.0); return result;"}
+{"actuator":"H2024/3-A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(520.0); return result;"}
 ,
-{"actuator":"LF24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(600.0); return result;"}
+{"actuator":"LF24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(600.0); return result;"}
 ,
-{"actuator":"TFB120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(525.0); return result;"}
+{"actuator":"TFB120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(525.0); return result;"}
 ,
-{"actuator":"MS4609-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1040.0); return result;"}
+{"actuator":"MS4609-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1040.0); return result;"}
 ,
-{"actuator":"ML-8202", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(512.0); return result;"}
+{"actuator":"ML-8202", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(512.0); return result;"}
 ,
-{"actuator":"M9208-BGC-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(955.0); return result;"}
+{"actuator":"M9208-BGC-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(955.0); return result;"}
 ,
-{"actuator":"DCP100OUT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(160.0); return result;"}
+{"actuator":"DCP100OUT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(160.0); return result;"}
 ,
-{"actuator":"LF24MFT-F01", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1287.0); return result;"}
+{"actuator":"LF24MFT-F01", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1287.0); return result;"}
 ,
-{"actuator":"Cable Drv 6 Ft.", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(416.0); return result;"}
+{"actuator":"Cable Drv 6 Ft.", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(416.0); return result;"}
 ,
-{"actuator":"DCP050OUT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(160.0); return result;"}
+{"actuator":"DCP050OUT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(160.0); return result;"}
 ,
-{"actuator":"TFB24-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(720.0); return result;"}
+{"actuator":"TFB24-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(720.0); return result;"}
 ,
-{"actuator":"ML-4202", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(485.0); return result;"}
+{"actuator":"ML-4202", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(485.0); return result;"}
 ,
-{"actuator":"MP2781", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(480.0); return result;"}
+{"actuator":"MP2781", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(480.0); return result;"}
 ,
-{"actuator":"MA318", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1400.0); return result;"}
+{"actuator":"MA318", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1400.0); return result;"}
 ,
-{"actuator":"AFBUP-RUS", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1050.0); return result;"}
+{"actuator":"AFBUP-RUS", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1050.0); return result;"}
 ,
-{"actuator":"HQRSS050", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(100.0); return result;"}
+{"actuator":"HQRSS050", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(100.0); return result;"}
 ,
-{"actuator":"AFB24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1350.0); return result;"}
+{"actuator":"AFB24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1350.0); return result;"}
 ,
-{"actuator":"331-3060", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1000.0); return result;"}
+{"actuator":"331-3060", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1000.0); return result;"}
 ,
-{"actuator":"M9203-BUB-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(775.0); return result;"}
+{"actuator":"M9203-BUB-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(775.0); return result;"}
 ,
-{"actuator":"FSNF230", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(975.0); return result;"}
+{"actuator":"FSNF230", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(975.0); return result;"}
 ,
-{"actuator":"MS4709", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(980.0); return result;"}
+{"actuator":"MS4709", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(980.0); return result;"}
 ,
-{"actuator":"HDHQ050IN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(291.0); return result;"}
+{"actuator":"HDHQ050IN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(291.0); return result;"}
 ,
-{"actuator":"M9220-BAC-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1400.0); return result;"}
+{"actuator":"M9220-BAC-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1400.0); return result;"}
 ,
-{"actuator":"HQR050", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(28.0); return result;"}
+{"actuator":"HQR050", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(28.0); return result;"}
 ,
-{"actuator":"MS8104-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(750.0); return result;"}
+{"actuator":"MS8104-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(750.0); return result;"}
 ,
-{"actuator":"MS8120S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1220.0); return result;"}
+{"actuator":"MS8120S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1220.0); return result;"}
 ,
-{"actuator":"MS4620", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1180.0); return result;"}
+{"actuator":"MS4620", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1180.0); return result;"}
 ,
-{"actuator":"MP2781-SQ", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(640.0); return result;"}
+{"actuator":"MP2781-SQ", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(640.0); return result;"}
 ,
-{"actuator":"M9181A-1012", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1900.0); return result;"}
+{"actuator":"M9181A-1012", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1900.0); return result;"}
 ,
-{"actuator":"FSLF24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(600.0); return result;"}
+{"actuator":"FSLF24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(600.0); return result;"}
 ,
-{"actuator":"NFB24-SR", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1300.0); return result;"}
+{"actuator":"NFB24-SR", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1300.0); return result;"}
 ,
-{"actuator":"331-3060P", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1660.0); return result;"}
+{"actuator":"331-3060P", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1660.0); return result;"}
 ,
-{"actuator":"LF120-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(820.0); return result;"}
+{"actuator":"LF120-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(820.0); return result;"}
 ,
-{"actuator":"TFB24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(550.0); return result;"}
+{"actuator":"TFB24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(550.0); return result;"}
 ,
-{"actuator":"MB/ELEC MTR", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(140.0); return result;"}
+{"actuator":"MB/ELEC MTR", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(140.0); return result;"}
 ,
-{"actuator":"MA6418", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(6250.0); return result;"}
+{"actuator":"MA6418", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(6250.0); return result;"}
 ,
-{"actuator":"MA318-500", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1725.0); return result;"}
+{"actuator":"MA318-500", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1725.0); return result;"}
 ,
-{"actuator":"WGHWOUT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1400.0); return result;"}
+{"actuator":"WGHWOUT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1400.0); return result;"}
 ,
-{"actuator":"M9220-BAA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1175.0); return result;"}
+{"actuator":"M9220-BAA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1175.0); return result;"}
 ,
-{"actuator":"H2024/3", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(520.0); return result;"}
+{"actuator":"H2024/3", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(520.0); return result;"}
 ,
-{"actuator":"GCA126", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1340.0); return result;"}
+{"actuator":"GCA126", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1340.0); return result;"}
 ,
-{"actuator":"H2000/8", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(760.0); return result;"}
+{"actuator":"H2000/8", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(760.0); return result;"}
 ,
-{"actuator":"M9220-BGA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1060.0); return result;"}
+{"actuator":"M9220-BGA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1060.0); return result;"}
 ,
-{"actuator":"M4182B-1002", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1260.0); return result;"}
+{"actuator":"M4182B-1002", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1260.0); return result;"}
 ,
-{"actuator":"LCPIN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(160.0); return result;"}
+{"actuator":"LCPIN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(160.0); return result;"}
 ,
-{"actuator":"FSTF24-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(695.0); return result;"}
+{"actuator":"FSTF24-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(695.0); return result;"}
 ,
-{"actuator":"MA418-500", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1500.0); return result;"}
+{"actuator":"MA418-500", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1500.0); return result;"}
 ,
-{"actuator":"BAH", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(476.0); return result;"}
+{"actuator":"BAH", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(476.0); return result;"}
 ,
-{"actuator":"AF24MFT30001", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1420.0); return result;"}
+{"actuator":"AF24MFT30001", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1420.0); return result;"}
 ,
-{"actuator":"Cable Drv 3 FT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(392.0); return result;"}
+{"actuator":"Cable Drv 3 FT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(392.0); return result;"}
 ,
-{"actuator":"M9203-BGA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(595.0); return result;"}
+{"actuator":"M9203-BGA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(595.0); return result;"}
 ,
-{"actuator":"GCA226", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1240.0); return result;"}
+{"actuator":"GCA226", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1240.0); return result;"}
 ,
-{"actuator":"FSAF230", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2335.0); return result;"}
+{"actuator":"FSAF230", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2335.0); return result;"}
 ,
-{"actuator":"RH120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(610.0); return result;"}
+{"actuator":"RH120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(610.0); return result;"}
 ,
-{"actuator":"GCA121", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1240.0); return result;"}
+{"actuator":"GCA121", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1240.0); return result;"}
 ,
-{"actuator":"DCPIN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(160.0); return result;"}
+{"actuator":"DCPIN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(160.0); return result;"}
 ,
-{"actuator":"RH24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(740.0); return result;"}
+{"actuator":"RH24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(740.0); return result;"}
 ,
-{"actuator":"H2024/3-B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(520.0); return result;"}
+{"actuator":"H2024/3-B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(520.0); return result;"}
 ,
-{"actuator":"RH24-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(680.0); return result;"}
+{"actuator":"RH24-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(680.0); return result;"}
 ,
-{"actuator":"Cable Drv 5 Ft.", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(412.0); return result;"}
+{"actuator":"Cable Drv 5 Ft.", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(412.0); return result;"}
 ,
-{"actuator":"NFB24-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1150.0); return result;"}
+{"actuator":"NFB24-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1150.0); return result;"}
 ,
-{"actuator":"FSLF120-RUS", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(540.0); return result;"}
+{"actuator":"FSLF120-RUS", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(540.0); return result;"}
 ,
-{"actuator":"LF24-SR", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1060.0); return result;"}
+{"actuator":"LF24-SR", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1060.0); return result;"}
 ,
-{"actuator":"M9208-BGA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(725.0); return result;"}
+{"actuator":"M9208-BGA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(725.0); return result;"}
 ,
-{"actuator":"MS7520A2015", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1600.0); return result;"}
+{"actuator":"MS7520A2015", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1600.0); return result;"}
 ,
-{"actuator":"GM24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1140.0); return result;"}
+{"actuator":"GM24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1140.0); return result;"}
 ,
-{"actuator":"FSTF24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(495.0); return result;"}
+{"actuator":"FSTF24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(495.0); return result;"}
 ,
-{"actuator":"MS8209", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(920.0); return result;"}
+{"actuator":"MS8209", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(920.0); return result;"}
 ,
-{"actuator":"H2024/6-B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(720.0); return result;"}
+{"actuator":"H2024/6-B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(720.0); return result;"}
 ,
-{"actuator":"MS4109-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1040.0); return result;"}
+{"actuator":"MS4109-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1040.0); return result;"}
 ,
-{"actuator":"MB/PNEU MTR", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(236.0); return result;"}
+{"actuator":"MB/PNEU MTR", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(236.0); return result;"}
 ,
-{"actuator":"FSAF230A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2335.0); return result;"}
+{"actuator":"FSAF230A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2335.0); return result;"}
 ,
-{"actuator":"MS8104", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(550.0); return result;"}
+{"actuator":"MS8104", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(550.0); return result;"}
 ,
-{"actuator":"FSAF230-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2535.0); return result;"}
+{"actuator":"FSAF230-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2535.0); return result;"}
 ,
-{"actuator":"NFBUP-RUS", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(850.0); return result;"}
+{"actuator":"NFBUP-RUS", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(850.0); return result;"}
 ,
-{"actuator":"MS8109-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1040.0); return result;"}
+{"actuator":"MS8109-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1040.0); return result;"}
 ,
-{"actuator":"RLH24-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1270.0); return result;"}
+{"actuator":"RLH24-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1270.0); return result;"}
 ,
-{"actuator":"FSNF24S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1100.0); return result;"}
+{"actuator":"FSNF24S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1100.0); return result;"}
 ,
-{"actuator":"FSAF120A-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1260.0); return result;"}
+{"actuator":"FSAF120A-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1260.0); return result;"}
 ,
-{"actuator":"FSAF24A-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1260.0); return result;"}
+{"actuator":"FSAF24A-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1260.0); return result;"}
 ,
-{"actuator":"MS4120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1020.0); return result;"}
+{"actuator":"MS4120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1020.0); return result;"}
 ,
-{"actuator":"RLH24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1120.0); return result;"}
+{"actuator":"RLH24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1120.0); return result;"}
 ,
-{"actuator":"FSAF24S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1260.0); return result;"}
+{"actuator":"FSAF24S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1260.0); return result;"}
 ,
-{"actuator":"M9203-BGB-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(775.0); return result;"}
+{"actuator":"M9203-BGB-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(775.0); return result;"}
 ,
-{"actuator":"FSLF120S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(755.0); return result;"}
+{"actuator":"FSLF120S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(755.0); return result;"}
 ,
-{"actuator":"FSAF120A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1060.0); return result;"}
+{"actuator":"FSAF120A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1060.0); return result;"}
 ,
-{"actuator":"AFB24SR", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1425.0); return result;"}
+{"actuator":"AFB24SR", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1425.0); return result;"}
 ,
-{"actuator":"LF24SR-RUS", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(750.0); return result;"}
+{"actuator":"LF24SR-RUS", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(750.0); return result;"}
 ,
-{"actuator":"WGCWOUT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1660.0); return result;"}
+{"actuator":"WGCWOUT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1660.0); return result;"}
 ,
-{"actuator":"M9220-GGA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1135.0); return result;"}
+{"actuator":"M9220-GGA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1135.0); return result;"}
 ,
-{"actuator":"H2024/8-A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"H2024/8-A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"WGHWRM", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2260.0); return result;"}
+{"actuator":"WGHWRM", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2260.0); return result;"}
 ,
-{"actuator":"HDHQ050", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(224.0); return result;"}
+{"actuator":"HDHQ050", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(224.0); return result;"}
 ,
-{"actuator":"RLH120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(960.0); return result;"}
+{"actuator":"RLH120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(960.0); return result;"}
 ,
-{"actuator":"MS4609", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"MS4609", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"FSAF24A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1060.0); return result;"}
+{"actuator":"FSAF24A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1060.0); return result;"}
 ,
-{"actuator":"FSTF230", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(495.0); return result;"}
+{"actuator":"FSTF230", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(495.0); return result;"}
 ,
-{"actuator":"FSAF120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1060.0); return result;"}
+{"actuator":"FSAF120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1060.0); return result;"}
 ,
-{"actuator":"331-2961P", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1280.0); return result;"}
+{"actuator":"331-2961P", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1280.0); return result;"}
 ,
-{"actuator":"MS4604-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(750.0); return result;"}
+{"actuator":"MS4604-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(750.0); return result;"}
 ,
-{"actuator":"MP2814", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(560.0); return result;"}
+{"actuator":"MP2814", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(560.0); return result;"}
 ,
-{"actuator":"HCHDIN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(420.0); return result;"}
+{"actuator":"HCHDIN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(420.0); return result;"}
 ,
-{"actuator":"MS4604", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(565.0); return result;"}
+{"actuator":"MS4604", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(565.0); return result;"}
 ,
-{"actuator":"AFBUP", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1425.0); return result;"}
+{"actuator":"AFBUP", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1425.0); return result;"}
 ,
-{"actuator":"HDCP100OUT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(200.0); return result;"}
+{"actuator":"HDCP100OUT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(200.0); return result;"}
 ,
-{"actuator":"M9208-GGA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(875.0); return result;"}
+{"actuator":"M9208-GGA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(875.0); return result;"}
 ,
-{"actuator":"MS4209", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"MS4209", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"331-2961", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(540.0); return result;"}
+{"actuator":"331-2961", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(540.0); return result;"}
 ,
-{"actuator":"H2024/6-A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(720.0); return result;"}
+{"actuator":"H2024/6-A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(720.0); return result;"}
 ,
-{"actuator":"Cable Drv 8 Ft", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(424.0); return result;"}
+{"actuator":"Cable Drv 8 Ft", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(424.0); return result;"}
 ,
-{"actuator":"MS4104-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(750.0); return result;"}
+{"actuator":"MS4104-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(750.0); return result;"}
 ,
-{"actuator":"M9208-BAC-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1000.0); return result;"}
+{"actuator":"M9208-BAC-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1000.0); return result;"}
 ,
-{"actuator":"AFBUP-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1550.0); return result;"}
+{"actuator":"AFBUP-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1550.0); return result;"}
 ,
-{"actuator":"HQS375B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(28.0); return result;"}
+{"actuator":"HQS375B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(28.0); return result;"}
 ,
-{"actuator":"331-4827P", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1060.0); return result;"}
+{"actuator":"331-4827P", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1060.0); return result;"}
 ,
-{"actuator":"MS4309", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"MS4309", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"TFB24-SR", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(790.0); return result;"}
+{"actuator":"TFB24-SR", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(790.0); return result;"}
 ,
-{"actuator":"RLH24-MOD", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1375.0); return result;"}
+{"actuator":"RLH24-MOD", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1375.0); return result;"}
 ,
-{"actuator":"RLH120-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1100.0); return result;"}
+{"actuator":"RLH120-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1100.0); return result;"}
 ,
-{"actuator":"LF24-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(800.0); return result;"}
+{"actuator":"LF24-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(800.0); return result;"}
 ,
-{"actuator":"FSAF24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1060.0); return result;"}
+{"actuator":"FSAF24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1060.0); return result;"}
 ,
-{"actuator":"H2024/8", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"H2024/8", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"FSNF230-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1100.0); return result;"}
+{"actuator":"FSNF230-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1100.0); return result;"}
 ,
-{"actuator":"TFB24SR-RUS", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(710.0); return result;"}
+{"actuator":"TFB24SR-RUS", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(710.0); return result;"}
 ,
-{"actuator":"FSAF230A-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2535.0); return result;"}
+{"actuator":"FSAF230A-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2535.0); return result;"}
 ,
-{"actuator":"NFBUP-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1300.0); return result;"}
+{"actuator":"NFBUP-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1300.0); return result;"}
 ,
-{"actuator":"H2000/3-B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(480.0); return result;"}
+{"actuator":"H2000/3-B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(480.0); return result;"}
 ,
-{"actuator":"MP2781A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(480.0); return result;"}
+{"actuator":"MP2781A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(480.0); return result;"}
 ,
-{"actuator":"H2024/4", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(600.0); return result;"}
+{"actuator":"H2024/4", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(600.0); return result;"}
 ,
-{"actuator":"GGD221", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1080.0); return result;"}
+{"actuator":"GGD221", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1080.0); return result;"}
 ,
-{"actuator":"MP2814A-SQ", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(680.0); return result;"}
+{"actuator":"MP2814A-SQ", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(680.0); return result;"}
 ,
-{"actuator":"FSTF230-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(695.0); return result;"}
+{"actuator":"FSTF230-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(695.0); return result;"}
 ,
-{"actuator":"FSAF24SR-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1850.0); return result;"}
+{"actuator":"FSAF24SR-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1850.0); return result;"}
 ,
-{"actuator":"TFB120-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(700.0); return result;"}
+{"actuator":"TFB120-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(700.0); return result;"}
 ,
-{"actuator":"H2000/6", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(660.0); return result;"}
+{"actuator":"H2000/6", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(660.0); return result;"}
 ,
-{"actuator":"WGCWIN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1660.0); return result;"}
+{"actuator":"WGCWIN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1660.0); return result;"}
 ,
-{"actuator":"H2024/6", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(720.0); return result;"}
+{"actuator":"H2024/6", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(720.0); return result;"}
 ,
-{"actuator":"H2024/8-B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"H2024/8-B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"AFB24MFT-F01", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1420.0); return result;"}
+{"actuator":"AFB24MFT-F01", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1420.0); return result;"}
 ,
-{"actuator":"DR38SQ-HQ", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(0.0); return result;"}
+{"actuator":"DR38SQ-HQ", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(0.0); return result;"}
 ,
-{"actuator":"FSAF24-BAL", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2125.0); return result;"}
+{"actuator":"FSAF24-BAL", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2125.0); return result;"}
 ,
-{"actuator":"ML-8302", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(512.0); return result;"}
+{"actuator":"ML-8302", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(512.0); return result;"}
 ,
-{"actuator":"HQR050B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(28.0); return result;"}
+{"actuator":"HQR050B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(28.0); return result;"}
 ,
-{"actuator":"331-4827", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(340.0); return result;"}
+{"actuator":"331-4827", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(340.0); return result;"}
 ,
-{"actuator":"FSAF120S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1260.0); return result;"}
+{"actuator":"FSAF120S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1260.0); return result;"}
 ,
-{"actuator":"MS8109", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"MS8109", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"WGHWIN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1400.0); return result;"}
+{"actuator":"WGHWIN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1400.0); return result;"}
 ,
-{"actuator":"MS7510IAQ", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(772.0); return result;"}
+{"actuator":"MS7510IAQ", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(772.0); return result;"}
 ,
-{"actuator":"AFB24S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1600.0); return result;"}
+{"actuator":"AFB24S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1600.0); return result;"}
 ,
-{"actuator":"FSLF120", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(560.0); return result;"}
+{"actuator":"FSLF120", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(560.0); return result;"}
 ,
-{"actuator":"FSNF120S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1100.0); return result;"}
+{"actuator":"FSNF120S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1100.0); return result;"}
 ,
-{"actuator":"MS4104", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(550.0); return result;"}
+{"actuator":"MS4104", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(550.0); return result;"}
 ,
-{"actuator":"MP2781A-SQ", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(640.0); return result;"}
+{"actuator":"MP2781A-SQ", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(640.0); return result;"}
 ,
-{"actuator":"HDCP100IN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(200.0); return result;"}
+{"actuator":"HDCP100IN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(200.0); return result;"}
 ,
-{"actuator":"HND QUAD-PVC", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(100.0); return result;"}
+{"actuator":"HND QUAD-PVC", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(100.0); return result;"}
 ,
-{"actuator":"M9182A-1011", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(2200.0); return result;"}
+{"actuator":"M9182A-1011", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(2200.0); return result;"}
 ,
-{"actuator":"HQS375", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(28.0); return result;"}
+{"actuator":"HQS375", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(28.0); return result;"}
 ,
-{"actuator":"ML6161B2032", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(480.0); return result;"}
+{"actuator":"ML6161B2032", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(480.0); return result;"}
 ,
-{"actuator":"H2000/6-A", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(660.0); return result;"}
+{"actuator":"H2000/6-A", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(660.0); return result;"}
 ,
-{"actuator":"MS7520IAQ", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(927.0); return result;"}
+{"actuator":"MS7520IAQ", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(927.0); return result;"}
 ,
-{"actuator":"MTG BRKT", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(140.0); return result;"}
+{"actuator":"MTG BRKT", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(140.0); return result;"}
 ,
-{"actuator":"MS4620-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1220.0); return result;"}
+{"actuator":"MS4620-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1220.0); return result;"}
 ,
-{"actuator":"HDHQ100", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(224.0); return result;"}
+{"actuator":"HDHQ100", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(224.0); return result;"}
 ,
-{"actuator":"FSTF120-RUS", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(495.0); return result;"}
+{"actuator":"FSTF120-RUS", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(495.0); return result;"}
 ,
-{"actuator":"RH120-S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(680.0); return result;"}
+{"actuator":"RH120-S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(680.0); return result;"}
 ,
-{"actuator":"HDHQ100IN", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(291.0); return result;"}
+{"actuator":"HDHQ100IN", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(291.0); return result;"}
 ,
-{"actuator":"H2000/8-B", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(760.0); return result;"}
+{"actuator":"H2000/8-B", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(760.0); return result;"}
 ,
-{"actuator":"M9208-BAA-RK", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(775.0); return result;"}
+{"actuator":"M9208-BAA-RK", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(775.0); return result;"}
 ,
-{"actuator":"RH24-MOD", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1020.0); return result;"}
+{"actuator":"RH24-MOD", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1020.0); return result;"}
 ,
-{"actuator":"GCA161", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1400.0); return result;"}
+{"actuator":"GCA161", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1400.0); return result;"}
 ,
-{"actuator":"FSLF24S", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(800.0); return result;"}
+{"actuator":"FSLF24S", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(800.0); return result;"}
 ,
-{"actuator":"Cable Drv 4 Ft.", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(404.0); return result;"}
+{"actuator":"Cable Drv 4 Ft.", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(404.0); return result;"}
 ,
-{"actuator":"SPC", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(224.0); return result;"}
+{"actuator":"SPC", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(224.0); return result;"}
 ,
-{"actuator":"FSNF24", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(900.0); return result;"}
+{"actuator":"FSNF24", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(900.0); return result;"}
 ,
-{"actuator":"M4182A-1004", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(1140.0); return result;"}
+{"actuator":"M4182A-1004", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(1140.0); return result;"}
 ,
-{"actuator":"MS4109", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(840.0); return result;"}
+{"actuator":"MS4109", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(840.0); return result;"}
 ,
-{"actuator":"HDHQ075", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(224.0); return result;"}
+{"actuator":"HDHQ075", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(224.0); return result;"}
 ,
-{"actuator":"MS8309", "rule":" var result = 0; result.totalprice = parseInt(m.ActuatorQuantity) * parseInt(920.0); return result;"}
+{"actuator":"MS8309", "rule":" var result = {}; result.totalprice = parseInt(m.actuatorquantity) * parseInt(920.0); return result;"}
 
 
 ] }

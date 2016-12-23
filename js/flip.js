@@ -93,7 +93,7 @@ function continueFlipping(line, currentOption) {
 
 		//TODO: handle case where it is RED 
 
-		result = ruleFlow(flippedModel, currentOption); 
+		result = ruleFlow(line, currentOption); 
 
 		if (result.listvaluecolor == 'Red')
 			continue;  

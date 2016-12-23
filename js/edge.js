@@ -235,30 +235,15 @@ function afterCellUpdate(event) {
 
     validateLineItem(target, option);
 
-    displayValidationResult(); //Error msg, or in case of successful validation, NO message 
-
-    if (!validationSucceeded)
-        return; 
-
-    //Validation was successfull AFTER flipping : update the screen with the new values 
-    if (startedFlipping && validationSucceeded) {
-        updateDisplay(target, flippedModel); 
-    }
-
-    var line = null;
-    if (!startedFlipping) {
-        line = model; 
-    }
-    else 
-    {
-        line = flippedModel; 
-    }
+    displayValidationResult(target); //Error msg, or in case of successful validation, NO message 
     
-    setSectionCalcs(job, product, line);
-    setActuatorQuantity(job, product, line); 
-    var props = getModelProperties(); 
-    
+    var line = model; 
+
     if (validationSucceeded) {
+        setSectionCalcs(job, product, line);
+        setActuatorQuantity(job, product, line); 
+        var props = getModelProperties(); 
+        //TODO: retrieve updated actuator quantity from props?   
         price(line); 
     }
     
@@ -266,10 +251,11 @@ function afterCellUpdate(event) {
 }
 
 function updateDisplay(row, line) {
-
-    for (let option of doneFlipOptions) {
-        var inputElement = row.querySelector('[data-option="' + option + '"]');
-        inputElement.value = line[option]; 
+    
+    for (let option of options) {
+        var inputElement = row.querySelector('[data-option="' + option.name + '"]');
+        if (inputElement)
+            inputElement.value = line[option.name]; 
 
     }
     
@@ -306,7 +292,7 @@ function clickHandler(event) {
     enrichModel(model); 
     console.log(model);
     
-    //Get all the options from the Select control 
+    //Get all the values from the Select control 
     var values = [];
     var options = sel.options;
     for (i = 0; i < options.length; i++) {
@@ -331,16 +317,20 @@ function clickHandler(event) {
         else {
             sel.options[i].style.backgroundColor = 'white';
             sel.options[i].disabled = false;    
-            sel.options[i].title = values[i].pricelabel; 
+            sel.options[i].title = values[i].actuatorquantity + '- $' + values[i].price; 
+
         }
     }
+
+    //Sort values by List Price
+
 }
     
     
-function validateLineItem(tr, optionChanged) {
+function validateLineItem(targetRow, optionChanged) {
      
     model = {}; 
-    var cells = tr.getElementsByTagName("td");
+    var cells = targetRow.getElementsByTagName("td");
     for (var i = 0; i < cells.length; i++) {
         var el = cells[i].firstElementChild;
         if (el == null) continue; 
@@ -354,23 +344,27 @@ function validateLineItem(tr, optionChanged) {
     }    
     
     validationSucceeded = false; 
+    startedFlipping = false;
+    failedFlipOptions.clear();
+    doneFlipOptions.clear();
+    flipValuesExhausted = false; 
 
-    Object.assign(model, properties); //add writable properties such as maxheight, maxwidth, etc 
-    
     enrichModel(model);  //add attributes required by RM Eng Calcs 
 
     var result = ruleFlow(model, optionChanged);  
     if (result.isavailable)  {
-        validationSucceeded = true; 
-        startedFlipping = false; 
+        callRulesEngineByValidationOrder(model); 
+        validationSucceeded = (!flipValuesExhausted);
+        updateDisplay(targetRow, model);
+        updateRowColor(targetRow);
         return; 
     }
 
     //If changed option is numeric, no point flipping!! 
     var optionObj = optionMap[optionChanged];
     if (optionObj.type == "Value") {
-        validationSucceeded = false; 
-        startedFlipping = false;     
+        validationSucceeded = false;
+        updateRowColor(targetRow); 
         return; 
     }
 
@@ -383,22 +377,30 @@ function validateLineItem(tr, optionChanged) {
         log.debug('Failed Variables: ', failedVariables); 
     }
 
-    failedFlipOptions.clear();
-    doneFlipOptions.clear();
-    flipValuesExhausted = false; 
-
-    flippedModel = Object.assign({}, model); 
-    
-    startFlippingValues(flippedModel, optionChanged, failedVariables, allVariables);
+    startFlippingValues(model, optionChanged, failedVariables, allVariables);
     
     if (!flipValuesExhausted) {
-        callRulesEngineByValidationOrder(flippedModel); 
+        callRulesEngineByValidationOrder(model); 
     }
     if (!flipValuesExhausted)
         validationSucceeded = true; 
-
-        
+    
+    updateDisplay(targetRow, model);
+    updateRowColor(targetRow); 
 }
+
+
+
+function updateRowColor(targetRow) {
+
+    if (validationSucceeded) {
+        targetRow.classList.remove('invalid');
+    }
+    else {
+        targetRow.classList.add('invalid');    
+    }    
+}
+
 
 
 function callRulesEngineByValidationOrder(line) {
@@ -414,8 +416,10 @@ function callRulesEngineByValidationOrder(line) {
         if (result.isavailable)
             continue; 
 
-        if (!result.isavailable && optionObj.type == 'Value')
+        if (!result.isavailable && optionObj.type == 'Value') {
+            flipValuesExhausted = true; //Can't flip a numeric value !! 
             return; 
+        }
 
         var failedVariables = result.failedVariables;
         var allVariables = result.allVariables; 
@@ -613,8 +617,19 @@ function validateListOption() {
 }
 
 
-function displayValidationResult() {
-    var msg1 = document.getElementById('msg');
-    msg1.innerHTML = validationFailureMessage; 
+function displayValidationResult(targetRow) {
+
+    let msg1 = document.getElementById('msg');
+    if (validationFailureMessage != '') {
+        msg1.innerHTML = validationFailureMessage; 
+        
+    }
+    else {
+        msg1.innerHTML = ''; 
+          
+    }    
 }
+
+
+
 

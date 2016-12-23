@@ -21,6 +21,8 @@ function isActuatorAvailable(model) {
     var actuator = model['ACTUATOR'];
 
     var validActuators = actuatorMappings[actType]; 
+    if (!validActuators)
+        debugger; 
     if (validActuators.indexOf(actuator) == -1)
         return false; 
 
@@ -89,7 +91,7 @@ function ruleFlow(model, option) {
         setActuatorQuantity(job, product, model);           
         var props = getModelProperties(); 
                 
-        model.ActuatorQuantity = props.actuatorquantity;
+        model.actuatorquantity = props.actuatorquantity;
         result.actuatorquantity = props.actuatorquantity;  
     }
     
@@ -187,6 +189,7 @@ function validateOption(model, option, values) {
         var result = ruleFlow(model, option);
         value.isavailable = result.isavailable;
         value.listvaluecolor = result.listvaluecolor;
+        value.price = result.price; 
         if (!result.isavailable && result.message == '') {
             var msg = 'This value is unavailable because of ' + result.failedVariables.join(',');
             result.message = msg;     

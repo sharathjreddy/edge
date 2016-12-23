@@ -3,16 +3,21 @@ var currentRequest = null;
 
 function price(line) {
     
-    let pricingRequest = buildPricingRequest(line);     
-    console.log(pricingRequest); 
+    let pricingXML = buildPricingRequest(line);     
+    
+    let pricingRequest = 
+        {
+            Pricing : pricingXML, 
+            CD35_Properties: job.CD35_Properties,
+            Products_CD35_Writable : job.Products_CD35_Writable
+        };
 
-    var formData = {
-            'name' : pricingRequest 
-    }; 
+    console.log(pricingRequest); 
 
     currentRequest = jQuery.ajax({
         type: 'POST',
-        data: formData,
+        data: JSON.stringify(pricingRequest),
+        contentType: 'application/json; charset=utf-8',
         url: '/pricing',
         beforeSend : function()    {           
             if(currentRequest != null) {

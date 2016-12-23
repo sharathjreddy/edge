@@ -26,9 +26,9 @@
         table { white-space: nowrap;
                 border-spacing:0px;
                 border-collapse: separate;   
-                cellpadding:5px;
+                
               }
-        tr, td {  padding: 5px;   }
+        td, th {  padding: 5px;   }
 
         .show {
             z-index:1000;
@@ -46,8 +46,12 @@
             display: none;
         }
 
-        tr:nth-of-type(odd){
-          background:rgba(255,255,136,0.5);
+        tr:nth-of-type(even){
+          background-color:#f1f1f1; 
+        }
+
+        tr.invalid {
+          background-image: linear-gradient(red, white);
         }
 
         </style>
@@ -114,15 +118,32 @@
     </li>
   </ul>
 </div>
-      </nav>
+    </nav>
       
-    <nav class="slds-col slds-size--1-of-1">
+    <div class="slds-col slds-size--1-of-1">
         <div id="div1" style="width:100%;overflow:auto;height:400px;padding:10px;font-size:10px">
            
         </div>
-        <div id='msg'/>
-    </nav>
-    </div>
+      <div id='msg'/></div>
+       
+      <div position="relative">
+
+
+      <div position="relative">
+  <div class="slds-spinner slds-spinner--large" role="alert">
+    <span class="slds-assistive-text">Loading</span>
+    <div class="slds-spinner__dot-a"></div>
+    <div class="slds-spinner__dot-b"></div>
+  </div>
+</div>
+
+
+
+      </div>
+
+      
+   </div>
+   
 
     <!-- initially hidden right-click menu -->
         <div class="hide" id="rmenu">
@@ -133,6 +154,8 @@
 
             </ul>
         </div>
+
+
         
 </body>
 </html>
