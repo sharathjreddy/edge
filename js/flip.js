@@ -144,6 +144,9 @@ function filterAndSort(failedVariables) {
 
 	//options are already sorted! 
 	for (let option of options) {
+		if (!failedVariables)
+			debugger; 
+
 		if (failedVariables.indexOf(option.name) > -1) {
 			failedOptions.push(option.name); 
 		}

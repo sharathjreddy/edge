@@ -529,6 +529,7 @@ function createRow(options) {
     var lineItem = model + '-' + counter;
     counter++; 
     td.appendChild(document.createTextNode(lineItem));
+	td.setAttribute("id", lineItem); 
     tr.appendChild(td);
 
     td = _td_.cloneNode(false);

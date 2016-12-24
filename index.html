@@ -2,12 +2,22 @@
 <html>
     <head>
         <title>Edge Selection Navigator</title>
+		
+		
         <!--
         <script src="js/CD35.js"></script>
         -->
-        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-        <script src="js/log4javascript.js"></script>
-        <script src="js/globalvariables.js"></script>
+		<link href="assets/styles/bootstrap.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="/assets/styles/salesforce-lightning-design-system.css" />
+		<link rel="stylesheet" href="dist/themes/default/style.min.css" />
+		<link rel="stylesheet" href="assets/styles/style.css" />
+		
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="dist/jstree.min.js"></script>
+		<script src="js/treecontroller.js"></script>
+		 <script src="js/bootstrap.min.js"></script>
+    <script src="js/log4javascript.js"></script> 
+		<script src="js/globalvariables.js"></script>
         <script src="js/rules.js"></script>
         <script src="js/edge.js"></script>
         <script src="js/flip.js"></script>
@@ -72,7 +82,7 @@
         </div>
         <div class="slds-media__body">
           <p class="slds-text-title--caps slds-line-height--reset">Job</p>
-          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" title="this should match the Record Title">Dampers for Irving Conv Center</h1>
+          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" id="jTitle" title="this should match the Record Title">Dampers for Irving Conv Center</h1>
         </div>
       </div>
     </div>
@@ -80,7 +90,60 @@
       <div class="slds-button-group" role="group">
         <button class="slds-button slds-button--neutral" id="price">Price</button>
         <button class="slds-button slds-button--neutral">Delete</button>
-        <button class="slds-button slds-button--neutral">Clone</button>
+        <button class="slds-button slds-button--neutral"  data-toggle="modal" data-target="#myModal" id="myModalLauncer">Clone</button>
+		<!-- Modal start--> 
+		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
+     aria-labelledby="myModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header  modal-headerBg">
+                <button type="button" class="close" 
+                   data-dismiss="modal" id="closeModal" onclick="reset();">
+                       <span aria-hidden="true">&times;</span>
+                       <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">
+                    Edge Selection Navigator
+                </h4>
+            </div>
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <form class="form-horizontal" action="" name="form" id="form">
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label"
+                              for="inputJobTitle">Job Title</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="form-control txt-fieldBg" 
+                        id="inputJobTitle" name="inputJobTitle" placeholder="JobTitle"/>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label  class="col-sm-3 control-label"
+                              for="inputJobDescription">Job Description</label>
+                    <div class="col-sm-8">
+                        <input type="text" name="inputJobDescription" class="form-control txt-fieldBg" 
+                        id="inputJobDescription" placeholder="JobDescription"/>
+                    </div>
+					<div><input type="hidden" id="stext"></div>
+                  </div>                
+				  <div id="parentTree" style="margin-top:50px">
+				  <div id="jstree_demo_div"></div>
+				  <img id="largeImg" />
+				   </div>
+				  
+				   <div class="form-group">
+                    <div class="col-sm-offset-2 col-sm-10 submitBtn">
+                      <button type="button" id="submit" class="slds-button slds-button--neutral submitRad" onclick="showInput();">Ok</button>
+					   <button type="button" id="cancelBtn" class="slds-button slds-button--neutral marginLeft10" onclick="reset();">Cancel</button>
+                    </div>
+					</div>
+                </form>
+                </div>
+             </div>
+    </div>
+</div>
+		<!-- Modal end-->
         <div class="slds-dropdown-trigger slds-dropdown-trigger--click slds-button--last" aria-expanded="false">
           <button class="slds-button slds-button--icon-border-filled" aria-haspopup="true" title="More Actions">
             <svg aria-hidden="true" class="slds-button__icon">
@@ -95,7 +158,7 @@
   <ul class="slds-grid slds-page-header__detail-row">
     <li class="slds-page-header__detail-block">
       <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Field 1">Field 1</p>
-      <p class="slds-text-body--regular slds-truncate" title="Description that demonstrates truncation with a long text field">Description that demonstrates truncation with a long text field.</p>
+      <p class="slds-text-body--regular slds-truncate" id="jDescription" title="Description that demonstrates truncation with a long text field">Description that demonstrates truncation with a long text field.</p>
     </li>
     <li class="slds-page-header__detail-block">
       <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Field2 (3)">Field 2 (3)
