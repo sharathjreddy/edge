@@ -232,6 +232,15 @@ function afterCellUpdate(event) {
     while (target && target.nodeName !== "TR") {
         target = target.parentNode;
     }
+    
+    if (sel.type == 'number') {
+        var val = sel.value; 
+        var reg = /^\d+$/;
+        if (!reg.test(val)) {
+            sel.value = 0; 
+        }
+    }
+    
 
     validateLineItem(target, option);
 
