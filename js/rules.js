@@ -92,7 +92,6 @@ function ruleFlow(model, option) {
         var props = getModelProperties(); 
                 
         model.actuatorquantity = props.actuatorquantity;
-        result.actuatorquantity = props.actuatorquantity;  
     }
     
     
@@ -101,7 +100,7 @@ function ruleFlow(model, option) {
         optionRules = rules[option];
     }
     else 
-        return processResult(result);
+        return processResult(result, model);
     
     
     //Invoke the Rule Engine - 4 types of events   
@@ -112,7 +111,7 @@ function ruleFlow(model, option) {
     }
 
     if (result && !result.isavailable)
-        return processResult(result);
+        return processResult(result, model);
 
 
     if (optionRules.hasOwnProperty('Global Value Available')) {
@@ -128,7 +127,7 @@ function ruleFlow(model, option) {
 
 
     if (result && !result.isavailable)
-        return processResult(result);
+        return processResult(result, model);
 
    
     if (optionRules.hasOwnProperty('LocalOption Value Available')) {
@@ -138,7 +137,7 @@ function ruleFlow(model, option) {
     }
     
     if (result && !result.isavailable)
-        return processResult(result);
+        return processResult(result, model);
 
 
     if (optionRules.hasOwnProperty('Local Value Available')) {
@@ -162,12 +161,12 @@ function ruleFlow(model, option) {
     }
 
 
-    return processResult(result); 
+    return processResult(result, model); 
 
 }
 
 
-function processResult(result) {
+function processResult(result, model) {
 
     validationFailureMessage = result.message;
      
@@ -175,6 +174,10 @@ function processResult(result) {
         result.failedVariables = result.allVariables;     
     }
      
+    if (typeof model.actuatorquantity != 'undefined') {
+        result.actuatorquantity = model.actuatorquantity; 
+    }
+
     return result; 
 }
 
@@ -195,6 +198,7 @@ function validateOption(model, option, values) {
             result.message = msg;     
         }
         value.message = result.message;
+        value.actuatorquantity = result.actuatorquantity; 
         value.pricelabel = result.actuatorquantity + '-' + result.price; 
     } 
 
