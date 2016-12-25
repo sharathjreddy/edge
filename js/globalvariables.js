@@ -1,5 +1,7 @@
 //List of options sorted by display order; 
 var options; 
+
+var optionsSortedByValidationOrder; 
 //Map of options : the key is the option rule name 
 var optionMap; 
 var product; 

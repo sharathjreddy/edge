@@ -90,7 +90,7 @@
       <div class="slds-button-group" role="group">
         <button class="slds-button slds-button--neutral" id="price">Price</button>
         <button class="slds-button slds-button--neutral">Delete</button>
-        <button class="slds-button slds-button--neutral"  data-toggle="modal" data-target="#myModal" id="myModalLauncer">Clone</button>
+        <button class="slds-button slds-button--neutral"  data-toggle="modal" data-target="#myModal" id="myModalLauncer">New</button>
 		<!-- Modal start--> 
 		<div class="modal fade" id="myModal" tabindex="-1" role="dialog" 
      aria-labelledby="myModalLabel" aria-hidden="true">
@@ -144,42 +144,11 @@
     </div>
 </div>
 		<!-- Modal end-->
-        <div class="slds-dropdown-trigger slds-dropdown-trigger--click slds-button--last" aria-expanded="false">
-          <button class="slds-button slds-button--icon-border-filled" aria-haspopup="true" title="More Actions">
-            <svg aria-hidden="true" class="slds-button__icon">
-              <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-            </svg>
-            <span class="slds-assistive-text">More Actions</span>
-          </button>
-        </div>
+        
       </div>
     </div>
   </div>
-  <ul class="slds-grid slds-page-header__detail-row">
-    <li class="slds-page-header__detail-block">
-      <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Field 1">Field 1</p>
-      <p class="slds-text-body--regular slds-truncate" id="jDescription" title="Description that demonstrates truncation with a long text field">Description that demonstrates truncation with a long text field.</p>
-    </li>
-    <li class="slds-page-header__detail-block">
-      <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Field2 (3)">Field 2 (3)
-        <button class="slds-button slds-button--icon" aria-haspopup="true" title="More Actions">
-          <svg aria-hidden="true" class="slds-button__icon slds-button__icon--small">
-            <use xlink:href="/assets/icons/utility-sprite/svg/symbols.svg#down"></use>
-          </svg>
-          <span class="slds-assistive-text">More Actions</span>
-        </button>
-      </p>
-      <p class="slds-text-body--regular">Multiple Values</p>
-    </li>
-    <li class="slds-page-header__detail-block">
-      <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Field 3">Field 3</p><a href="javascript:void(0);">Hyperlink</a></li>
-    <li class="slds-page-header__detail-block">
-      <p class="slds-text-title slds-truncate slds-m-bottom--xx-small" title="Field 4">Field 4</p>
-      <p>
-        <span title="Description (2-line truncation—must use JS to truncate).">Description (2-line truncat...</span>
-      </p>
-    </li>
-  </ul>
+  
 </div>
     </nav>
       
@@ -189,26 +158,23 @@
         </div>
       <div id='msg'/></div>
        
-      <div position="relative">
+      <div style="position:relative">
+      <div class="slds-spinner slds-spinner--large" role="alert" style="display:none;margin-top: 50px">
+      <span class="slds-assistive-text">Loading</span>
+      <div class="slds-spinner__dot-a"></div>
+      <div class="slds-spinner__dot-b"></div>
+      </div>
+      </div>
 
-
-      <div position="relative">
-  <div class="slds-spinner slds-spinner--large" role="alert">
-    <span class="slds-assistive-text">Loading</span>
-    <div class="slds-spinner__dot-a"></div>
-    <div class="slds-spinner__dot-b"></div>
-  </div>
-</div>
-
+      <div style="pre">
 
 
       </div>
 
-      
-   </div>
-   
+    </div>
 
-    <!-- initially hidden right-click menu -->
+      
+      <!-- initially hidden right-click menu -->
         <div class="hide" id="rmenu">
             <ul>
                 <li id="filldown">

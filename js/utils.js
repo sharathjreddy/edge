@@ -22,3 +22,20 @@ function mouseY(evt) {
     }
 }
 
+function copy( original )  
+{
+    // First create an empty object
+    // that will receive copies of properties
+    var clone = {} ;
+
+    var key ;
+
+    for ( key in original )
+    {
+        // copy each property into the clone
+        if (original.hasOwnProperty[key])
+          clone[key] = original[key] ;
+    }
+
+    return clone ;
+}

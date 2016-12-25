@@ -7,7 +7,7 @@ var _table_ = document.createElement('table'),
 
 var options = null;
 var properties = null;    
-var model = 'CD35';
+var modelId = 'CD35';
 var counter = 1; 
 
 var table;
@@ -97,9 +97,8 @@ function loadModelMetadata() {
     xmlHttp.send(null);
 
 }
-
-function loadProperties(data) {
-
+ 
+function loadProperties(data)  {
     var arr = JSON.parse(data);
     options = arr.options;
     actuatorMappings = arr.actuator_mappings; 
@@ -108,7 +107,8 @@ function loadProperties(data) {
         var option = options[i];
         optionMap[option.name] = option; 
     }
-    options.sort(function(a, b) {
+    optionsSortedByValidationOrder = options.slice();  
+    optionsSortedByValidationOrder.sort(function(a, b) {
 
         var colA = parseInt(a.columnOrder);
         var colB = parseInt(b.columnOrder);
@@ -123,7 +123,7 @@ function loadProperties(data) {
     });
 
     properties = arr.properties; 
-    buildHtmlTable(options);
+    buildHtmlTable(optionsSortedByValidationOrder);
 
     options.sort(function(a, b) {
 
@@ -211,6 +211,7 @@ function filldown() {
     for (var i = 0; i < rows; i++) {
         var input = nextRow.querySelector('[data-option="' + fillDownSelectedOption + '"]'); 
         input.value = fillDownSelectedValue;
+        validateLineItem(nextRow, fillDownSelectedOption); 
         nextRow = nextRow.nextElementSibling;
     }
 
@@ -224,7 +225,7 @@ function afterCellUpdate(event) {
     if (event.target.type != 'select-one' && event.target.type != 'number') 
         return;
 
-    model = {}; 
+    line = {}; 
     var sel = event.target;
     var target = sel;
     var option = target.getAttribute('data-option');
@@ -241,7 +242,6 @@ function afterCellUpdate(event) {
         }
     }
     
-
     validateLineItem(target, option);
 
     displayValidationResult(target); //Error msg, or in case of successful validation, NO message 
@@ -525,7 +525,7 @@ function findValue(values, valueToFind) {
  
 
 function addRow() {
-    var tr = createRow(options);
+    var tr = createRow(optionsSortedByValidationOrder);
     table.appendChild(tr);
 }
 
@@ -535,7 +535,7 @@ function createRow(options) {
     var tr = _tr_.cloneNode(false);
 
     var td = _td_.cloneNode(false);
-    var lineItem = model + '-' + counter;
+    var lineItem = modelId + '-' + counter;
     counter++; 
     td.appendChild(document.createTextNode(lineItem));
 	td.setAttribute("id", lineItem); 
@@ -546,6 +546,7 @@ function createRow(options) {
     ninput.setAttribute("type", "number");    
     ninput.setAttribute("data-option", 'qty'); 
     ninput.value = 1;
+    ninput.size = 2; 
     td.appendChild(ninput);
     tr.appendChild(td);
 
