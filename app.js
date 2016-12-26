@@ -40,13 +40,22 @@ app.get('/product_properties/:id', function(req, res) {
 
 });
 
-app.use('/pricing', function(req, res) {
+app.use('/pricing/:id', function(req, res) {
 
 	console.log('forwaring pricing request'); 
-	
+	var id = req.params.id;
 	//var url = 'http://localhost:3001/pricing'; 
   	//req.pipe(request(url)).pipe(res);
-  	res.end('hello'); 
+  	console.log('id is ' + id); 
+
+  	fs.readFile( __dirname + "/" + id + "_Pricing.xml", 'utf8', function (err, data) {
+       //var options = JSON.parse( data ); 
+       //console.log( options );
+       //res.end( JSON.stringify(options));
+       res.end(data);
+
+    }); 
+  	//res.end('hello'); 
 });
 	
 	

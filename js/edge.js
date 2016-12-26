@@ -26,7 +26,6 @@ function bindKeys() {
 
     $(table).keydown(function(e) {
     
-
     var $table = $(this);
     var $active = $('input:focus,select:focus',$table);
     var $next = null;
@@ -66,12 +65,13 @@ function bindKeys() {
                 .next();
 
             if ($next.length == 0) {  //We are on the last row!!
-                addRow();    
+                let tr = createRow();    
+                validateLineItem(tr, options[0]); 
                 $next = $active.closest('tr').next();
             }    
 
             $next.find('td:nth-child(' + position + ')').find(focusableQuery).focus();
-            
+            //TODO: update the validation msg to reflect the current row 
             break;
 
         default: return; // exit this handler for other keys
@@ -259,12 +259,20 @@ function afterCellUpdate(event) {
 
 }
 
-function updateDisplay(row, line) {
+function updateDisplayValues(row, line, pristineCopy) {
     
-    for (let option of options) {
-        var inputElement = row.querySelector('[data-option="' + option.name + '"]');
-        if (inputElement)
-            inputElement.value = line[option.name]; 
+    for (let key in pristineCopy) {
+        
+        if (!pristineCopy.hasOwnProperty(key))
+            continue; 
+        
+        let originalValue = pristineCopy[key];
+        let modifiedValue = line[key];
+
+        if (originalValue != modifiedValue) {
+            var inputElement = row.querySelector('[data-option="' + key + '"]');
+            inputElement.value = modifiedValue; 
+        }
 
     }
     
@@ -352,6 +360,8 @@ function validateLineItem(targetRow, optionChanged) {
         log.trace(model); 
     }    
     
+    var pristineCopy = Object.assign({}, model);
+
     validationSucceeded = false; 
     startedFlipping = false;
     failedFlipOptions.clear();
@@ -364,7 +374,7 @@ function validateLineItem(targetRow, optionChanged) {
     if (result.isavailable)  {
         callRulesEngineByValidationOrder(model); 
         validationSucceeded = (!flipValuesExhausted);
-        updateDisplay(targetRow, model);
+        updateDisplayValues(targetRow, model,pristineCopy);
         updateRowColor(targetRow);
         return; 
     }
@@ -394,7 +404,7 @@ function validateLineItem(targetRow, optionChanged) {
     if (!flipValuesExhausted)
         validationSucceeded = true; 
     
-    updateDisplay(targetRow, model);
+    updateDisplayValues(targetRow, model, pristineCopy);
     updateRowColor(targetRow); 
 }
 
@@ -503,8 +513,7 @@ function findValue(values, valueToFind) {
          columns = addAllColumnHeaders(options, table);
          
     var tr = createRow(options);    
-    table.appendChild(tr);
-    
+       
     table.addEventListener('mousedown',  clickHandler);
     table.addEventListener('focusout',  afterCellUpdate);
     table.addEventListener('change',  afterCellUpdate);
@@ -524,13 +533,9 @@ function findValue(values, valueToFind) {
  }
  
 
-function addRow() {
-    var tr = createRow(optionsSortedByValidationOrder);
-    table.appendChild(tr);
-}
+function createRow() {
 
-
-function createRow(options) {
+    let options = optionsSortedByValidationOrder; 
 
     var tr = _tr_.cloneNode(false);
 
@@ -583,6 +588,7 @@ function createRow(options) {
         }
         tr.appendChild(td);
     }
+    table.appendChild(tr);
     return tr;
 
 }

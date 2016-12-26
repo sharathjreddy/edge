@@ -18,13 +18,14 @@ function price(line) {
         type: 'POST',
         data: JSON.stringify(pricingRequest),
         contentType: 'application/json; charset=utf-8',
-        url: '/pricing',
+        url: '/pricing/' + modelId,
         beforeSend : function()    {           
             if(currentRequest != null) {
                 currentRequest.abort();
             }
         },
         success: function(data) {
+            console.log(data); 
         // Success
         },
         error:function(e){
