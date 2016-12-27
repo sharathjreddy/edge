@@ -9,7 +9,7 @@ function startFlippingValues(line, selectedOption, failedVariables, allVariables
 
     if (flipValuesExhausted)
     	return; 
-
+    
     var allOptions = filterAndSort(allVariables); 
 
     for (let option of allOptions) {
@@ -79,7 +79,7 @@ function continueFlipping(line, currentOption) {
 	//TODO: filter out non-list, not-value options? eg. Drawings 
 
 	var optionObj = optionMap[currentOption]; 
-	if (optionObj.Type == "Value") {
+	if (optionObj.type == "Value") {
 		flipValuesExhausted = true; 
 		return false; //Nothing more to be done; can't flip a numeric value 
 	}	
