@@ -3,10 +3,6 @@
     <head>
         <title>Edge Selection Navigator</title>
 		
-		
-        <!--
-        <script src="js/CD35.js"></script>
-        -->
 		<link href="assets/styles/bootstrap.min.css" rel="stylesheet">
         <link rel="stylesheet" type="text/css" href="/assets/styles/salesforce-lightning-design-system.css" />
 		<link rel="stylesheet" href="dist/themes/default/style.min.css" />
@@ -82,7 +78,7 @@
         </div>
         <div class="slds-media__body">
           <p class="slds-text-title--caps slds-line-height--reset">Job</p>
-          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" id="jTitle" title="this should match the Record Title">Dampers for Irving Conv Center</h1>
+          <h1 class="slds-page-header__title slds-m-right--small slds-align-middle slds-truncate" id="jTitle" title="this should match the Record Title">N/A</h1>
         </div>
       </div>
     </div>
@@ -158,12 +154,14 @@
         </div>
       <div id='msg'/></div>
        
-      <div style="position:relative">
-      <div class="slds-spinner slds-spinner--large" role="alert" style="display:none;margin-top: 50px">
-      <span class="slds-assistive-text">Loading</span>
-      <div class="slds-spinner__dot-a"></div>
-      <div class="slds-spinner__dot-b"></div>
-      </div>
+      <div id='pricing'>
+        <div id='spinner' style="display:flex;align-item:center;justify-content:center;margin-top: 20px">
+          <img src='assets/images/ajax-loader.gif'/>  
+        </div>
+        <div id='pricing_text'>
+
+        </div>
+      
       </div>
 
       <div style="pre">

@@ -44,21 +44,16 @@ $('#closeModal').on('click',function(){
 }); 	
 
 function showInput() {
-        document.getElementById('CD35-1').innerHTML = document.getElementById("stext").value;
+        modelId = document.getElementById("stext").value;
 		document.getElementById('jTitle').innerHTML = 
-		document.getElementById("inputJobTitle").value;
-		document.getElementById('jDescription').innerHTML = 
-        document.getElementById("inputJobDescription").value;
-		 $('input[type=text]').val('');  
-	/* 	document.form.reset(); */
+			document.getElementById("inputJobTitle").value;
+		//document.getElementById('jDescription').innerHTML = document.getElementById("inputJobDescription").value;
+		 $('input[type=text]').val('');
+		 loadModelMetadata(); 
 }
  
- /* function clearText (){
-	 document.form.reset();
-	 
- } */
 
- function reset(){
+function reset(){
     $('input[type=text]').val('');  
    }
 	

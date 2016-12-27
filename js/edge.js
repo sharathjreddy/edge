@@ -13,7 +13,10 @@ var counter = 1;
 var table;
 $(document).ready(function() {
 
-    loadModelMetadata();
+    //Look for Query String 
+    modelId = getParameterByName('model');
+    if (modelId)
+        loadModelMetadata();  
 
     document.getElementById("price").addEventListener("click", price, false);
     //table = buildHtmlTable(options);
