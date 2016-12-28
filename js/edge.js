@@ -321,6 +321,12 @@ function clickHandler(event) {
     console.log(JSON.stringify(values));
     validateOption(model, option, values);
     console.log(JSON.stringify(values));
+
+    if (option == 'ACTUATOR') {  
+        sortActuatorValuesByPrice(values, sel); 
+        return; 
+    }
+
     
     //TODO: update the Grid with the availability results 
     for (i = 0; i < values.length; i++) {
@@ -336,15 +342,79 @@ function clickHandler(event) {
         }
         else {
             sel.options[i].style.backgroundColor = 'white';
-            sel.options[i].disabled = false;    
-            sel.options[i].title = values[i].actuatorquantity + '- $' + values[i].price; 
-
-        }
+            sel.options[i].disabled = false;  
+       }
     }
 
     //Sort values by List Price
 
 }
+
+
+function sortActuatorValuesByPrice(values, selectElement) {
+    
+    values.sort(function(a, b) {
+
+        if (a.listvaluecolor == 'Red') 
+            return 1; 
+        
+        if (b.listvaluecolor == 'Red') 
+            return -1;
+
+        if (a.actuatorquantity == -1) {
+            return 1;
+        }
+
+        if (b.actuatorquantity == -1) 
+            return -1; 
+
+        if (!a.isavailable) {
+            return 1;
+        }
+
+        if (!b.isavailable) {
+            return -1;
+        }        
+
+        if (a.price < b.price) 
+            return -1; 
+        else 
+            return 1; 
+
+        return 0; 
+    });
+
+    selectElement.innerHTML = ''; 
+    for (var i = 0; i < values.length; i++) {
+        
+        var option = document.createElement("option");
+        option.value = values[i].valueName; 
+        option.text = values[i].valueName; 
+
+        if (values[i].listvaluecolor == 'Red') {
+            option.style.backgroundColor = 'pink';
+            option.disabled = true;
+            option.title = values[i].message; 
+        }
+        else if (values[i].actuatorquantity == -1) {
+            option.style.backgroundColor = 'pink';
+            option.disabled = true;
+            option.title = 'Not available because of actuator quantity'; 
+        }
+        else if (!values[i].isavailable){
+            option.style.backgroundColor = 'grey';
+            option.disabled = false;    
+            option.title = values[i].message; 
+        }
+        else {
+            option.style.backgroundColor = 'white';
+            option.disabled = false;  
+            option.title = values[i].actuatorquantity + '- $' + values[i].price; 
+        }
+        selectElement.appendChild(option); 
+    }
+}
+
     
     
 function validateLineItem(targetRow, optionChanged) {
