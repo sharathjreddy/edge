@@ -45,3 +45,11 @@ function getParameterByName(name) {
     var match = RegExp('[?&]' + name + '=([^&]*)').exec(window.location.search);
     return match && decodeURIComponent(match[1].replace(/\+/g, ' '));
 }
+
+function hideSpinner() {
+  document.getElementById('spinner').style.display = 'none'; 
+}
+
+function showSpinner() {
+  document.getElementById('spinner').style.display = 'flex'; 
+}

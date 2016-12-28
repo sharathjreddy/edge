@@ -640,7 +640,7 @@ function validateListOption() {
 function displayValidationResult(targetRow) {
 
     let msg1 = document.getElementById('msg');
-    if (validationFailureMessage != '') {
+    if (validationFailureMessage) {
         msg1.innerHTML = validationFailureMessage; 
         
     }

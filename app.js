@@ -13,6 +13,13 @@ app.get('/', function(req, res) {
 	res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+
+app.post('/login', function(req, res) {
+	console.log('executing login method'); 
+	res.redirect('index.html');
+});
+
+
 app.get('/product/:id', function(req, res) {
 	
 	var id = req.params.id;
@@ -48,13 +55,16 @@ app.use('/pricing/:id', function(req, res) {
   	//req.pipe(request(url)).pipe(res);
   	console.log('id is ' + id); 
 
-  	fs.readFile( __dirname + "/" + id + "_Pricing.xml", 'utf8', function (err, data) {
+  	setTimeout(function() {
+
+  		fs.readFile( __dirname + "/" + id + "_Pricing.xml", 'utf8', function (err, data) {
        //var options = JSON.parse( data ); 
        //console.log( options );
        //res.end( JSON.stringify(options));
-       res.end(data);
+       		res.end(data);
 
-    }); 
+    	});
+	}, 2000);     	 
   	//res.end('hello'); 
 });
 	

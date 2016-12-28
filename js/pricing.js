@@ -19,13 +19,22 @@ function price(line) {
         data: JSON.stringify(pricingRequest),
         contentType: 'application/json; charset=utf-8',
         url: '/pricing/' + modelId,
-        beforeSend : function()    {           
+        beforeSend : function()    {       
+            showSpinner();     
             if(currentRequest != null) {
                 currentRequest.abort();
             }
         },
         success: function(data) {
             console.log(data); 
+            hideSpinner(); 
+            var parser = new DOMParser();
+            var xmlDoc = parser.parseFromString(data,"text/xml");
+            var info = xmlDoc.getElementsByTagName("lineitem_info");
+            var pricing_text = info[0].getAttribute('pricing_detail'); 
+            console.log(pricing_text); 
+            var preElement = document.getElementById('pre');
+            preElement.innerHTML = pricing_text; 
         // Success
         },
         error:function(e){
