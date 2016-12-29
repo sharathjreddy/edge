@@ -35,6 +35,9 @@ function price(line) {
             console.log(pricing_text); 
             var preElement = document.getElementById('pre');
             preElement.innerHTML = pricing_text; 
+            document.getElementById('pricing_text').style.display = 'block';
+            var spinner = document.getElementById('spinner');
+            spinner.style.display = 'none';
         // Success
         },
         error:function(e){

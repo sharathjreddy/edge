@@ -52,4 +52,7 @@ function hideSpinner() {
 
 function showSpinner() {
   document.getElementById('spinner').style.display = 'flex'; 
+  //hide validation error msg, Pricing text
+  document.getElementById('msg').style.display = 'none';
+  document.getElementById('pricing_text').style.display = 'none';
 }
