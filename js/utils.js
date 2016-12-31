@@ -10,6 +10,21 @@ function mouseX(evt) {
     }
 }
 
+function displayValidationResult(targetRow) {
+
+    var msg1 = document.getElementById('msg'); 
+    var validationFailureMessage = targetRow.getAttribute('data-validation-message');
+    if (validationFailureMessage) {
+        msg1.innerHTML = validationFailureMessage; 
+    }
+    else {
+        msg1.innerHTML = 'Validation Successful'; 
+          
+    } 
+        
+}
+
+
 function mouseY(evt) {
     if (evt.pageY) {
         return evt.pageY;
@@ -53,6 +68,6 @@ function hideSpinner() {
 function showSpinner() {
   document.getElementById('spinner').style.display = 'flex'; 
   //hide validation error msg, Pricing text
-  document.getElementById('msg').style.display = 'none';
+  //document.getElementById('msg').style.display = 'none';
   document.getElementById('pricing_text').style.display = 'none';
 }

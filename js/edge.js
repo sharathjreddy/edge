@@ -165,7 +165,26 @@ function parseProperties(data) {
     job.CD35_Properties = arr.CD35_Properties; 
     job.CD35_Writable_Properties = arr.CD35_Writable_Properties; 
     job.Products_CD35_Writable = arr.Products_CD35_Writable; 
+
+    createAndValidateLineItem(); 
 }
+
+function createAndValidateLineItem() {
+
+    var tr = createRow(options);    
+    var firstOption = optionsSortedByValidationOrder[0].name; 
+    var firstOption = optionsSortedByValidationOrder[0].name; 
+    var inputElement = tr.querySelector('[data-option="' + firstOption + '"]');
+    inputElement.focus(); 
+
+    validateLineItem(tr, firstOption); 
+    displayValidationResult(tr); 
+    //Set focus on option that failed? 
+   
+
+}
+
+
 
 function loadRules() {
     var xmlHttp = new XMLHttpRequest();
@@ -220,6 +239,27 @@ function filldown() {
 
 }
 
+
+function onFocus(event) {
+    
+    console.log('executing onfocus');
+
+    if (event.target.type != 'select-one' && event.target.type != 'number') 
+        return;
+
+    var sel = event.target;
+    var target = sel;
+    var option = target.getAttribute('data-option');
+    
+    while (target && target.nodeName !== "TR") {
+        target = target.parentNode;
+    }
+
+    displayValidationResult(target); 
+
+}
+
+
     
 function afterCellUpdate(event) {
     
@@ -246,8 +286,6 @@ function afterCellUpdate(event) {
     }
     
     validateLineItem(target, option);
-
-    displayValidationResult(target); //Error msg, or in case of successful validation, NO message 
     
     var line = model; 
 
@@ -448,7 +486,7 @@ function validateLineItem(targetRow, optionChanged) {
         callRulesEngineByValidationOrder(model); 
         validationSucceeded = (!flipValuesExhausted);
         updateDisplayValues(targetRow, model,pristineCopy);
-        updateRowColor(targetRow);
+        updateDisplay(targetRow);
         return; 
     }
 
@@ -456,7 +494,7 @@ function validateLineItem(targetRow, optionChanged) {
     var optionObj = optionMap[optionChanged];
     if (optionObj.type == "Value") {
         validationSucceeded = false;
-        updateRowColor(targetRow); 
+        updateDisplay(targetRow); 
         return; 
     }
 
@@ -478,7 +516,23 @@ function validateLineItem(targetRow, optionChanged) {
         validationSucceeded = true; 
     
     updateDisplayValues(targetRow, model, pristineCopy);
+    updateDisplay();  
+}
+
+
+function updateDisplay(targetRow) {
+    
     updateRowColor(targetRow); 
+     
+    if (validationFailureMessage) {
+        targetRow.setAttribute('data-validation-message', validationFailureMessage);  
+    }
+    else {
+        targetRow.setAttribute('data-validation-message', '');
+    }
+    
+    displayValidationResult(targetRow); //Error msg, or in case of successful validation, NO message 
+
 }
 
 
@@ -585,8 +639,7 @@ function findValue(values, valueToFind) {
     table = _table_.cloneNode(false),
          columns = addAllColumnHeaders(options, table);
          
-    var tr = createRow(options);    
-       
+    table.addEventListener('focusin',  onFocus);
     table.addEventListener('mousedown',  clickHandler);
     table.addEventListener('focusout',  afterCellUpdate);
     table.addEventListener('change',  afterCellUpdate);
@@ -707,18 +760,6 @@ function validateListOption() {
 }
 
 
-function displayValidationResult(targetRow) {
-
-    let msg1 = document.getElementById('msg');
-    if (validationFailureMessage) {
-        msg1.innerHTML = validationFailureMessage; 
-        
-    }
-    else {
-        msg1.innerHTML = ''; 
-          
-    }    
-}
 
 
 
