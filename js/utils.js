@@ -16,10 +16,11 @@ function displayValidationResult(targetRow) {
     var validationFailureMessage = targetRow.getAttribute('data-validation-message');
     if (validationFailureMessage) {
         msg1.innerHTML = validationFailureMessage; 
+        msg1.setAttribute('class', 'my-notify-error');
     }
     else {
         msg1.innerHTML = 'Validation Successful'; 
-          
+        msg1.setAttribute('class', 'my-notify-success');
     } 
         
 }

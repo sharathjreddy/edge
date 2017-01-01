@@ -2,9 +2,9 @@
 <html>
     <head>
         <title>Edge Selection Navigator</title>
-		
-		<link href="assets/styles/bootstrap.min.css" rel="stylesheet">
-        <link rel="stylesheet" type="text/css" href="/assets/styles/salesforce-lightning-design-system.css" />
+		<link href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" rel="stylesheet"/>
+		<link href="assets/styles/bootstrap.min.css" rel="stylesheet"/>
+    <link rel="stylesheet" type="text/css" href="/assets/styles/salesforce-lightning-design-system.css" />
 		<link rel="stylesheet" href="dist/themes/default/style.min.css" />
 		<link rel="stylesheet" href="assets/styles/style.css" />
 		
@@ -25,10 +25,43 @@
         
         <link rel="stylesheet" type="text/css" href="/assets/styles/salesforce-lightning-design-system.css" />
         <style>
-    		.red {
-        		
-        		background-color: red;
-    		}
+
+          .my-notify-success:before, .my-notify-error:before {
+              font-family:FontAwesome;
+              font-style:normal;
+              font-weight:400;
+              speak:none;
+              display:inline-block;
+              text-decoration:inherit;
+              width:1em;
+              margin-right:.2em;
+              text-align:center;
+              font-variant:normal;
+              text-transform:none;
+              line-height:1em;
+              margin-left:.2em;
+              -webkit-font-smoothing:antialiased;
+              -moz-osx-font-smoothing:grayscale
+          }
+
+          .my-notify-success:before {
+              content:'\f00c';
+          }
+
+          .my-notify-error:before {
+              content:'\f057';
+          }
+          .my-notify-success {
+              color: #4F8A10;
+              background-color: #DFF2BF;
+          }
+
+          .my-notify-error {
+              color: #D8000C;
+              background-color: #FFBABA;
+          }
+
+    		
         table { white-space: nowrap;
                 border-spacing:0px;
                 border-collapse: separate;   
@@ -61,15 +94,13 @@
         }
 
         #msg {
-          width: 400px;
+          width: 100%;
           border: 1px solid #D8D8D8;
           padding: 5px;
           border-radius: 5px;
           font-family: Arial;
           font-size: 14px;
           text-transform: uppercase;
-          background-color: rgb(255, 249, 242);
-          color: rgb(211, 0, 0);
           text-align: center;
         }
 
