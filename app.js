@@ -2,7 +2,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var fs = require("fs");
-var request = require('request');
+//var request = require('request');
 
 app.use('/js',express.static(path.join(__dirname, 'js')));
 
@@ -60,7 +60,7 @@ app.use('/pricing/:id', function(req, res) {
   	//req.pipe(request(url)).pipe(res);
   	console.log('id is ' + id); 
 
-  	setTimeout(function() {
+  	//setTimeout(function() {
 
   		fs.readFile( __dirname + "/" + id + "_Pricing.xml", 'utf8', function (err, data) {
        //var options = JSON.parse( data ); 
@@ -69,7 +69,7 @@ app.use('/pricing/:id', function(req, res) {
        		res.end(data);
 
     	});
-	}, 2000);     	 
+	//}, 2000);     	 
   	//res.end('hello'); 
 });
 	
