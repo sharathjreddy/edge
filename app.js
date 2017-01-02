@@ -4,21 +4,26 @@ var path = require('path');
 var fs = require("fs");
 var request = require('request');
 
-
 app.use('/js',express.static(path.join(__dirname, 'js')));
 
 app.use(express.static(__dirname));
 
 app.get('/', function(req, res) {
-	res.sendFile(path.join(__dirname, 'index.html'));
+	console.log('serving root file'); 
+	res.sendFile(path.join(__dirname, 'login.html'));
+});
+
+
+app.get('/config', function(req, res) {
+	console.log('serving config file'); 
+	res.sendFile(path.join(__dirname, 'config.html'));
 });
 
 
 app.post('/login', function(req, res) {
 	console.log('executing login method'); 
-	res.redirect('index.html');
+	res.redirect('config.html');
 });
-
 
 app.get('/product/:id', function(req, res) {
 	
