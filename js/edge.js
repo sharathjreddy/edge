@@ -244,18 +244,34 @@ function onFocus(event) {
     
     console.log('executing onfocus');
 
-    if (event.target.type != 'select-one' && event.target.type != 'number') 
+    if (event.target.type != 'select-one' && event.target.type != 'number' && event.target.type != 'text') 
         return;
 
     var sel = event.target;
     var target = sel;
     var option = target.getAttribute('data-option');
-    
+
+    var cell;     
     while (target && target.nodeName !== "TR") {
+        if (target.nodeName == 'TD') {
+            cell = target;  
+        }
         target = target.parentNode;
     }
 
     displayValidationResult(target); 
+
+    var cells = table.getElementsByTagName("input"); 
+    for (var i = 0; i < cells.length; i++) { 
+        cells[i].classList.remove('selected');
+    }
+
+    var cells = table.getElementsByTagName("select"); 
+    for (var i = 0; i < cells.length; i++) { 
+        cells[i].classList.remove('selected');
+    }
+
+    sel.classList.add('selected');
 
 }
 
@@ -516,7 +532,7 @@ function validateLineItem(targetRow, optionChanged) {
         validationSucceeded = true; 
     
     updateDisplayValues(targetRow, model, pristineCopy);
-    updateDisplay();  
+    updateDisplay(targetRow);  
 }
 
 
