@@ -714,6 +714,14 @@ function createRow() {
             td.appendChild(ninput);
 
         }
+
+        if (x.type == 'Free Form Text') {
+            var ninput = document.createElement("INPUT");
+            ninput.setAttribute("type", "text");    
+            ninput.setAttribute("data-option", x.name);
+            td.appendChild(ninput);
+        }        
+
         if (x.type == 'List') {
             var sel = document.createElement("SELECT");
             sel.setAttribute("data-option", x.name);
