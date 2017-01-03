@@ -616,10 +616,12 @@ function enrichModel(model) {
         if (option.type == "Value") {
             value = option.values[0];
         }
-        if (option.type == "List") {
+        else if (option.type == "List") {
             console.log("list"); 
             value = findValue(option.values, model[key]);
         }
+        else 
+            continue; 
 
         //findValue(option.values, model[key]);
         model[option.displayName] = model[key]; 
