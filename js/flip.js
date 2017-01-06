@@ -5,15 +5,16 @@ function startFlippingValues(line, selectedOption, failedVariables, allVariables
 	
 	doneFlipOptions.add(selectedOption);
 	
-    flipOptions(line, failedVariables, selectedOption);
-
+    flipOptions(line, failedVariables, selectedOption); 
+    
     if (flipValuesExhausted)
     	return; 
     
+    if (!allVariables) return;   //one case where this would be true is if the ACT_TYPE/ACTUATOR lookup failed 
     var allOptions = filterAndSort(allVariables); 
-
+    
     for (let option of allOptions) {
-
+    	
     	var optionObj = optionMap[option]; 
 
     	if (option == 'ACTUATOR' && (doneFlipOptions.has(option) || failedFlipOptions.has(option)))
@@ -84,7 +85,16 @@ function continueFlipping(line, currentOption) {
 		return false; //Nothing more to be done; can't flip a numeric value 
 	}	
 
-	var values = optionObj.values;  
+	var values = optionObj.values.slice(0); 
+
+	//sort values by actuator cost
+	if (currentOption == 'ACTUATOR') {
+		validateOption(line, currentOption, values);
+        sortActuatorValuesByPrice(values); 
+        values = filterActuatorValues(values); 
+	}
+
+
 	for (let value of values) {
 
 		if (value.name == model[currentOption]) continue; 
@@ -99,14 +109,16 @@ function continueFlipping(line, currentOption) {
 			continue;  
 
 		if (result.isavailable) {
-			doneFlipOptions.add(currentOption); 
+			doneFlipOptions.add(currentOption);  
 			flipValuesExhausted = false; 
 			return true; 
 		}
 
 		var failedVariables = result.failedVariables; 
+		
 		failedFlipOptions.add(currentOption);
 		flipOptions(line, failedVariables,currentOption); 
+		failedFlipOptions.delete(currentOption); //sr
 
 		result = ruleFlow(line, currentOption); 
 		

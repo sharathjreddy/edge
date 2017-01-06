@@ -44,8 +44,9 @@ function ruleFlow(model, option) {
         if (!isActuatorAvailable(model)) {
             result.isavailable = false; 
             result.listvaluecolor = 'Red';
+            result.failedVariables = ['ACT_TYPE'];
             result.message = 'Not available because of ' + model['ACT_TYPE']; 
-            return result; 
+            return processResult(result, model); 
         }
     }
 
@@ -55,7 +56,7 @@ function ruleFlow(model, option) {
         case "ACCESSORIES": 
             //should never actually fail !! 
             var isValid = {}; 
-            isActuatorInvalid(isValid, product.Product_Parent_Category_Name, product, model, value); 
+            isActuatorInvalid(isValid, product.Product_Parent_Category_Name, product, model, value);   
             break; 
             
         case "FRAME":
@@ -93,8 +94,7 @@ function ruleFlow(model, option) {
                 
         model.actuatorquantity = props.actuatorquantity;
     }
-    
-    
+        
     let optionRules = null;
     if (rules.hasOwnProperty(option)) {
         optionRules = rules[option];
@@ -110,11 +110,10 @@ function ruleFlow(model, option) {
         console.log(result.message); 
     }
 
-    if (result && !result.isavailable)
-        return processResult(result, model);
+    //if (result && !result.isavailable)
+    //    return processResult(result, model);
 
-
-    if (optionRules.hasOwnProperty('Global Value Available')) {
+    if (result.isavailable && optionRules.hasOwnProperty('Global Value Available')) {
             
         let globalValueFunctions = optionRules['Global Value Available'];
              
@@ -125,22 +124,23 @@ function ruleFlow(model, option) {
         
     }
 
-
+    /*
     if (result && !result.isavailable)
         return processResult(result, model);
-
-   
-    if (optionRules.hasOwnProperty('LocalOption Value Available')) {
+    */
+    
+    if (result.isavailable && optionRules.hasOwnProperty('LocalOption Value Available')) {
             
         result = optionRules['LocalOption Value Available'](model);
         console.log(result.message); 
     }
     
+    /*
     if (result && !result.isavailable)
         return processResult(result, model);
+    */
 
-
-    if (optionRules.hasOwnProperty('Local Value Available')) {
+    if (result.isavailable && optionRules.hasOwnProperty('Local Value Available')) {
         
         let globalValueFunctions = optionRules['Local Value Available'];
          
@@ -151,7 +151,8 @@ function ruleFlow(model, option) {
         
     }
 
-    //If Actutator, execute Actuator Pricing Rules 
+    //If Actutator, execute Actuator Pricing Rules; We do this even if the Actuator
+    //is unavailable (for flipping)
     if (option == 'ACTUATOR') {
         let func = actuatorPricingRules[value];        
         if (func) {
@@ -159,8 +160,8 @@ function ruleFlow(model, option) {
             result.price = price.totalprice; 
         }
     }
-
-
+    
+    
     return processResult(result, model); 
 
 }
@@ -188,7 +189,7 @@ function validateOption(model, option, values) {
 	var backupValue = model[option]; 
     
     for (let value of values) {
-        model[option] = value.valueName; 
+        model[option] = value.name; 
         var result = ruleFlow(model, option);
         value.isavailable = result.isavailable;
         value.listvaluecolor = result.listvaluecolor;
@@ -199,9 +200,9 @@ function validateOption(model, option, values) {
         }
         value.message = result.message;
         value.actuatorquantity = result.actuatorquantity; 
-        value.pricelabel = result.actuatorquantity + '-' + result.price; 
+        value.pricelabel = result.actuatorquantity + '- $' + result.price; 
     } 
-
+    
     model[option] = backupValue; 
     return; 
 }

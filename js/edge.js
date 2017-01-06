@@ -43,7 +43,7 @@ function bindKeys() {
 
         case 38: // up
 
-            if (!e.ctrlKey) return;
+            //if (!e.ctrlKey) return;
 
             $next = $active
                 .closest('tr')
@@ -61,7 +61,7 @@ function bindKeys() {
         case 40: // down
             console.log('key down');
 
-            if (!e.ctrlKey) return; 
+            //if (!e.ctrlKey) return; 
 
             $next = $active
                 .closest('tr')
@@ -76,6 +76,15 @@ function bindKeys() {
             $next.find('td:nth-child(' + position + ')').find(focusableQuery).focus();
             //TODO: update the validation msg to reflect the current row 
             break;
+
+        case 13:  //enter key
+            $next = $active
+                .closest('tr')
+                .prev()                
+                .find('td:nth-child(' + position + ')')
+                .find(focusableQuery);
+            $next.focus();
+
 
         default: return; // exit this handler for other keys
     }
@@ -370,7 +379,7 @@ function clickHandler(event) {
     var values = [];
     var options = sel.options;
     for (i = 0; i < options.length; i++) {
-        values.push( { valueName : options[i].value, isavailable : true } );
+        values.push( { name : options[i].value, isavailable : true } );
     }
     console.log(JSON.stringify(values));
     validateOption(model, option, values);
@@ -405,30 +414,44 @@ function clickHandler(event) {
 }
 
 
-function sortActuatorValuesByPrice(values, selectElement) {
-    
-    values.sort(function(a, b) {
 
-        if (a.listvaluecolor == 'Red') 
-            return 1; 
+function filterActuatorValues(values) {
+
+    var filteredValues = []; 
+
+    for (let value of values) {
+        if (value.listvaluecolor == 'Red') {
+            continue; 
+        }
+        else if (value.actuatorquantity < 0) {
+            continue;  
+        }
+
+        filteredValues.push(value); 
         
-        if (b.listvaluecolor == 'Red') 
-            return -1;
+    }
 
-        if (a.actuatorquantity == -1) {
-            return 1;
+    return filteredValues; 
+}
+
+
+
+function sortActuatorValuesByPrice(values, selectElement) {
+
+    for (let value of values) {
+        if (value.listvaluecolor == 'Red') {
+            value.price = '99999';
         }
-
-        if (b.actuatorquantity == -1) 
-            return -1; 
-
-        if (!a.isavailable) {
-            return 1;
+        else if (value.actuatorquantity < 0) {
+            value.price = '99997'; 
         }
+        //else if (value.isavailable == false) {
+        //    value.price = '99997'; 
+        //}
+    }
 
-        if (!b.isavailable) {
-            return -1;
-        }        
+
+    values.sort(function(a, b) {
 
         if (a.price < b.price) 
             return -1; 
@@ -438,12 +461,16 @@ function sortActuatorValuesByPrice(values, selectElement) {
         return 0; 
     });
 
+    //This function is also used while flipping...
+    if (!selectElement)
+        return; 
+
     selectElement.innerHTML = ''; 
     for (var i = 0; i < values.length; i++) {
         
         var option = document.createElement("option");
-        option.value = values[i].valueName; 
-        option.text = values[i].valueName; 
+        option.value = values[i].name; 
+        option.text = values[i].name; 
 
         if (values[i].listvaluecolor == 'Red') {
             option.style.backgroundColor = 'pink';
@@ -513,7 +540,7 @@ function validateLineItem(targetRow, optionChanged) {
         updateDisplay(targetRow); 
         return; 
     }
-
+    
     startedFlipping = true; 
     userSelectedOption = optionChanged; 
     
@@ -695,13 +722,14 @@ function createRow() {
     ninput.setAttribute("type", "number");    
     ninput.setAttribute("data-option", 'qty'); 
     ninput.value = 1;
-    ninput.size = 2; 
+    ninput.style.width = "5em"; 
     td.appendChild(ninput);
     tr.appendChild(td);
 
     td = _td_.cloneNode(false);
     var ninput = document.createElement("INPUT");  
     ninput.setAttribute("data-option", 'tag');
+    ninput.style.width = "8em"; 
     td.appendChild(ninput);
     tr.appendChild(td);
 
@@ -712,6 +740,7 @@ function createRow() {
             var ninput = document.createElement("INPUT");
             ninput.setAttribute("type", "number");    
             ninput.setAttribute("data-option", x.name);
+            ninput.style.width = "5em";
             ninput.value = 0;
             td.appendChild(ninput);
 
